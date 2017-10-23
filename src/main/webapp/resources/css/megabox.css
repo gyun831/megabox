@@ -1,0 +1,25 @@
+
+@charset "UTF-8";
+html, body {
+   height: 100%;
+}
+#wrapper{
+	position:relative;
+    min-height:100%;
+}
+#footer-wrap{
+	position:absolute;
+    bottom:0;
+    width:100%;
+    height:70px;   
+}
+.last_btns {
+	position: absolute;
+	top: 13px;
+	right: 13px;
+}
+
+.modal-open .modal {
+	overflow-x: hidden;
+	overflow-y: hidden;
+}

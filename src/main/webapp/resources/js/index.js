@@ -314,7 +314,6 @@ var mainUI ={
 		    +'</div>'
 			+'</div>'
 			+'</div>'
-			+'<br><br><br><br><br><br>'
 		}
 }
 var compUI ={
@@ -567,7 +566,7 @@ var compUI ={
 			+'				</div>'			
 			+'				</span>'
 			+'		</p>'
-			+'		<input id="main_login" type="submit" value="로그인" title="로그인" class="img_btn user" onclick="login();" />'
+			+'		<input id="main_login" type="submit" value="로그인" title="로그인" class="img_btn user" />'
 			+'	</div>'
 			+'</div>'
 			+'</div>'
@@ -587,7 +586,7 @@ var compUI ={
 			+'<a href="javascript:void(0);" id="exit" class="login_box_close" title="닫기">닫기</a>'
 			+'</div>'
 		},
-		afterlogin : ()=>{return '<div class="member_info remove_loginInfo" style="cursor: pointer;">'
+		afterlogin : (m)=>{return '<div class="member_info remove_loginInfo" style="cursor: pointer;">'
 			+'<div class="photo">'
 			+'<img src="http://image2.megabox.co.kr/mop/home/user/bg_myphoto.png" alt="프로필 사진 배경이미지" style="position: absolute;left: 0;top: 0;">'
 			+'<img src="http://image2.megabox.co.kr/mop/home/user/profile_m.png" alt="프로필 사진" id="topMyphotoImage">'
@@ -596,7 +595,7 @@ var compUI ={
 		+'</div>'
 		+'<div class="name">'
 			+'<a class="name_btn" title="회원정보 간략보기">'
-				+'<strong>유주열<span>님</span></strong>'
+				+'<strong>'+m.member.name+'<span>님</span></strong>'
 				+'<span id="login_drop" class="name_arrow"><i class="fa fa-chevron-down"></i></span>'
 			+'</a>'
 //			+'<a href="javascript:void(0);" class="name_membership c_mint" onclick="showMenu('mypage-booking')" title="예매내역 바로가기">예매확인/취소</a>'

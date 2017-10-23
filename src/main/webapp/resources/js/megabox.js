@@ -69,13 +69,13 @@ megabox.index =(()=>{
 					.click(e=>{
 						alert('dd');
 					});
-				    $(".thumb").mouseover(function(){
-				    	$(this).attr('class','thumb flip flipIt');
-				    });
-				    $(".thumb").mouseout(function(){
-				    	$(this).attr('class','thumb flip');
-				    });
 					});
+			    $(".thumb").mouseover(function(){
+			    	$(this).attr('class','thumb flip flipIt');
+			    });
+			    $(".thumb").mouseout(function(){
+			    	$(this).attr('class','thumb flip');
+			    });
 			    $(document).scroll(function(){
 			    	var height = $(document).scrollTop();
 					$('#grand1').css({'background-position-y':1600-height});
@@ -120,23 +120,46 @@ megabox.index =(()=>{
 	    			joo.mega.memberadd().appendTo($main);
 		    	})
 		    	$('#main_login').click(()=>{
-		    		main();
-		    		$('#login_wrap').attr('class','login_info remove_loginInfo');
-		    		$('#open_myinfo').attr('class','login hide');
-		    		$('.navigation').after(compUI.afterlogin());
-	    			$('.member_info').after(joo.mega.loginbox());
-	    			$('#login_drop').click(()=>{
-	    				$('#myinfo_wrap').attr('class','login_info remove_loginInfo open_myinfo_open');
-	    			});
-		    		$('#top_logo').click(()=>{
-		    			onCreate();
+		    		$.ajax({
+		    			url : $$('x')+'/login',
+		    			method : 'post',
+		    			data : JSON.stringify({
+		    				'id' : $('#login-id').val(),
+		    				'password' : $('#login-pw').val()
+		    			}),
+		    			contentType : 'application/json',
+		    			success : m=>{
+		    				if(m.msg==("성공")){
+		    					alert('성공');
+					    		main();
+					    		$('#login_wrap').attr('class','login_info remove_loginInfo');
+					    		$('#open_myinfo').attr('class','login hide');
+					    		$('.navigation').after(compUI.afterlogin(m));
+					    		$('.member_info').after(joo.mega.loginbox());
+				    			$('#login_drop').click(()=>{
+				    				$('#myinfo_wrap').attr('class','login_info remove_loginInfo open_myinfo_open');
+				    			});
+					    		$('#top_logo').click(()=>{
+					    			onCreate();
+					    		})
+							    $('#exit').on('click',()=>{
+							    	$('#login_wrap').attr('class','login_info remove_loginInfo');
+							    });
+		    				}else{
+		    					alert('실패');
+		    					onCreate();
+		    				}
+		    			},
+		    			error : ()=>{
+		    				alert('실패');
+		    			}
+		    				
+		    			
 		    		})
 		    	});
 		    	});
 		    	});
-		    $('#exit').on('click',()=>{
-		    	$('#login_wrap').attr('class','login_info remove_loginInfo');
-		    });
+
 		});
 	}
 	return {init:init,main:main,header:header};

@@ -27,8 +27,8 @@
 </header>
 <div id="wrapper">
 <div id="mega_main"></div>
-<div id="footer-wrap"></div>
 </div> 
+<div id="footer-wrap"></div>
 <script>
 megabox.common.init('${path.ctx}');
 reservation.index.init();

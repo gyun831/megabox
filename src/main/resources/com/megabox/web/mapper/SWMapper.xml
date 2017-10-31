@@ -23,7 +23,7 @@
 		<result property="date" column="date"/>
 		<result property="seen" column="seen"/>
 		<result property="interesting" column="interesting"/>
-		<result property="stealcut" column="stealcut"/>
+		<result property="stillcut" column="stillcut"/>
 	</resultMap>
 	
 	<select id="selectMovieList" resultMap="resultMap" parameterType="com.megabox.web.domain.Reservation">
@@ -208,8 +208,8 @@
 		WHERE id=#{id} AND movie_title=#{reservationNumber} AND movie_check=#{seatSeq}
 	</delete>
 	
-	<select id="selectStealcut" resultMap="resultMap" parameterType="com.megabox.web.domain.Reservation">
-		SELECT movie_seq, stealcut
+	<select id="selectStillcut" resultMap="resultMap" parameterType="com.megabox.web.domain.Reservation">
+		SELECT movie_seq, stillcut
 		FROM movie
 		WHERE movie_seq = #{cancel};
 	</select>

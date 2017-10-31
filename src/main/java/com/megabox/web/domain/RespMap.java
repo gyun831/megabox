@@ -10,5 +10,5 @@ public class RespMap {
 					director,actor,gnere,filmRate,contents,startDay,
 					endDay,runningTimme,score,image,timeSeq,day,startTime,endTime
 					,screen,officeName,screeningNumber,id, movieSeq,genre,
-					runningtime,count,replyNum, content, date, seen, interesting, stealcut;
+					runningtime,count,replyNum, content, date, seen, interesting, stillcut;
 }

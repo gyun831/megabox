@@ -403,7 +403,7 @@ seungwoo.movieDetail=((()=>{
 					alert('에러 발생 : '+m);
 			}
 		});
-		seungwoo.movieStealcut.init($movieSeq);
+		seungwoo.movieStillcut.init($movieSeq);
 		seungwoo.movieComment.init($movieSeq);
 	};
 	var setContentView=()=>{
@@ -460,7 +460,7 @@ seungwoo.movieDetail=((()=>{
 	return {init:init}
 }))();
 
-seungwoo.movieStealcut=(()=>{
+seungwoo.movieStillcut=(()=>{
 	var ctx, $movieSeq;
 	var init=x=>{
 		ctx=$$("x");
@@ -470,13 +470,13 @@ seungwoo.movieStealcut=(()=>{
 	var onCreate=()=>{
 		setContentView();
 		$.ajax({
-			url : ctx+'/movie/stealcut/'+$movieSeq,
+			url : ctx+'/movie/stillcut/'+$movieSeq,
 			method : 'post',
 			dataType : 'json',
 			contentType : 'application/json',
 			success : d=>{
-				if(d.movieStealcut.stealcut!=null) {
-					var array=d.movieStealcut.stealcut.split(",");
+				if(d.movieStillcut.stillcut!=null) {
+					var array=d.movieStillcut.stillcut.split(",");
 					$('<span/>')
 						.addClass("stillCount")
 						.text(" ("+array.length+")")
@@ -490,7 +490,7 @@ seungwoo.movieStealcut=(()=>{
 				$('<a/>').addClass('still_prev2').text('이전 스틸컷').appendTo($('.still_prevNext2'));
 				$('<a/>').addClass('still_next2').text('다음 스틸컷').appendTo($('.still_prevNext2'));
 
-				if(d.movieStealcut.stealcut!=null) {
+				if(d.movieStillcut.stillcut!=null) {
 					var img='';
 					$.each(array,(i,j)=>{
 						img+='<img class="mySlides" src="'+array[i]+'" style="margin:0 auto;">'

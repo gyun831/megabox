@@ -61,15 +61,15 @@ public class SWController {
 		return map;
 	};
 	
-	@RequestMapping(value="/movie/stealcut/{movieSeq}", method=RequestMethod.POST, consumes="application/json")
-	public @ResponseBody Map<?,?> stealcut(@PathVariable String movieSeq) {
+	@RequestMapping(value="/movie/stillcut/{movieSeq}", method=RequestMethod.POST, consumes="application/json")
+	public @ResponseBody Map<?,?> stillcut(@PathVariable String movieSeq) {
 		Map<String,Object> map=new HashMap<>();
 		rsv.setCancel(movieSeq);
-		IGetService movieStealcutService=null;
-		movieStealcutService=(x)-> {
-			return mapper.selectStealcut(rsv);
+		IGetService movieStillcutService=null;
+		movieStillcutService=(x)-> {
+			return mapper.selectStillcut(rsv);
 		};
-		map.put("movieStealcut", movieStealcutService.execute(rsv));
+		map.put("movieStillcut", movieStillcutService.execute(rsv));
 		return map;
 	};
 

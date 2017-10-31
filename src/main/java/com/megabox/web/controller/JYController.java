@@ -37,7 +37,6 @@ public class JYController {
 	public @ResponseBody Map<?,?> login(@RequestBody Map<String,String> login){
 		Map<String,Object> map = new HashMap<>();
 		IGetService loginService = null;
-		System.out.println(login.get("id"));
 		cmd.setSearch(login.get("id"));
 		cmd.setColumn("id");
 		loginService=(x)->{

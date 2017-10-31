@@ -93,32 +93,141 @@ megabox.index =(()=>{
 		.addClass('icon i7')
 		.text('로그인').appendTo($('#open_myinfo'));
 		$('.header-wrap').append(compUI.loginUI());
+		$('#top_logo').click(()=>{
+			onCreate();
+		})
 	    $("#main_movie").click(()=>{
 	    	$.getScript(sw,()=>{
-	    		seungwoo.movieMain.init();
+	    		seungwoo.movieMain.init("movie-boxoffice");
 	    		$('#top_logo').click(()=>{
 	    			onCreate();
 	    		})
 	    	})
 	    });
-		    $('#open_myinfo').click(()=>{
+	    $('#open_myinfo').click(()=>{
 		    	$('#login_wrap').attr('class','login_info remove_loginInfo open_myinfo_open');
 		    	$.getScript(jy,()=>{
 		    	$('.col2').click(()=>{
 		    			$('#login_wrap').attr('class','login_info remove_loginInfo');
 		    			$main.empty();
-		    			joo.mega.nonmember().appendTo($main);
+		    			$main.append(memberUI.nonmember());
 		    		});
 		    	$('.col3').click(()=>{
 		    		$('#login_wrap').attr('class','login_info remove_loginInfo');
 	    			$main.empty();
-	    			joo.mega.findbyid().appendTo($main);
+	    			$main.append(memberUI.findbyid());
+	    			$('#id_send').click(()=>{
+	    				$.ajax({
+	    					url : $$('x')+'/sendMail',
+	    					method : 'post',
+	    					data : JSON.stringify({
+	    						'email' : $('#userfind-id-email').val()
+	    					}),
+	    					contentType : 'application/json',
+	    					success : m=>{
+	    						alert('전송');
+	    						$('#find_id').click(()=>{
+	    							if(m.joinCode==$('#userfind-id-code').val()){
+		    							alert('인증완료');
+		    							$.ajax({
+	    			    					url : $$('x')+'/selectid/email',
+	    			    					method : 'post',
+	    			    					data : JSON.stringify({
+	    			    						'value' : $('#userfind-id-email').val()
+	    			    					}),
+	    			    					contentType : 'application/json',
+	    			    					success : m=>{
+	    			    						if(m.msg=="성공"){
+	    			    							alert('ID는'+m.member.id+'입니다.');
+	    			    						}else{
+	    			    							alert('존재하지않습니다.');
+	    			    						}
+	    			    					},
+	    			    					error : ()=>{
+	    			    						alert('실패');
+	    			    					}
+		    							})
+		    						}	
+	    						})	
+	    					},
+	    					error : ()=>{
+	    						alert('실패');
+	    					}
+	    				})	
+	    			})
+	    			$('#pass_send').click(()=>{
+	    				$.ajax({
+	    					url : $$('x')+'/sendMail',
+	    					method : 'post',
+	    					data : JSON.stringify({
+	    						'email' : $('#userfind-pass-email').val()
+	    					}),
+	    					contentType : 'application/json',
+	    					success : m=>{
+	    						alert('전송');
+	    						$('#img_btn_pass').click(()=>{
+	    							if(m.joinCode==$('#userfind-pass-code').val()){
+	    								alert('인증완료');
+		    							$.ajax({
+	    			    					url : $$('x')+'/select/email',
+	    			    					method : 'post',
+	    			    					data : JSON.stringify({
+	    			    						'value' : $('#userfind-pass-email').val()
+	    			    					}),
+	    			    					contentType : 'application/json',
+	    			    					success : m=>{
+	    			    						if(m.msg=="성공"){
+	    			    							alert('password는'+m.member.password+'입니다.');
+	    			    						}else{
+	    			    							alert('존재하지않습니다.');
+	    			    						}
+	    			    					},
+	    			    					error : ()=>{
+	    			    						alert('실패');
+	    			    					}
+		    							})
+	    							}
+	    						})
+	    					},
+	    					error : ()=>{
+	    						alert('실패');
+	    					}
+	    					})
+	    			})
 		    		});
 		    	$('.col4').click(()=>{
 		    		$('#login_wrap').attr('class','login_info remove_loginInfo');
 	    			$main.empty();
-	    			joo.mega.memberadd().appendTo($main);
+	    			$main.append(memberUI.membertext());
+	    			$('#check_send').click(()=>{
+	    				$.ajax({
+	    					url : $$('x')+'/sendMail',
+	    					method : 'post',
+	    					data : JSON.stringify({
+	    						'email' : $('#check_mail').val()
+	    					}),
+	    					contentType : 'application/json',
+	    					success : m=>{
+	    						alert('전송');
+	    						$('#email_check').click(()=>{
+		    						if(m.joinCode==$('#check_code').val()){
+		    							alert('인증완료');
+		    							megabox.func.memberadd();
+		    						}else{
+		    							alert('인증번호 다시입력');
+		    						}
+	    						})
+	    					},
+	    					error : ()=>{
+	    						alert('실패');
+	    					}
+	    				})
+	    			})
+
 		    	})
+		    	$('#exit').on('click',()=>{
+					$('#login_wrap').attr('class','login_info remove_loginInfo');
+				});
 		    	$('#main_login').click(()=>{
 		    		$.ajax({
 		    			url : $$('x')+'/login',
@@ -130,21 +239,15 @@ megabox.index =(()=>{
 		    			contentType : 'application/json',
 		    			success : m=>{
 		    				if(m.msg==("성공")){
-		    					alert('성공');
-					    		main();
-					    		$('#login_wrap').attr('class','login_info remove_loginInfo');
-					    		$('#open_myinfo').attr('class','login hide');
-					    		$('.navigation').after(compUI.afterlogin(m));
-					    		$('.member_info').after(joo.mega.loginbox());
-				    			$('#login_drop').click(()=>{
-				    				$('#myinfo_wrap').attr('class','login_info remove_loginInfo open_myinfo_open');
-				    			});
+		    					megabox.func.login(m);
+		    					sessionStorage.setItem('id',m.member.id);
+		    					sessionStorage.setItem('name',m.member.name);
+		    					sessionStorage.setItem('birth',m.member.birth);
+		    					sessionStorage.setItem('phone',m.member.phone);
+		    					sessionStorage.setItem('email',m.member.email);
 					    		$('#top_logo').click(()=>{
-					    			onCreate();
+					    			megabox.func.login(m);
 					    		})
-							    $('#exit').on('click',()=>{
-							    	$('#login_wrap').attr('class','login_info remove_loginInfo');
-							    });
 		    				}else{
 		    					alert('실패');
 		    					onCreate();
@@ -153,8 +256,6 @@ megabox.index =(()=>{
 		    			error : ()=>{
 		    				alert('실패');
 		    			}
-		    				
-		    			
 		    		})
 		    	});
 		    	});
@@ -162,7 +263,168 @@ megabox.index =(()=>{
 
 		});
 	}
-	return {init:init,main:main,header:header};
+	return {init:init,main:main,header:header,onCreate:onCreate};
+})();
+megabox.func=(()=>{
+	var index,jy,js,$main;
+	var login=(m)=>{
+		$main=$('#mega_main');
+		js=$$('j');
+		index=js+'/index.js';
+		jy=js+'/jooyoul.js';
+		$.getScript(index,()=>{
+			$.getScript(jy,()=>{
+				megabox.index.main();
+				$('#login_wrap').attr('class','login_info remove_loginInfo');
+				$('#open_myinfo').attr('class','login hide');
+				$('.navigation').after(compUI.afterlogin(m));
+				$('.member_info').after(memberUI.loginbox());
+				$('#login_drop').click(()=>{
+					$('#myinfo_wrap').attr('class','login_info remove_loginInfo open_myinfo_open');
+				});
+				$('.item1').click(()=>{
+	    			$('#myinfo_wrap').attr('class','login_info remove_loginInfo');
+	    			mymegabox();
+				})
+				$(".log_out").click(()=>{
+					sessionStorage.removeItem('id');
+					sessionStorage.removeItem('name');
+					sessionStorage.removeItem('birth');
+					sessionStorage.removeItem('phone');
+					sessionStorage.removeItem('email');
+					megabox.index.onCreate();
+				});
+			})
+		})
+	}
+	var mymegabox=()=>{
+		$main.empty();
+		$main.append(memberUI.mymegabox());
+		$('#col7').click(()=>{
+			myinfoupdate();
+		})
+	}
+	var myinfoupdate=()=>{
+		$main.empty();
+		$main.append(memberUI.myinfoupdate());
+		$('#myinfocan').click(()=>{
+			mymegabox();
+		})
+		$('#myinfoup').click(()=>{
+			$.ajax({
+				url : $$('x')+'/selectid/id',
+				method : 'post',
+				dataType : 'json',
+				data :JSON.stringify({
+					'value' : $$('id')
+				}),
+				contentType : 'application/json',
+				success : m=>{
+					var phone = $('[name="mobile1"]').val()+'-'+$('[name="mobile2"]').val()+'-'+$('[name="mobile3"]').val();
+					var email = $('[name="emailaddr"]').val();
+					if(phone==""){
+						phone = m.member.phone;
+					}
+					if(email==""){
+						email = m.member.email;
+					}
+					if(m.member.password==$('#inputtext2').val()){
+						$.ajax({
+							url : $$('x')+'/update',
+							method : 'post',
+							dataType : 'json',
+							data : JSON.stringify({
+								'id' : m.member.id,
+								'phone' : phone,
+								'email' : email
+							}),
+							contentType : 'application/json',
+							success : m=>{
+								alert('수정 완료');
+								sessionStorage.setItem('phone',phone);
+								sessionStorage.setItem('email',email);
+								myinfoupdate();
+							},
+							error : (x,m,s)=>{
+								alert(s);
+							}
+							
+						})
+					}else if($('#inputtext2').val()==""){
+						alert('비밀번호를 입력해주세요');
+					}else{
+						alert('비밀번호가 틀립니다.');
+					}
+					
+				},
+				error : (x,m,s)=>{
+					alert(s);
+				}
+			})
+			
+		})
+		$('#passUpdate').click(()=>{
+			passupdate();
+		})
+	}
+	var passupdate=()=>{
+		$main.empty();
+		$main.append(memberUI.passchange());
+	}
+	var memberadd=()=>{
+		$('#mega_main').empty();
+		$('#mega_main').append(memberUI.memberadd());
+		$('#img_btn_user_input_id_pull-left').click(()=>{
+			$.ajax({
+				url : $$('x')+'/selectid/id',
+				method : 'post',
+				data : JSON.stringify({
+					'value' : $('#inputtext1').val()
+				}),
+				contentType : 'application/json',
+				success :m=>{
+					if(m.msg==("성공")){
+						alert('사용가능');
+					}else{
+						alert('중복입니다. 다른ID를 입력해주세요');
+					}
+					$('#passwordfirm').click(()=>{
+						if($('#inputtext2').val()==$('#inputtext3').val()){
+							alert('일치합니다.');
+						}else{
+							alert('일치하지않습니다.');
+						}
+					})
+					$('#joinconfirm').click(()=>{
+						$.ajax({
+							url : $$('x')+'/join',
+							method : 'post',
+							data : JSON.stringify({
+								'id' : $('#inputtext1').val(),
+								'password' : $('#inputtext2').val() ,
+								'name' : $('#inputtext4').val(),
+								'birth' : $('[name="birthYear"]').val()+'-'+$('[name="birthMonth"]').val()+'-'+$('[name="birthDate"]').val(),
+								'phone' : $('[name="mobile1"]').val()+'-'+$('[name="mobile2"]').val()+'-'+$('[name="mobile3"]').val(),
+								'email' : $('#inputtext9').val()
+							}),
+							contentType : 'application/json',
+							success : m=>{
+								alert('회원가입성공');
+								onCreate();
+							},
+							error : ()=>{
+								alert('실패');
+							}
+						})
+					})
+				},
+				error : ()=>{
+					alert('실패');
+				}
+			})
+		})
+	}
+	return {login:login,mymegabox:mymegabox,myinfoupdate:myinfoupdate,passupdate:passupdate,memberadd:memberadd}
 })();
 megabox.session={
 	init : (ctx)=>{
@@ -176,7 +438,7 @@ megabox.session={
 	}
 };
 var $$=(x)=>{return megabox.session.getPath(x);};
-var slide=()=>{return $(function(){
+var slide=(m)=>{return $(function(){
     var slideIndex = 0;
     function carousel() {
         var i;
@@ -195,7 +457,7 @@ var slide=()=>{return $(function(){
 	//자동롤링
 	var Timer = '';
 
-	if(Timer) clearInterval(timer);
+	if(Timer) clearInterval(Timer);
 	Timer = setInterval(function(){
 		carousel();
 		}, 4000);

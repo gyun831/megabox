@@ -6,6 +6,6 @@ import lombok.Data;
 
 @Component @Data
 public class MyMovieStory {
-	private String id,movieTitle,check;
+	private String id,movieTitle,movieCheck;
 
 }

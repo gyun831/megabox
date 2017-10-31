@@ -7,6 +7,6 @@ import lombok.Data;
 
 @Lazy @Component @Data
 public class Command {
-	private String search;
+	private String search,column,condition;
 
 }

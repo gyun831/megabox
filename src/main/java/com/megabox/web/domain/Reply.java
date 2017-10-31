@@ -6,5 +6,5 @@ import lombok.Data;
 
 @Component @Data
 public class Reply {
-	private String replyNum,movieTitle,id,content,date;
+	private String replyNum,movieTitle,id,content,date,score;
 }

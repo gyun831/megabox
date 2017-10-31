@@ -6,5 +6,5 @@ import lombok.Data;
 
 @Component @Data
 public class Seat {
-
+	private String line,seatno,screeningnumber,seat_name,type,cancel;
 }

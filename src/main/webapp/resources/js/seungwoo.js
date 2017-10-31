@@ -8,8 +8,10 @@ seungwoo.common=(()=>{
 })();
 
 seungwoo.movieMain=(()=>{
-	var init=()=>{
+	var ctx, $sort; 
+	var init=x=>{
 		ctx=$$('x');
+		$sort=x;
 		$("#mega_main").empty();
 		onCreate();
 	};
@@ -18,80 +20,8 @@ seungwoo.movieMain=(()=>{
 		seungwoo.movieHeader.init();
 		seungwoo.movieSubmenu.init();
 		
-		/* 정렬 */
-		$('<a/>').text('개봉일순').appendTo($('.sort_wrap li').eq(0))
-			.click(e=>{
-				alert('개봉일순');
-			});
-		$('<a/>').text('가나다순').appendTo($('.sort_wrap li').eq(1))
-			.click(e=>{
-				alert('가나다순');
-			});
-		
-		/* 나중에 $.ajax로 바꾸기 */
-		$.getJSON(ctx+'/get/board/none', data=>{
-			var li='';
-			$.each(data,function(i,j){
-				li+='<li class="item">'
-		                +'<div id="item_1" class="thumb flip">'
-		                    +'<div class="upper">'
-		                        +'<span class="boxoffice n3">03</span>'
-		                        +'</div>'
-			                    +'<div class="lower">'
-				                    +'<div class="back_wrap">'
-				                    +'<button type="button" name="btnSeenMovie_012675" class="img_you_ck btn_01 " data-code="012675">본영화</button>'
-				                    +'<button type="button" name="btnInterestingMovie_012675" class="img_you_ck btn_02 " data-code="012675">보고싶어</button>'
-			                    +'</div>'
-			                    +'<a href="javascript:void(0);" class="blank"></a>'
-			                    +'<img src="http://image2.megabox.co.kr/mop/poster/2017/D7/32EA72-3589-4F85-B131-94A199ABE31A.large.jpg" class="back_poster">'
-		                    +'</div>'
-		                +'</div>'
-		                +'<div class="front-info">'
-		                    +'<div class="rating">'
-		                        +'<span class="fz14 pt2 pr9"><span>평점</span>'
-		                        +'<span>7.2</span></span>'
-		                        +'<span class="star">'
-		                            +'<span class="fill" style="width:72.4%;"></span>'
-		                        +'</span>'
-		                    +'</div>'
-		                    +'<div class="movie_info">'
-		                        +'<h3 class="sm_film">'
-		                            +'<span class="film_rate age_15">15세관람가</span>'
-		                            +'<a class="film_title">남한산성</a>'
-		                        +'</h3>'
-		                        +'<div class="btn_wrap sm_btn">'
-		                            +'<a id="goMovieDetail_1" class="img_btn movie pull-left">상세정보</a>'
-		                            +'<a id="goMovieReservation_1" class="img_btn movie pull-right">예매하기</a>'
-		                        +'</div>'
-		                    +'</div>'
-		                +'</div>'
-		            +'</li>';
-			});
-		});
-		
-		var arr=[
-            'http://image2.megabox.co.kr/mop/poster/2017/46/F8B4A0-0392-4366-8344-9F210B198398.large.jpg',
-            'http://image2.megabox.co.kr/mop/poster/2017/28/5CCD96-6F15-4C2F-8F4E-CF9A9E9CF37D.large.jpg',
-            ];
-		
-         $.each(arr,(i,j)=>{
-            $('#movieList').append(seungwoo.movieUI.boxoffice(arr[i]));
-            $('<a/>')
-            .appendTo('.lower')
-            .attr('class','blank')
-            .attr('title','영화상세 보기')
-            .click(()=>{
-            	seungwoo.movieDetail.init();
-            });
-             $(".thumb").mouseover(function(){
-                $(this).attr('class','thumb flip flipIt');
-             });
-             $(".thumb").mouseout(function(){
-                $(this).attr('class','thumb flip');
-             });
-
-         });
-		/*each 안에 들어갈 것-끝*/
+		/* 정렬 + 영화 리스트 */
+		seungwoo.movieMainSort.init($sort);
 	};
 	var setContentView=()=>{
 		$("#mega_main")
@@ -115,28 +45,249 @@ seungwoo.movieMain=(()=>{
 			.append($('<div/>',{id:"movie_container",class:"movie_container"}));
 		$(".movie_container")
 			.append($('<div/>',{class:"full-width"}));
+		
 		$('<div/>',{id:"flip_wrapper"})
 			.css({'width':'984px'})
-			.appendTo('.full-width');
-
+			.appendTo($(".full-width"));
 		$('<div/>')
 			.addClass('movielist_util_wrap')
-			.appendTo('#flip_wrapper');
+			.appendTo($("#flip_wrapper"));
 		$('<ul/>')
 			.addClass('sort_wrap')
-			.appendTo('.movielist_util_wrap');	
-		$('.sort_wrap')
-			.append($('<li/>'))
-			.append($('<li/>'));
-		
+			.appendTo($(".movielist_util_wrap"));
 		$('<ul/>',{id:"movieList"})
-			.appendTo('#flip_wrapper');
+			.appendTo($("#flip_wrapper"));
+		
+		$('<button>',{id:"moreMovieList", class:"view_more full_width"})
+			.text('더보기 +')
+			.appendTo($("#flip_wrapper"));
 	};
 	return {init:init}
 })();
 
+seungwoo.movieMainSort=(()=>{
+	var ctx, $sort;
+	var init=x=>{
+		ctx=$$("x");
+		$sort=x;
+		$(".sort_wrap").empty();
+		onCreate();
+	};
+	var onCreate=()=>{
+		setContentView();
+		if($sort=="movie-boxoffice") {
+			$("#movie_sm01").addClass('movie sm01 active');
+			seungwoo.movieList.init($sort);
+		} else if($sort=="movie-showing-date") {
+			$("#movie_sm02").addClass('movie sm02 active');
+			$('.sort_wrap').append($('<li/>')).append($('<li/>')).append($('<li/>'));
+			$('<a/>').addClass("active").text('개봉일순').appendTo($('.sort_wrap li').eq(0))
+				.click(e=>{
+					$sort="movie-showing-date";
+					$(".sort_wrap li a").removeClass();
+					$(".sort_wrap li a").eq(0).addClass("active");
+					seungwoo.movieList.init($sort);
+				});
+			$('<a/>').text('평점순').appendTo($('.sort_wrap li').eq(1))
+				.click(e=>{
+					$sort="movie-showing-score";
+					$(".sort_wrap li a").removeClass();
+					$(".sort_wrap li a").eq(1).addClass("active");
+					seungwoo.movieList.init($sort);
+				});
+			$('<a/>').text('가나다순').appendTo($('.sort_wrap li').eq(2))
+				.click(e=>{
+					$sort="movie-showing-character";
+					$(".sort_wrap li a").removeClass();
+					$(".sort_wrap li a").eq(2).addClass("active");
+					seungwoo.movieList.init($sort);
+				});
+			seungwoo.movieList.init("movie-showing-date");
+		} else if($sort=="movie-scheduled-date") {
+			$("#movie_sm03").addClass('movie sm03 active');
+			$('.sort_wrap').append($('<li/>')).append($('<li/>'));
+			$('<a/>').addClass("active").text('개봉일순').appendTo($('.sort_wrap li').eq(0))
+				.click(e=>{
+					$sort="movie-scheduled-date";
+					$(".sort_wrap li a").removeClass();
+					$(".sort_wrap li a").eq(0).addClass("active");
+					seungwoo.movieList.init($sort);
+				});
+			$('<a/>').text('가나다순').appendTo($('.sort_wrap li').eq(1)).click(e=>{
+					$sort="movie-scheduled-character";
+					$(".sort_wrap li a").removeClass();
+					$(".sort_wrap li a").eq(1).addClass("active");
+					seungwoo.movieList.init($sort);
+				});
+			seungwoo.movieList.init($sort);
+		} else if($sort=="movie-interesting-date") {
+			$("#movie_sm11").addClass('movie sm11 active');
+			$('.sort_wrap').append($('<li/>')).append($('<li/>'));
+			$('<a/>').addClass("active").text('개봉일순').appendTo($('.sort_wrap li').eq(0))
+				.click(e=>{
+					$sort="movie-interesting-date";
+					$(".sort_wrap li a").removeClass();
+					$(".sort_wrap li a").eq(0).addClass("active");
+					seungwoo.movieList.init($sort);
+				});
+			$('<a/>').text('가나다순').appendTo($('.sort_wrap li').eq(1)).click(e=>{
+					$sort="movie-interesting-character";
+					$(".sort_wrap li a").removeClass();
+					$(".sort_wrap li a").eq(1).addClass("active");
+					seungwoo.movieList.init($sort);
+				});
+			seungwoo.movieList.init($sort);
+		}
+	};
+	var setContentView=()=>{
+		
+	};
+	return {init:init}
+})();
+
+seungwoo.movieList=(()=>{
+	var ctx, $sort, $id;
+	var init=x=>{
+		$sort=x;
+		$id=$$("id");
+		$("#movieList").empty();
+		ctx=$$('x');
+		onCreate();
+	};
+	var onCreate=()=>{
+		setContentView();
+		$.ajax({
+			url : ctx+'/movie/list',
+			method : 'post',
+			dataType : 'json',
+			data : JSON.stringify({
+				"sort" : $sort,
+				"id" : $id
+			}),
+			contentType : 'application/json',
+			success : d=> {
+				var list='';
+				$.each(d.movieList,(i,j)=>{
+					list+='<li class="item" style="display:none;">'
+			                +'<div id="item_'+j.movieSeq+'" class="thumb flip">'
+			                +'	<div class="upper">'
+			                +'		<span class="boxoffice n'+(i+1)+'">'+(i+1)+'</span>'
+			                +'		<img src="'+j.image+'">'
+			                +'	</div>'
+			                +'	<div class="lower">'
+				            +'		<div class="back_wrap">'
+				                    +'<button id="btnSeenMovie_'+j.movieSeq+'" class="img_you_ck btn_01" data-code="'+j.movieSeq+'">본영화</button>'
+				                    +'<button id="btnInterestingMovie_'+j.movieSeq+'" class="img_you_ck btn_02" data-code="'+j.movieSeq+'">보고싶어</button>'
+			                +'	</div>'
+			                +'<img src="'+j.image+'" class="back_poster">'
+			                +'</div>'
+			                +'</div>'
+			                +'<div class="front-info">'
+			                    +'<div class="rating">'
+			                        +'<span class="fz14 pt2 pr9"><span>평점</span>'
+			                        +'<span>'+(j.score*1).toFixed(1)+'</span></span>'
+			                        +'<span class="star">'
+			                            +'<span class="fill" style="width:'+j.score*10+'%;"></span>'
+			                        +'</span>'
+			                    +'</div>'
+			                    +'<div class="movie_info">'
+			                        +'<h3 class="sm_film">'
+			                            +'<span class="film_rate '+j.filmRate+'"></span>'
+			                            +'<a class="film_title">'+j.movieTitle+'</a>'
+			                        +'</h3>'
+			                        +'<div class="btn_wrap sm_btn">'
+			                            +'<a id="goMovieDetail_'+j.movieSeq+'" class="img_btn movie pull-left">상세정보</a>'
+			                            +'<a id="goMovieReservation_'+j.movieSeq+'" class="img_btn movie pull-right">예매하기</a>'
+			                        +'</div>'
+			                    +'</div>'
+			                +'</div>'
+			            +'</li>'
+					+'<script>'
+					+'if(seungwoo.fx.seenChk('+j.movieSeq+')>0) {'
+					+'	$("#btnSeenMovie_'+j.movieSeq+'").attr("class","img_you_ck btn_01 active")'	
+					+'}'
+					+'if(seungwoo.fx.interestingChk('+j.movieSeq+')>0) {'
+					+'	$("#btnInterestingMovie_'+j.movieSeq+'").attr("class","img_you_ck btn_02 active")'	
+					+'}'
+					+'$("#btnSeenMovie_'+j.movieSeq+'").click(e=>{'
+				    +'	if(seungwoo.fx.loginChk()<0) {'
+				    +'		alert("로그인 후 이용가능한 서비스입니다.");'
+				    +'		return false;'
+				    +'	} else {'
+				    +'		seungwoo.fx.listMovieCheck('+j.movieSeq+',"'+$sort+'")'
+				    +'	}'
+				    +'});'
+				    +'$("#btnInterestingMovie_'+j.movieSeq+'").click(e=>{'
+				    +'	if(seungwoo.fx.loginChk()<0) {'
+				    +'		alert("로그인 후 이용가능한 서비스입니다.");'
+				    +'		return false;'
+				    +'	} else {'
+				    +'		seungwoo.fx.listMovieCheck('+j.movieSeq+',"'+$sort+'")'	
+				    +'	}'
+				    +'});'
+			        +'$("#item_'+j.movieSeq+'").hover(e=>{'
+					+'			$("#item_'+j.movieSeq+'").addClass("thumb flip flipIt");'
+					+'			$("<a/>",{class:"blank"})'
+					+'				.appendTo($("#item_'+j.movieSeq+' div").eq(1))'
+					+'				.click(e=>{'
+					+'					seungwoo.movieDetail.init('+j.movieSeq+');'
+					+'				});'
+					+'		},'
+					+'		e=>{'
+					+'			$("#item_'+j.movieSeq+'").removeClass();'
+					+'			$("#item_'+j.movieSeq+'").addClass("thumb flip");'
+					+'			$("#item_'+j.movieSeq+' div a").remove()'
+					+'		}'
+					+'	); '
+					+'$("#goMovieDetail_'+j.movieSeq+'").click(e=>{'
+					+'	seungwoo.movieDetail.init('+j.movieSeq+');'
+					+'});'
+					+'$("#goMovieReservation_'+j.movieSeq+'").click(e=>{'
+					+'	alert("예매하기")'
+					+'});'
+					+'</script>'
+				});
+				$("#movieList").removeClass().append(list);
+
+				$(document).ready(()=>{
+					$(".item:hidden").slice(0, 4).show();
+					if($(".item:hidden").length==0) {
+						$("#moreMovieList").remove();
+					}
+				});
+				$("#moreMovieList").click(e=>{
+					$(".item:hidden").slice(0, 4).show();
+					if($(".item:hidden").length==0) {
+						$("#moreMovieList").remove();
+					}
+				});
+			},
+			error : (x,s,m)=> {
+				alert('에러 발생 : '+m);
+			}
+		});
+	};
+	var setContentView=()=>{
+		
+	};
+	return {init:init};
+})();
+
 seungwoo.movieDetail=((()=>{
-	var init=()=>{
+	var ctx, $movieSeq, $sort, $pageNum;
+	var init=(x,y,z)=>{
+		$("#movie_detail").empty();
+		$movieSeq=x;
+		if(y==null) {
+			$sort='movie-comment-date';
+		} else {
+			$sort=y;
+		}
+		if(z==null) {
+			$pageNum=1;
+		} else {
+			$pageNum=z;
+		}
 		ctx=$$('x');
 		onCreate();
 	};
@@ -151,224 +302,109 @@ seungwoo.movieDetail=((()=>{
 				$("#movie_detail").empty();
 			});
 		
-		/* [영화상세 정보] */
-		$('<i/>')
-			.addClass('age_l age_12_l')
-			.text('XX세관람가')
-			.appendTo($("#title_clearfix h2"));
-		$('<span/>')
-			.text('영화이름')
-			.insertAfter($("#title_clearfix h2 i"));
-		$('<p/>')
-			.addClass('right_p')
-			.html('예매율<strong>xx</strong>위<span> x.x% </span>')
-			.appendTo('.reservation_wrap');
-		$('<button/>')
-			.addClass('img_btn movie btn_reservation')
-			.text('예매하기')
-			.appendTo('.reservation_wrap')
-			.click(e=>{
-				alert('예매하기');
-			});
-		$($(".info_wrap")).html(
-				'<li><strong>타입</strong> : 디지털(자막)</li>'
-				+'<li><strong>개봉일</strong> : 2017.00.00</li>'
-				+'<li><strong>감독</strong> : 감독명</li>'
-				+'<li><strong>출연진</strong> :'
-				+'	배우1,&nbsp;배우2,&nbsp;배우3'
-				+'</li>'
-				+'<li><strong>장르</strong> : XX / XX 분</li>'
-				+'<li>'
-				+'	<strong>누적관객</strong> : XX,XXX명<span class="divider"></span><strong>전일관객</strong> : XXX명 <a href="#" class="audience_tooltips" id="btn_tooltips" title="누적관객 도움말 보기">누적관객 도움말</a>'
-				+'	<div class="tooltips_box">누적관객 및 전일관객은 영화진흥 위원회<br>'
-				+'		영화관 입장권 통합전상망제공 기준입니다. <br>'
-				+'		(<span id="tooltipsDate">2017.XX.XX</span>기준)'
-				+'	</div>'
-				+'</li>'	
-		);
-		
-		$('<button/>',{class:"img_btn btn_seen",id:"btnSeenMovie"})
-			.text('본영화')
-			.appendTo($("#btn_wrap_1"))
-			.click(e=>{
-				alert('본영화');
-			});
-		$('<button/>',{class:"img_btn btn_inte",id:"btnInterestingMovie"})
-			.text('보고싶어')
-			.appendTo($("#btn_wrap_1"))
-			.click(e=>{
-				alert('보고싶어');
-			});
-		$('<span/>')
-			.addClass('like')
-			.html('<span>xx<i></i></span>')
-			.appendTo($("#btn_wrap_1"));
-		$('<a/>')
-			.addClass('img_btn btn_timeSchedule')
-			.attr('target',"_self")
-			.text('상영시간표')
-			.appendTo($("#btn_wrap_1"))
-			.click(e=>{
-				alert('상영시간표');
-			});
-		
-		$('<span/>')
-			.addClass("stillCount")
-			.text('(xx)')
-			.appendTo($("#btn_steelCut"));
-		
-		$('<a/>')
-			.addClass('still_prev')
-			.text('이전 스틸컷')
-			.appendTo($('.still_prevNext'))
-			.click(e=>{
-				alert('이전 스틸컷');
-			});
-		$('<a/>')
-			.addClass('still_next')
-			.text('다음 스틸컷')
-			.appendTo($('.still_prevNext'))
-			.click(e=>{
-				alert('다음 스틸컷');
-			});
-		
-		$('<a/>',{id:"stlll_cut_x",title:"스틸컷x",class:"on"})
-			.appendTo($(".stillLi"));
-		$('<span/>')
-			.addClass('blind')
-			.text('스틸컷x')
-			.appendTo($(".stillLi a"));
-		
-		$('<a/>')
-			.addClass('still_prev2')
-			.text('이전 스틸컷')
-			.appendTo($('.still_prevNext2'))
-			.click(e=>{
-				alert('이전 스틸컷2');
-			});
-		$('<a/>')
-			.addClass('still_next2')
-			.text('다음 스틸컷')
-			.appendTo($('.still_prevNext2'))
-			.click(e=>{
-				alert('다음 스틸컷2');
-			});
-		
-		/* [영화상세 댓글] */
-		
-		$('<span/>',{id:"movieCommentTotalCount"})
-			.text('(x)')
-			.appendTo($("#popup_box_row5 h3"));
-		
-		$("#myStarScore input")
-			.eq(0)
-			.hover(e=>{
-				alert('별점1');
-			});
-		$("#myStarScore input")
-			.eq(1)
-			.hover(e=>{
-				alert('별점2');
-			});
-		$("#myStarScore input")
-			.eq(2)
-			.hover(e=>{
-				alert('별점3');
-			});
-		$("#myStarScore input")
-			.eq(3)
-			.hover(e=>{
-				alert('별점4');
-			});
-		$("#myStarScore input")
-			.eq(4)
-			.hover(e=>{
-				alert('별점5');
-			});
-		
-		/* textarea 글자수 제한 */
-		$('.textarea textarea').keyup(function(e) {
-	        if($(this).val().length > 100) {
-	        	alert("글자수는 100자로 제한됩니다.!");  
-	            $(this).val($(this).val().substring(0, 100));
-	        }
-	    });
-		$('.textarea textarea').keyup(function(e){
-	          var content = $(this).val();
-	          $(this).height(((content.split('\n').length + 1) * 1.5) + 'em');
-	          $('#wordCheckCount').html(content.length + '/100');
-	      });
-		
-		$('<button/>',{type:"submit",class:"img_btn movie"})
-			.text('등록')
-			.appendTo($("#btn_wrap_2"))
-			.click(e=>{
-				alert('등록');
-			});
-		
-		/* 정렬 */
-		$('<li/>')
-			.addClass('c_mint')
-			.text('최신순')
-			.appendTo($("#movieCommentList ul").eq(0))
-			.click(e=>{
-				alert('최신순');
-			});
-		$('<li/>')
-			.text('추천순')
-			.appendTo($("#movieCommentList ul").eq(0))
-			.click(e=>{
-				alert('추천순');
-			});
-		$('<li/>')
-			.text('평점순')
-			.appendTo($("#movieCommentList ul").eq(0))
-			.click(e=>{
-				alert('평점순');
-			});
-		
-		/* 나중에 $.ajax로 바꾸기 */
-		$.getJSON(ctx+'/get/board/none', data=>{
-			var li='';
-			$.each(data,function(i,j){
-				li+='<li>'
-	                +'<div class="text">'
-	                    +'<div class="name"><strong>gkdud3**</strong></div>'
-	                    +'<p><span class="comment">윽 진짜 노잼이였는데 다시 상영하네..</span></p>'
-	                    +'<div class="name">'
-	                        +'<span>17.10.03</span>'
-	                        +'<span class="small_star2">'
-	                            +'<span class="fill" style="width:0.0%;"><span class="blind">별점1 괜히봤어요</span></span>'
-	                        +'</span>'
-	                        +'<div class="report"><i class="i_report" aria-hidden="true"></i>신고하기</div>'
-	                    +'</div>'
-	                +'</div>'
-	                +'<div class="recommend">'
-	                    +'<p><strong>1</strong></p>'
-	                    +'<p><a style="color:#333" title="추천하기">추천</a></p>'
-	                +'</div>'
-	            +'</li>';
-			});
-			$("#movieCommentList ul").eq(1).append();
+		$.ajax({
+			url : ctx+'/movie/detail/'+$movieSeq,
+			method : 'post',
+			dataType : 'json',
+			contentType : 'application/json',
+			success : d=>{
+				/* [영화상세 정보] */
+				$('<img>')
+					.attr('src',d.movieDetail.image)
+					.appendTo($(".left_wrap"))
+				$('<i/>')
+					.addClass('age_l '+d.movieDetail.filmRate+'_l')
+					.appendTo($("#title_clearfix h2"));
+				$('<span/>')
+					.text(d.movieDetail.movieTitle)
+					.insertAfter($("#title_clearfix h2 i"));
+				
+				$('<span/>')
+					.addClass("small_star")
+					.appendTo($(".reservation_wrap"));
+				$(".small_star")
+					.append('<span class="fill" style="width:'+d.movieDetail.score*10+'%;"></span>');
+			
+				$('<p/>')
+					.addClass('left_p')
+					.appendTo($(".reservation_wrap"));
+				$(".left_p")
+					.append('<span>'+d.movieStarCount+'</span><span>명 참여</span>');
+				
+				$(".left_p")
+					.append('<strong>'+(d.movieDetail.score*1).toFixed(1)+'</strong><span class="divider"></span>');
+				
+				/*
+				$('<p/>')
+					.addClass('right_p')
+					.html('예매율 <strong>0</strong>위<span> 0.0% </span>')
+					.appendTo($(".reservation_wrap"));
+					
+				*/
+				/*
+				$('<button/>')
+					.addClass('img_btn movie btn_reservation')
+					.text('예매하기')
+					.appendTo($(".reservation_wrap"))
+					.click(e=>{
+						alert('예매하기');
+					});
+				*/
+				$($(".info_wrap")).html('<li><strong>개봉일</strong> : '+d.movieDetail.startDay.substring(0,4)+'.'+d.movieDetail.startDay.substring(4,6)+'.'+d.movieDetail.startDay.substring(6,8)+'</li>'
+						+'<li><strong>감독</strong> : '+d.movieDetail.director+'</li>'
+						+'<li><strong>출연진</strong> : '
+						+d.movieDetail.actor
+						+'</li>'
+						+'<li><strong>장르</strong> : '+d.movieDetail.genre+' / '+d.movieDetail.runningtime+'</li>'
+				);
+				
+				$('<button/>',{class:"img_btn btn_seen",id:"btnSeenMovie"})
+					.text('본영화')
+					.appendTo($("#btn_wrap_1"));
+				$('<button/>',{class:"img_btn btn_inte",id:"btnInterestingMovie"})
+					.text('보고싶어')
+					.appendTo($("#btn_wrap_1"));
+
+				if(seungwoo.fx.loginChk()>0) {
+					if(seungwoo.fx.seenChk($movieSeq)>0) {
+						$("#btnSeenMovie").attr("class","img_btn btn_seen active");
+					} 
+				} 
+				
+				if(seungwoo.fx.loginChk()>0) {
+					if(seungwoo.fx.interestingChk($movieSeq)>0) {
+						$("#btnInterestingMovie").attr("class","img_btn btn_inte active");
+					} 
+				}
+				
+				seungwoo.fx.detailMovieCheck($movieSeq);
+				
+				$('<span/>')
+					.addClass('like')
+					.html('<span>'+d.movieWishCount+'<i></i></span>')
+					.appendTo($("#btn_wrap_1"));
+				/*
+				$('<a/>')
+					.addClass('img_btn btn_timeSchedule')
+					.attr('target',"_self")
+					.text('상영시간표')
+					.appendTo($("#btn_wrap_1"))
+					.click(e=>{
+						alert('상영시간표');
+					});
+				*/
+				
+				$('<div/>')
+					.addClass('text')
+					.text(d.movieDetail.contents)
+					.appendTo($("#popup_box_row2"));
+				},
+				error : (x,s,m)=>{
+					alert('에러 발생 : '+m);
+			}
 		});
-		$("#movieCommentList ul").eq(1).append('<li>'
-                +'<div class="text">'
-                    +'<div class="name"><strong>gkdud3**</strong></div>'
-                    +'<p><span class="comment">윽 진짜 노잼이였는데 다시 상영하네..</span></p>'
-                    +'<div class="name">'
-                        +'<span>17.10.03</span>'
-                        +'<span class="small_star2">'
-                            +'<span class="fill" style="width:0.0%;"><span class="blind">별점1 괜히봤어요</span></span>'
-                        +'</span>'
-                        +'<div class="report"><i class="i_report" aria-hidden="true"></i>신고하기</div>'
-                    +'</div>'
-                +'</div>'
-                +'<div class="recommend">'
-                    +'<p><strong>1</strong></p>'
-                    +'<p><a style="color:#333" title="추천하기">추천</a></p>'
-                +'</div>'
-            +'</li>'
-		);
+		seungwoo.movieStealcut.init($movieSeq);
+		seungwoo.movieComment.init($movieSeq);
 	};
 	var setContentView=()=>{
 		$("#movie_detail")
@@ -420,11 +456,77 @@ seungwoo.movieDetail=((()=>{
 		$('<h3/>')
 			.text('줄거리')
 			.appendTo($("#popup_box_row2"));
-		$('<div/>')
-			.addClass('text')
-			.text('영화설명')
-			.appendTo($("#popup_box_row2"));
-		
+	};
+	return {init:init}
+}))();
+
+seungwoo.movieStealcut=(()=>{
+	var ctx, $movieSeq;
+	var init=x=>{
+		ctx=$$("x");
+		$movieSeq=x;
+		onCreate();
+	};
+	var onCreate=()=>{
+		setContentView();
+		$.ajax({
+			url : ctx+'/movie/stealcut/'+$movieSeq,
+			method : 'post',
+			dataType : 'json',
+			contentType : 'application/json',
+			success : d=>{
+				if(d.movieStealcut.stealcut!=null) {
+					var array=d.movieStealcut.stealcut.split(",");
+					$('<span/>')
+						.addClass("stillCount")
+						.text(" ("+array.length+")")
+						.appendTo($("#btn_steelCut"));
+				} else {
+					$('<span/>')
+						.addClass("stillCount")
+						.text("(0)")
+						.appendTo($("#btn_steelCut"));
+				}
+				$('<a/>').addClass('still_prev2').text('이전 스틸컷').appendTo($('.still_prevNext2'));
+				$('<a/>').addClass('still_next2').text('다음 스틸컷').appendTo($('.still_prevNext2'));
+
+				if(d.movieStealcut.stealcut!=null) {
+					var img='';
+					$.each(array,(i,j)=>{
+						img+='<img class="mySlides" src="'+array[i]+'" style="margin:0 auto;">'
+					});
+					$(".still_img").append(img);
+				}
+				
+				$(".still_prev2").click(e=>{
+					plusDivs(-1);
+				});
+				$(".still_next2").click(e=>{
+					plusDivs(1);
+				});
+				
+				var slideIndex = 1;
+				showDivs(slideIndex);
+				function plusDivs(n) {
+				    showDivs(slideIndex += n);
+				}
+				function showDivs(n) {
+				    var i;
+				    var x = $(".mySlides");
+				    if (n > x.length) {slideIndex = 1} 
+				    if (n < 1) {slideIndex = x.length} ;
+				    for (i = 0; i < x.length; i++) {
+				        x[i].style.display = "none"; 
+				    }
+				    x[slideIndex-1].style.display = "block"; 
+				}
+			},
+			error : (x,s,m)=>{
+				alert("에러 : "+m);
+			}
+		});
+	};
+	var setContentView=()=>{
 		$('<div/>',{id:"popup_box_row3",class:"popup_box row3"})
 			.appendTo($("#movieDetail"));
 		$('<h3/>')
@@ -433,13 +535,6 @@ seungwoo.movieDetail=((()=>{
 			.addClass('btn_steelCut active')
 			.text('스틸컷')
 			.appendTo($("#popup_box_row3 h3"));
-		
-		$('<div/>')
-			.addClass('stillcut_list')
-			.appendTo($("#popup_box_row3"));
-		$('<div/>')
-			.addClass('still_prevNext')
-			.appendTo($('.stillcut_list'));
 	
 		$('<div/>')
 			.addClass('still_slide')
@@ -447,10 +542,7 @@ seungwoo.movieDetail=((()=>{
 		$('<ul/>')
 			.css({'style':"width:1510px",'left':"0px",'right':"0px"})
 			.appendTo($(".still_slide"));
-		$('<li/>')
-			.addClass('stillLi')
-			.appendTo($(".still_slide ul"));
-		
+
 		$('<div/>')
 			.addClass('still_view_box')
 			.appendTo($("#popup_box_row3"));
@@ -460,13 +552,146 @@ seungwoo.movieDetail=((()=>{
 		$('<div/>')
 			.addClass('still_prevNext2')
 			.appendTo($('.still_view_box'));
+	};
+	return {init:init}
+})();
+
+seungwoo.movieComment=(()=>{
+	var ctx, $movieSeq, $sort, $pageNum;
+	var init=(x,y,z)=>{
+		ctx=$$("x");
+		$movieSeq=x;
+		$("#popup_box_row5").remove();
+		if(y==null) {
+			$sort='movie-comment-date';
+		} else {
+			$sort=y;
+		}
+		if(z==null) {
+			$pageNum=1;
+		} else {
+			$pageNum=z;
+		}
+		onCreate();
+	};
+	var onCreate=()=>{
+		setContentView();
+		/* [영화상세 댓글] */
+		$("#myStarScore input").eq(0).click(()=>{
+			$("#myStarScore input").eq(0).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_on.png');
+			$("#myStarScore input").eq(1).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_off.png');
+			$("#myStarScore input").eq(2).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_off.png');
+			$("#myStarScore input").eq(3).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_off.png');
+			$("#myStarScore input").eq(4).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_off.png');
+			$("#starScoreExplain").text("괜히 봤어요");
+		});
+		$("#myStarScore input").eq(1).click(()=>{
+			$("#myStarScore input").eq(0).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_on.png');
+			$("#myStarScore input").eq(1).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_on.png');
+			$("#myStarScore input").eq(2).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_off.png');
+			$("#myStarScore input").eq(3).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_off.png');
+			$("#myStarScore input").eq(4).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_off.png');
+			$("#starScoreExplain").text("기대하진 말아요");
+		});
+		$("#myStarScore input").eq(2).click(()=>{
+			$("#myStarScore input").eq(0).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_on.png');
+			$("#myStarScore input").eq(1).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_on.png');
+			$("#myStarScore input").eq(2).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_on.png');
+			$("#myStarScore input").eq(3).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_off.png');
+			$("#myStarScore input").eq(4).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_off.png');
+			$("#starScoreExplain").text("무난했어요");
+		});
+		$("#myStarScore input").eq(3).click(()=>{
+			$("#myStarScore input").eq(0).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_on.png');
+			$("#myStarScore input").eq(1).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_on.png');
+			$("#myStarScore input").eq(2).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_on.png');
+			$("#myStarScore input").eq(3).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_on.png');
+			$("#myStarScore input").eq(4).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_off.png');
+			$("#starScoreExplain").text("기대해도 좋아요!");
+		});
+		$("#myStarScore input").eq(4).click(()=>{
+			$("#myStarScore input").eq(0).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_on.png');
+			$("#myStarScore input").eq(1).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_on.png');
+			$("#myStarScore input").eq(2).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_on.png');
+			$("#myStarScore input").eq(3).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_on.png');
+			$("#myStarScore input").eq(4).attr('src','http://image2.megabox.co.kr/mop/home/star_mid_on.png');
+			$("#starScoreExplain").text("너무 멋진 영화였어요!");
+		});
 		
+		/* textarea 글자수 제한 */
+		$("textarea[name=comment]").keyup(function(e) {
+	        if($(this).val().length > 100) {
+	        	alert("글자수는 100자로 제한됩니다.!");  
+	            $(this).val($(this).val().substring(0, 100));
+	        }
+	    });
+		$("textarea[name=comment]").keyup(function(e){
+	          var content = $(this).val();
+	          $(this).height(((content.split('\n').length + 1) * 1.5) + 'em');
+	          $('#wordCheckCount').html(content.length + '/100');
+	      });
+		
+		if(seungwoo.fx.loginChk()<0) {
+			$("textarea[name=comment]").text("로그인 후 이용가능한 서비스입니다.");
+		};
+		
+		$('<button/>',{type:"button",class:"img_btn movie"})
+			.css({"width":"100%","height":"100%","vertical-align":"middle","background-position":"-600px -100px"})
+			.text('등록')
+			.appendTo($("#btn_wrap_2"))
+			.click(e=>{
+				if(seungwoo.fx.loginChk()<0) {
+					alert("로그인 후 이용가능한 서비스입니다.");
+				} else {
+					if($("textarea[name=comment]").val().length==0) {
+						alert("댓글 내용을 입력해주세요.");
+						return false;
+					}
+					if($("#starScore").val()=="") {
+						alert("평점을 입력해주세요.");
+						return false;
+					} 
+						
+					$.ajax({
+						url : ctx+'/movie/comment/'+$movieSeq+'/write',
+						method : 'post',
+						dataType : 'json',
+						data : JSON.stringify({
+							"id" : $$("id"),
+							"content" : $("textarea[name=comment]").val(),
+							"score" : $("input[name=starScore]").val()
+						}),
+						contentType : 'application/json',
+						success : d=>{
+							if(d.msg=="성공") {
+								alert('댓글이 작성되었습니다.');
+								seungwoo.movieComment.init($movieSeq,$sort);
+							} else {
+								alert('이미 댓글을 작성하셨습니다.');
+							};
+						},
+						error : (a,b,c)=> {
+							alert("에러 : "+c);
+						}
+					})
+					
+				}	
+			});
+		/*var json ={
+				"movie_seq":$movieSeq,
+				"sort":$sort,
+				"page_num":1,
+		};*/
+		seungwoo.movieCommentList.init($movieSeq,$sort);
+	};
+	var setContentView=()=>{
 		$('<div/>',{id:"popup_box_row5",class:"popup_box row5"})
 			.appendTo($("#movieDetail"));
-		
 		$('<h3/>')
 			.text('한줄평')
 			.appendTo($("#popup_box_row5"));
+		$('<span/>',{id:"movieCommentTotalCount"})
+			.appendTo($("#popup_box_row5 h3"));
 		
 		$('<div/>')
 			.addClass('write_wrap')
@@ -492,22 +717,39 @@ seungwoo.movieDetail=((()=>{
 			.css({'cursor':'pointer','width':'125px'})
 			.appendTo($(".rate"));
 		$('<input/>',{type:"image",src:"http://image2.megabox.co.kr/mop/home/star_mid_off.png"})
-			.attr({'alt':"별점1 괜히봤어요"})
-			.appendTo($("#myStarScore"));
+			.appendTo($("#myStarScore"))
+			.click(e=>{
+				$("starScore").val("2");
+				return false;
+			});
 		$('<input/>',{type:"image",src:"http://image2.megabox.co.kr/mop/home/star_mid_off.png"})
-			.attr({'alt':"별점2 기대하진 말아요"})
-			.appendTo($("#myStarScore"));
+			.appendTo($("#myStarScore"))
+			.click(e=>{
+				$("starScore").val("4");
+				return false;
+			});
 		$('<input/>',{type:"image",src:"http://image2.megabox.co.kr/mop/home/star_mid_off.png"})
-			.attr({'alt':"별점3 무난했어요"})
-			.appendTo($("#myStarScore"));
+			.appendTo($("#myStarScore"))
+			.click(e=>{
+				$("starScore").val("6");
+				return false;
+			});
 		$('<input/>',{type:"image",src:"http://image2.megabox.co.kr/mop/home/star_mid_off.png"})
-			.attr({'alt':"별점4 기대해도 좋아요!"})
-			.appendTo($("#myStarScore"));
+			.appendTo($("#myStarScore"))
+			.click(e=>{
+				$("#starScore").val("8");
+				return false;
+			});
 		$('<input/>',{type:"image",src:"http://image2.megabox.co.kr/mop/home/star_mid_off.png"})
-			.attr({'alt':"별점5 너무 멋진 영화였어요!"})
+			.appendTo($("#myStarScore"))
+			.click(e=>{
+				$("#starScore").val("10");
+				return false;
+			});
+		$('<input/>',{type:"hidden",id:"starScore"})
 			.appendTo($("#myStarScore"));
-		$('<input/>',{type:"hidden",name:"starScore"}).appendTo($("#myStarScore"));
-		$('<p/>')
+		
+		$('<p/>', {id:"starScoreExplain"})
 			.addClass('text-center')
 			.text('평점을 입력해주세요')
 			.appendTo($(".rate"));
@@ -516,7 +758,6 @@ seungwoo.movieDetail=((()=>{
 			.addClass('textarea')
 			.appendTo($(".input"));
 		$('<textarea/>',{title:"댓글쓰기",name:"comment",cols:"30",rows:"10"})
-			.text('로그인 후 이용가능한 서비스입니다.')
 			.appendTo($(".textarea"));
 		
 		$('<div/>',{id:"btn_wrap_2"})
@@ -525,6 +766,149 @@ seungwoo.movieDetail=((()=>{
 		
 		$('<div/>',{id:"movieCommentList",class:"list"})
 			.appendTo($("#popup_box_row5"));
+	};
+	return {init:init}
+})();
+
+seungwoo.movieCommentList=(()=>{
+	var $movieSeq, $sort, $pageNum, ctx, li, paging_li;
+	var init=(x,y,z)=>{
+		ctx=$$("x");
+		$movieSeq=x;
+		if(y==null) {
+			$sort='movie-comment-date';
+		} else {
+			$sort=y;
+		}
+		if(z==null) {
+			$pageNum=1;
+		} else {
+			$pageNum=z;
+		}
+		$("#movieCommentList").empty();
+		li='';
+		paging_li='';
+		onCreate();
+	};
+	var onCreate=()=>{
+		setContentView();
+		/* 정렬 */
+		$('<li/>',{id:"movieCommentSort1"}).text('최신순').appendTo($("#movieCommentList ul").eq(0));
+		$('<li/>',{id:"movieCommentSort2"}).text('평점순').appendTo($("#movieCommentList ul").eq(0));
+	
+		if($sort=="movie-comment-date") {
+			$("#movieCommentSort1").addClass('c_mint');
+		} else if($sort=="movie-comment-score") {
+			$("#movieCommentSort2").addClass('c_mint');
+		} 
+			
+		$("#movieCommentSort1").click(e=>{
+				$sort='movie-comment-date';
+				$("#movieCommentSort1").removeClass();
+				$("#movieCommentSort2").removeClass();
+				$("#movieCommentSort3").removeClass();
+				$("#movieCommentSort1").addClass('c_mint');
+				seungwoo.movieComment.init($movieSeq,$sort);
+			});
+		
+		$("#movieCommentSort2").click(e=>{
+				$sort='movie-comment-score';
+				$("#movieCommentSort1").removeClass();
+				$("#movieCommentSort2").removeClass();
+				$("#movieCommentSort3").removeClass();
+				$("#movieCommentSort2").addClass('c_mint');
+				seungwoo.movieComment.init($movieSeq,$sort);
+			});
+		
+		$.ajax({
+			url : ctx+'/movie/comment/'+$movieSeq,
+			method : 'post',
+			dataType : 'json',
+			data : JSON.stringify({
+				"sort" : $sort,
+				"pageNum" : $pageNum
+			}),
+			contentType : 'application/json',
+			success : d=>{
+				$("#movieCommentTotalCount")
+					.text(" ("+d.commentCount+")")
+				
+				$.each(d.commentList,(i,j)=>{
+					li+='<li>'
+	                +'<div class="text">'
+	                	+'<input type="hidden" id="replyID_'+j.replyNum+'" value="'+j.id+'">'
+	                	+'<input type="hidden" id="replyNum_'+j.replyNum+'" value="'+j.replyNum+'">'
+	                    +'<div class="name"><strong>'+j.id+'</strong></div>'
+	                    +'	<p>'
+	                    +'		<span id="comment_'+j.replyNum+'" class="comment">'+j.content+' </span>'
+	                    +'	</p>'
+	                    +'<div class="name">'
+	                        +'<span>'+j.date+'</span>'
+	                        +'<span class="small_star2">'
+	                            +'<span class="fill" style="width:'+j.score*10+'%;"></span>'
+	                        +'</span>'
+	                        +'<div id="report_'+j.replyNum+'" class="report"><i class="i_report" aria-hidden="true"></i>신고하기</div>'
+	                    +'</div>'
+	                +'</div>'
+	                +'</li>'
+					+'<script>'
+					+'if(seungwoo.fx.loginChk()>0) {'
+					+'	if($("#replyID_'+j.replyNum+'").val()==$$("id")) {'
+							+'$("<span/>",{class:"my_review"}).insertBefore($("#comment_'+j.replyNum+'"));'
+							+'$("<button/>",{id:"btn_modify_'+j.replyNum+'", class:"btn_delete"}).insertAfter($("#comment_'+j.replyNum+'"));'
+							+'$("#btn_modify_'+j.replyNum+'").click(e=>{'
+					+'		seungwoo.fx.deleteComment($("#replyNum_'+j.replyNum+'").val());'
+					+' 		seungwoo.movieComment.init('+$movieSeq+');'	
+					+'			});'
+					+'	 }'
+					+'}'
+					+'$("#report_'+j.replyNum+'").click(e=>{'
+					+'	alert("신고하기");'
+					+'});'
+					+'$("#recommend_'+j.replyNum+'").click(e=>{'
+					+'	alert("추천");'
+					+'});'
+					+'</script>';
+				});
+				$("#movieCommentList ul").eq(1).append(li);
+				
+				$("<ul>", {id:"custom-pagination"})
+					.addClass("custom-pagination mt20")
+					.appendTo($("#movieCommentList"));
+				
+				$("<li>").appendTo($("#movieCommentList ul").eq(2));
+				
+				console.log(d.commentPaging);
+				if(d.commentPaging.cnt>0) {
+					if(d.commentPaging.startPage>d.commentPaging.pageBlock) {
+						$("#movieCommentList ul").eq(2).append('<li><a class="img_btn customer prev" id="page_prev">«</a></li>');
+						$("#page_prev").click(e=>{
+							seungwoo.movieCommentList.init($movieSeq,$sort,d.commentPaging.startPage - d.commentPaging.pageBlock);
+						});
+					}
+					for(var i=d.commentPaging.startPage; i<=d.commentPaging.endPage; i++) {
+						if(i == d.commentPaging.currentPage) {
+							paging_li+='<li><a class="active" onclick=seungwoo.movieCommentList.init("'+$movieSeq+'","'+$sort+'","'+i+'")>'+i+'</a></li>';
+						}
+						if(i != d.commentPaging.currentPage) {
+							paging_li+='<li><a onclick=seungwoo.movieCommentList.init("'+$movieSeq+'","'+$sort+'","'+i+'")>'+i+'</a></li>';
+						}
+					}
+					$("#custom-pagination").append(paging_li);
+					if(d.commentPaging.pageCount>d.commentPaging.endPage) {
+						$("#movieCommentList ul").eq(2).append('<li><a class="img_btn customer next" id="page_next">»</a></li>');
+						$("#page_next").click(e=>{
+							seungwoo.movieCommentList.init($movieSeq,$sort,d.commentPaging.startPage + d.commentPaging.pageBlock);
+						});
+					}	
+				}	
+			},
+			error : (x,s,m)=>{
+				alert('에러 발생 : '+m);
+			}
+		});
+	};
+	var setContentView=()=>{
 		$('<ul/>')
 			.addClass('sort pull-right mb15')
 			.css({'overflow':'visible'})
@@ -533,107 +917,106 @@ seungwoo.movieDetail=((()=>{
 		$('<ul/>')
 			.addClass('item')
 			.appendTo($("#movieCommentList"));
-		/*
-		 <ul class="item">
-			<li>
-				<div class="text">
-					<div class="name"><strong>gkdud3**</strong></div>
-					<p><span class="comment">윽 진짜 노잼이였는데 다시 상영하네..</span></p>
-					<div class="name">
-						<span>17.10.03</span>
-						<span class="small_star2">
-							<span class="fill" style="width:0.0%;"><span class="blind">별점1 괜히봤어요</span></span>
-						</span>
-						<div class="report"><i class="i_report" aria-hidden="true"></i>신고하기</div>
-					</div>
-				</div>
-				<div class="recommend">
-					<p><strong>1</strong></p>
-					<p><a style="color:#333" title="추천하기">추천</a></p>
-				</div>
-			</li>
-		</ul>
-		
-		<ul class="custom-pagination mt20">
-			<li><a class="active" id="page1">1</a></li>
-			<li><a id="page2">2</a></li>
-			<li><a id="page3">3</a></li>
-			<li><a id="page4">4</a></li>
-			<li><a id="page5">5</a></li>
-			<li><a title="다음 10페이지 보기" class="img_btn customer next"></a></li>
-			<li><a title="마지막 페이지 보기" class="img_btn customer last"></a></li>
-		</ul>
-		 */
 	};
 	return {init:init}
-}))();
+})();
 
-seungwoo.movieInteresting=(()=>{
-	var init=()=>{
-		ctx=$$('x');
-		$("#mega_main").empty();
+seungwoo.movieMyCommentList=(()=>{
+	var $sort, ctx;
+	var init=x=>{
+		ctx=$$("x");
+		$sort=x;
 		onCreate();
 	};
 	var onCreate=()=>{
 		setContentView();
-		seungwoo.movieHeader.init();
-		seungwoo.movieSubmenu.init();
+		$(".sort_wrap").empty();
+		$("#movieList").empty();
+		$('<li/>',{id:"movieCommentSort1"}).text('최신순').appendTo($(".sort_wrap"));
+		$('<li/>',{id:"movieCommentSort2"}).text('평점순').appendTo($(".sort_wrap"));
 		
-		/* 정렬 */
-		$('<a/>')
-			.text('개봉일순')
-			.appendTo($('.movielist_util_wrap li').eq(0))
-			.click(e=>{
-				alert('개봉일순');
+		if($sort=="movie-comment-date") {
+			$("#movieCommentSort1").addClass('c_mint');
+		} else if($sort=="movie-comment-score") {
+			$("#movieCommentSort2").addClass('c_mint');
+		}
+			
+		$("#movieCommentSort1").click(e=>{
+				$sort='movie-comment-date';
+				$("#movieCommentSort2").removeClass();
+				$("#movieCommentSort3").removeClass();
+				$("#movieCommentSort1").attr('class','c_mint');
+				seungwoo.movieMyCommentList.init($sort);
 			});
-		$('<a/>')
-			.text('가나다순')
-			.appendTo($('.movielist_util_wrap li').eq(1))
-			.click(e=>{
-				alert('가나다순');
+		
+		$("#movieCommentSort2").click(e=>{
+				$sort='movie-comment-score';
+				$("#movieCommentSort1").removeClass();
+				$("#movieCommentSort3").removeClass();
+				$("#movieCommentSort2").attr('class','c_mint');
+				seungwoo.movieMyCommentList.init($sort);
 			});
+		
+		$.ajax({
+			url : ctx+'/movie/myComment',
+			method : 'post',
+			dataType : 'json',
+			data : JSON.stringify({
+				"sort" : $sort,
+				"id" : $$("id")
+			}),
+			contentType : 'application/json',
+			success : d=>{
+				$("#movieCommentTotalCount")
+					.text(" ("+d.myMovieCommentCount+")")
+				
+				var li='';
+				$.each(d.myMovieCommentList,(i,j)=>{
+					li+='<li>'
+					    +'<div class="col1">'
+				        +'<img src="'+j.image+'">'
+				    +'</div>'
+				    +'<div class="col2">'
+				        +'<p class="title"><span class="age '+j.filmRate+'"></span><strong>'+j.movieTitle+'</strong></p>'
+				        +'<span class="small_star">'
+				            +'<span class="fill" style="width:'+j.score*10+'%;"></span>'
+				        +'</span>'
+				        +'<div class="star-wrap-critic"></div>'
+				    +'</div>'
+				    +'<div class="col3 view">'
+				        +'<div>'
+				            +'<p>'+j.content+'</p>'
+				            +'<p>'+j.date+'</p>'
+				        +'</div>'
+				    +'</div>'
+				    +'<div class="col4 view">'
+				        +'<button type="button" id="deleteBtn_'+j.replyNum+'" class="img_btn mypage review_delete">삭제</button>'
+				    +'</div>'
+				    +'</li>'
+					+'<script>'
+					+'$("#deleteBtn_'+j.replyNum+'").click(e=>{'
+					+'	seungwoo.fx.deleteMyComment('+j.replyNum+',"'+$sort+'");'
+					+'});'
+					+'</script>';
+				});
+				$("#movieList").append(li);
+			},
+			error : (x,s,m)=>{
+				alert('에러 발생 : '+m);
+			}
+		});
 	};
 	var setContentView=()=>{
-		$("#mega_main").append($('<div/>',{class:'content_wrap'}));
-		$(".content_wrap").append($('<div/>',{class:"header-btn-wrap"}))
-			.append($('<div/>',{class:"sub_navi"}))
-			.append($('<div/>',{id:"main-content",class:"main-content"}))
-			.append($('<div/>',{id:"movie_detail",class:"modal fade"}));
-		
-		$(".header-btn-wrap")
-			.append($('<button/>',{id:"btn_menu_all_sub_c"}))
-			.append($('<div/>',{id:"btn_social_sub_c"}))
-			.append($('<div/>',{class:"btn_theater"}));
-		
-		$(".sub_navi")
-			.append($('<div/>',{class:"sub_navi_wrap"}));
-
-		$(".main-content")
-			.append($('<div/>',{id:"movie_container",class:"movie_container"}));
-		$(".movie_container")
-			.append($('<div/>',{class:"full-width"}));
-		$('<div/>',{id:"flip_wrapper"}).css({'width':'984px'})
-			.appendTo('.full-width');
-
-		$('<div/>')
-			.addClass('movielist_util_wrap')
-			.appendTo('#flip_wrapper');
-		$('<ul/>')
-			.addClass('sort_wrap')
-			.appendTo('.movielist_util_wrap');
-		$($(".sort_wrap"))
-			.append('<li/>')
-			.append('<li/>');
-		
-		$('<ul/>',{id:"movieList"})
-			.appendTo('#flip_wrapper');
+		$("#movieList").attr("class","mypage_review");
 	};
 	return {init:init}
 })();
 
 seungwoo.movieStory=(()=>{
-	var init=()=>{
+	var $sort;
+	var init=x=>{
 		ctx=$$('x');
+		$sort=x;
 		$("#mega_main").empty();
 		onCreate();
 	};
@@ -641,63 +1024,50 @@ seungwoo.movieStory=(()=>{
 		setContentView();
 		seungwoo.movieHeader.init();
 		seungwoo.myInfoSubmenu.init();
-		
+
 		$('<a/>',{id:"ttab1"}).attr({'data-toggle':"tab"})
 			.text('보고싶어')
 			.appendTo($("#nav-nav-tabs-mb20 li").eq(0))
 			.click(e=>{
-				alert('보고싶어');
+				$(".sort_wrap").empty();
+				$sort="movie-interesting-date";
+				seungwoo.movieStorySort.init($sort);
 			});
 		$('<a/>',{id:"ttab2"})
 			.attr({'data-toggle':"tab"})
 			.text('본영화')
 			.appendTo($("#nav-nav-tabs-mb20 li").eq(1))
 			.click(e=>{
-				alert('본영화');
+				$(".sort_wrap").empty();
+				$sort="movie-seen";
+				seungwoo.movieStorySort.init($sort);
 			});
 		$('<a/>',{id:"ttab4"})
 			.attr({'data-toggle':"tab"})
 			.text('나의 한줄평')
 			.appendTo($("#nav-nav-tabs-mb20 li").eq(2))
 			.click(e=>{
-				alert('나의 한줄평');
+				$(".sort_wrap").empty();
+				$("#movieList").empty();
+				$sort="movie-comment-date";
+				seungwoo.movieStorySort.init($sort);
 			});
 		
-		$('<span/>',{id:"movieStoryCount_interesting"})
-			.text('(x)')
-			.appendTo($("#ttab1"));
-		$('<span/>',{id:"movieStoryCount_seen"})
-			.text('(x)')
-			.appendTo($("#ttab2"));
-		$('<span/>',{id:"movieStoryCountComment"})
-			.text('(x)')
-			.appendTo($("#ttab4"));
+		if($sort=="movie-interesting-date") {
+			$("#ttab1").attr("aria-expanded","true");
+			$("#ttab2").attr("aria-expanded","false");
+			$("#ttab4").attr("aria-expanded","false");
+		} else if($sort=="movie-seen") {
+			$("#ttab1").attr("aria-expanded","false");
+			$("#ttab2").attr("aria-expanded","true");
+			$("#ttab4").attr("aria-expanded","false");
+		} else if($sort=="movie-comment-date") {
+			$("#ttab1").attr("aria-expanded","false");
+			$("#ttab2").attr("aria-expanded","false");
+			$("#ttab4").attr("aria-expanded","true");
+		}
 		
-		/* 정렬 */
-		$('<a/>')
-			.text('최신순')
-			.appendTo($(".sort_wrap li").eq(0))
-			.click(e=>{
-				alert('최신순');
-			});
-		$('<a/>')
-			.text('인기순')
-			.appendTo($(".sort_wrap li").eq(1))
-			.click(e=>{
-				alert('인기순');
-			});
-		$('<a/>')
-			.text('평점순')
-			.appendTo($(".sort_wrap li").eq(2))
-			.click(e=>{
-				alert('평점순');
-			});
-		$('<a/>')
-			.text('가나다순')
-			.appendTo($(".sort_wrap li").eq(3))
-			.click(e=>{
-				alert('가나다순');
-			});
+		seungwoo.movieStorySort.init($sort);
 	};
 	var setContentView=()=>{
 		$("#mega_main")
@@ -720,14 +1090,7 @@ seungwoo.movieStory=(()=>{
 			.css({'position':'relative'}).appendTo(".mypage_container");
 		
 		$('<ul/>')
-			.append($('<li/>'))
-			.append($('<li/>'))
-			.append($('<li/>'))
-			.append($('<li/>'))
-			.append($('<li/>'))
-			.append($('<li/>'))
-			.append($('<li/>'))
-			.append($('<li/>'))
+			.append($('<li/>')).append($('<li/>')).append($('<li/>')).append($('<li/>')).append($('<li/>')).append($('<li/>')).append($('<li/>')).append($('<li/>'))
 			.addClass('mypage_menu')
 			.appendTo("#width-fixed_mypage_membership_wrap");
 
@@ -756,14 +1119,50 @@ seungwoo.movieStory=(()=>{
 		$('<div/>',{class:"movielist_util_wrap"}).appendTo($("#flip_wrapper"));
 		
 		$('<ul/>',{class:"sort_wrap"}).appendTo($(".movielist_util_wrap"));
-		$(".sort_wrap").append('<li/>').append('<li/>').append('<li/>').append('<li/>');
 		
-		$('<ul/>',{id:"myInterestingMovieList"}).appendTo($("#flip_wrapper"));
-		/*
-		<li class="item no_item">
-			<img src="http://image2.megabox.co.kr/mop/home/mypage/img_moviestory_want.jpg">
-		</li>
-		*/
+		$('<ul/>',{id:"movieList"}).appendTo($("#flip_wrapper"));
+	};
+	return {init:init}
+})();
+
+seungwoo.movieStorySort=(()=>{
+	var ctx, $sort;
+	var init=x=>{
+		$sort=x;
+		ctx=$$("x");
+		onCreate();
+	};
+	var onCreate=()=>{
+		if($sort=="movie-interesting-date") {
+			$('.sort_wrap').append($('<li/>')).append($('<li/>')).append($('<li/>'));
+			$('<a/>').addClass("active").text('개봉일순').appendTo($('.sort_wrap li').eq(0))
+				.click(e=>{
+					$sort="movie-interesting-date";
+					$(".sort_wrap li a").removeClass();
+					$(".sort_wrap li a").eq(0).addClass("active");
+					seungwoo.movieList.init($sort);
+				});
+			$('<a/>').text('평점순').appendTo($('.sort_wrap li').eq(1))
+				.click(e=>{
+					$sort="movie-interesting-score";
+					$(".sort_wrap li a").removeClass();
+					$(".sort_wrap li a").eq(1).addClass("active");
+					seungwoo.movieList.init($sort);
+				});
+			$('<a/>').text('가나다순').appendTo($('.sort_wrap li').eq(2))
+				.click(e=>{
+					$sort="movie-interesting-character";
+					$(".sort_wrap li a").removeClass();
+					$(".sort_wrap li a").eq(2).addClass("active");
+					seungwoo.movieList.init($sort);
+				});
+			seungwoo.movieList.init($sort);
+		} else if($sort=="movie-seen") {
+			seungwoo.movieList.init($sort);
+		} else if($sort=="movie-comment-date") {
+			$sort="movie-comment-date";
+			seungwoo.movieMyCommentList.init($sort);
+		}
 	};
 	return {init:init}
 })();
@@ -786,7 +1185,7 @@ seungwoo.movieHeader=(()=>{
 			.text('필름 소사이어티')
 			.appendTo($("#btn_social_sub_c"))
 			.click(e=>{
-				alert('필름');
+				alert('필름 소사이어티');
 			});
 		$('<i/>')
 			.addClass('split')
@@ -796,7 +1195,7 @@ seungwoo.movieHeader=(()=>{
 			.text("클래식 소사이어티")
 			.appendTo($("#btn_social_sub_c"))
 			.click(e=>{
-				alert('클래식');
+				alert('클래식 소사이어티');
 			});
 		
 		$('<a/>',{class:"membership_txt"})
@@ -835,7 +1234,7 @@ seungwoo.movieHeader=(()=>{
 			.text('빠른예매')
 			.appendTo($(".btn_theater"))
 			.click(e=>{
-				alert('빠른예매');
+				
 			});
 	};
 	var setContentView=()=>{
@@ -857,79 +1256,59 @@ seungwoo.movieSubmenu=(()=>{
 	};
 	var onCreate=()=>{
 		setContentView();
+		$("#movie_sm01").attr('class','movie sm01');
+		$("#movie_sm02").attr('class','movie sm02');
+		$("#movie_sm03").attr('class','movie sm03');
+		$("#movie_sm11").attr('class','movie sm11');
+		$("#movie_sm12").attr('class','movie sm12');
 		$("#movie_sm01")
 			.click(e=>{
-				alert('박스오피스');
-				$("#movie_sm01").removeClass().addClass('movie sm01 active');
-				$("#movie_sm02").removeClass().addClass('movie sm02');
-				$("#movie_sm03").removeClass().addClass('movie sm03');
-				$("#movie_sm11").removeClass().addClass('movie sm11');
-				$("#movie_sm12").removeClass().addClass('movie sm12');
-				seungwoo.movieMain.init();
+				seungwoo.movieMain.init('movie-boxoffice');
 			});
 		$("#movie_sm02")
 			.click(e=>{
-				$("#movie_sm01").removeClass().addClass('movie sm01');
-				$("#movie_sm02").removeClass().addClass('movie sm02 active');
-				$("#movie_sm03").removeClass().addClass('movie sm03');
-				$("#movie_sm11").removeClass().addClass('movie sm11');
-				$("#movie_sm12").removeClass().addClass('movie sm12');
-				alert('최신개봉작');
+				seungwoo.movieMain.init('movie-showing-date');
 			});
 		$("#movie_sm03")
 			.click(e=>{
-				$("#movie_sm01").removeClass().addClass('movie sm01');
-				$("#movie_sm02").removeClass().addClass('movie sm02');
-				$("#movie_sm03").removeClass().addClass('movie sm03 active');
-				$("#movie_sm11").removeClass().addClass('movie sm11');
-				$("#movie_sm12").removeClass().addClass('movie sm12');
-				alert('상영예정작');
+				seungwoo.movieMain.init('movie-scheduled-date');
 			});
 		$("#movie_sm11")
 			.click(e=>{
-				$("#movie_sm01").removeClass().addClass('movie sm01');
-				$("#movie_sm02").removeClass().addClass('movie sm02');
-				$("#movie_sm03").removeClass().addClass('movie sm03');
-				$("#movie_sm11").removeClass().addClass('movie sm11 active');
-				$("#movie_sm12").removeClass().addClass('movie sm12');
-				alert('보고싶어');
-				seungwoo.movieInteresting.init();
+				if(seungwoo.fx.loginChk()>0) {
+					seungwoo.movieMain.init('movie-interesting-date');
+				} else {
+					alert("로그인 해주세요.");
+				}
 			});
 		$("#movie_sm12")
 			.click(e=>{
-				$("#movie_sm01").addClass('movie sm01');
-				$("#movie_sm02").addClass('movie sm02');
-				$("#movie_sm03").addClass('movie sm03');
-				$("#movie_sm11").addClass('movie sm11');
-				$("#movie_sm12").addClass('movie sm12 active');
-				alert('나의 무비스토리');
-				seungwoo.movieStory.init();
+				if(seungwoo.fx.loginChk()>0) {
+					seungwoo.movieStory.init("movie-interesting-date");
+				} else {
+					alert("로그인 해주세요.");
+				}
 			});
 	};
 	var setContentView=()=>{
 		$(".sub_navi_wrap").html('<ul class="clearfix">'
 			      +'<li>'
-			        +'<a id="movie_sm01" class="movie sm01">박스오피스</a>'
+			        +'<a id="movie_sm01">박스오피스</a>'
 			      +'</li>'
 			      +'<li>'
-			        +'<a id="movie_sm02" class="movie sm02">최신개봉작</a>'
+			        +'<a id="movie_sm02">최신개봉작</a>'
 			      +'</li>'
 			      +'<li>'
-			        +'<a id="movie_sm03" class="movie sm03">상영예정작</a>'
+			        +'<a id="movie_sm03">상영예정작</a>'
 			      +'</li>'
 			      +'<li>'
-			        +'<a id="movie_sm11" class="movie sm11">보고싶어</a>'
+			        +'<a id="movie_sm11">보고싶어</a>'
 			      +'</li>'
 			      +'<li class="pull-right pt10">'
-			        +'<a id="movie_sm12" class="movie sm12">나의 무비스토리</a>'
+			        +'<a id="movie_sm12">나의 무비스토리</a>'
 			      +'</li>'
 			    +'</ul>'
 		);
-		/*
-		$('<ul/>')
-			.addClass('clearfix')
-			.appendTo($(".sub_navi_wrap"));
-		$(".clearfix").append($('<li/>',{id:"movieSubmenu1"})).append($('<li/>',{id:"movieSubmenu2"})).append($('<li/>',{id:"movieSubmenu3"})).append($('<li/>',{id:"movieSubmenu4"})).append($('<li/>',{id:"movieSubmenu5",class:"pull-right pt10"}));*/
 	};
 	return {init:init};
 })();
@@ -971,7 +1350,7 @@ seungwoo.myInfoSubmenu=(()=>{
 		$('<a/>',{class:"col5",text:"나의무비스토리"})
 			.appendTo($(".mypage_menu li").eq(4))
 			.click(e=>{
-				alert('나의무비스토리');
+				seungwoo.movieStory.init("movie-interesting-date");
 			});
 		$('<a/>',{class:"col6",text:"관람권/VIP쿠폰"})
 			.appendTo($(".mypage_menu li").eq(5))
@@ -1056,6 +1435,291 @@ seungwoo.movieUI={
 			+'                              </div>'
 			+'                           </li>'
 		}	
+}
+
+seungwoo.fx={
+	loginChk : ()=> {
+		if($$("id")==null) {
+			return -1;
+		} else {
+			return 1;
+		};
+	},
+	deleteComment : x=>{
+		var ctx=$$("x");
+		$.ajax({
+			url : ctx+'/movie/comment/delete/'+x,
+			method : 'post',
+			dataType : 'json',
+			contentType : 'application/json',
+			success : d=> {
+				if(d.commentDeleteChk>0) {
+					alert('삭제 실패');
+				} else {
+					alert('삭제 성공');
+				};
+			},
+			error : (x,s,m)=> {
+				alert("에러 : "+m);
+			}	
+		})
+	},
+	deleteMyComment : (x,y)=>{
+		var ctx=$$("x");
+		$.ajax({
+			url : ctx+'/movie/deleteMyComment',
+			method : 'post',
+			dataType : 'json',
+			contentType : 'application/json',
+			data : JSON.stringify({
+				"replyNum" : x
+			}),
+			success : d=> {
+				alert("정상적으로 삭제되었습니다.");
+				seungwoo.movieMyCommentList.init(y);
+			},
+			error : (x,s,m)=> {
+				alert("에러 : "+m);
+			}	
+		})
+	},
+	seenChk : x=> {
+		var returnData=0;
+		var ctx=$$("x");
+		$.ajax({
+			url : ctx+'/movie/seen/chk',
+			method : 'post',
+			dataType : 'json',
+			contentType : 'application/json',
+			async: false,
+			data : JSON.stringify({
+				"movieSeq" : x,
+				"id" : $$("id"),
+				"movieCheck" : "s"
+			}),
+			success : d=> {
+				returnData=d.chk;
+			},
+			error : (x,s,m)=> {
+				alert("에러 : "+m);
+			}	
+		})
+		return returnData;
+	},
+	interestingChk : x=> {
+		var returnData=0;
+		var ctx=$$("x");
+		$.ajax({
+			url : ctx+'/movie/interesting/chk',
+			method : 'post',
+			dataType : 'json',
+			contentType : 'application/json',
+			async: false,
+			data : JSON.stringify({
+				"movieSeq" : x,
+				"id" : $$("id"),
+				"movieCheck" : "i"
+			}),
+			success : d=> {
+				returnData=d.chk;
+			},
+			error : (x,s,m)=> {
+				alert("에러 : "+m);
+			}	
+		})
+		return returnData;
+	},
+	listMovieCheck : (x,y)=>{
+		var ctx=$$("x");
+		var $movieSeq=x;
+		var $sort=y;
+		$("#btnSeenMovie_"+$movieSeq).click(e=>{
+			if(seungwoo.fx.loginChk()>0) {
+				if(seungwoo.fx.seenChk($movieSeq)>0) {
+					$("#btnSeenMovie_"+$movieSeq).attr("class","img_you_ck btn_01");
+					$.ajax({
+						url : ctx+'/movie/seen/remove',
+						method : 'post',
+						dataType : 'json',
+						data : JSON.stringify({
+							"movieSeq" : $movieSeq,
+							"id" : $$("id"),
+							"movieCheck" : "s"
+						}),
+						contentType : 'application/json',
+						success : d=>{
+							seungwoo.movieMainSort.init($sort);
+						},
+						error : (x,s,m)=>{
+							alert("에러 : "+m);
+						}
+					});
+				} else {
+					$("#btnSeenMovie_"+$movieSeq).attr("class","img_you_ck btn_01 active");
+					$.ajax({
+						url : ctx+'/movie/seen/add',
+						method : 'post',
+						dataType : 'json',
+						data : JSON.stringify({
+							"movieSeq" : $movieSeq,
+							"id" : $$("id"),
+							"movieCheck" : "s"
+						}),
+						contentType : 'application/json',
+						success : d=>{
+							seungwoo.movieMainSort.init($sort);
+						},
+						error : (x,s,m)=>{
+							alert("에러 : "+m);
+						}
+					});
+				}
+			} else {
+				alert('로그인 후 이용가능한 서비스입니다.');
+			};
+		});
+		
+		$("#btnInterestingMovie_"+$movieSeq).click(e=>{
+			if(seungwoo.fx.loginChk()>0) {
+				if(seungwoo.fx.interestingChk($movieSeq)>0) {
+					$("#btnInterestingMovie_"+$movieSeq).attr("class","img_you_ck btn_02");
+					$.ajax({
+						url : ctx+'/movie/interesting/remove',
+						method : 'post',
+						dataType : 'json',
+						data : JSON.stringify({
+							"movieSeq" : $movieSeq,
+							"id" : $$("id"),
+							"movieCheck" : "i"
+						}),
+						contentType : 'application/json',
+						success : d=>{
+							seungwoo.movieMainSort.init($sort);
+						},
+						error : (x,s,m)=>{
+							alert("에러 : "+m);
+						}
+					});
+				} else {
+					$("#btnInterestingMovie_"+$movieSeq).attr("class","img_you_ck btn_02 active");
+					$.ajax({
+						url : ctx+'/movie/interesting/add',
+						method : 'post',
+						dataType : 'json',
+						data : JSON.stringify({
+							"movieSeq" : $movieSeq,
+							"id" : $$("id"),
+							"movieCheck" : "i"
+						}),
+						contentType : 'application/json',
+						success : d=>{
+							seungwoo.movieMainSort.init($sort);
+						},
+						error : (x,s,m)=>{
+							alert("에러 : "+m);
+						}
+					});
+				}
+			} else {
+				alert('로그인 후 이용가능한 서비스입니다.');
+			};
+		});
+	},
+	detailMovieCheck : x=>{
+		var ctx=$$("x");
+		var $movieSeq=x;
+		$("#btnSeenMovie").click(e=>{
+			if(seungwoo.fx.loginChk()>0) {
+				if(seungwoo.fx.seenChk($movieSeq)>0) {
+					$("#btnSeenMovie").attr("class","img_btn btn_seen");
+					$.ajax({
+						url : ctx+'/movie/seen/remove',
+						method : 'post',
+						dataType : 'json',
+						data : JSON.stringify({
+							"movieSeq" : $movieSeq,
+							"id" : $$("id"),
+							"movieCheck" : "s"
+						}),
+						contentType : 'application/json',
+						success : d=>{
+							seungwoo.movieDetail.init($movieSeq);
+						},
+						error : (x,s,m)=>{
+							alert("에러 : "+m);
+						}
+					});
+				} else {
+					$("#btnSeenMovie").attr("class","img_btn btn_seen active");
+					$.ajax({
+						url : ctx+'/movie/seen/add',
+						method : 'post',
+						dataType : 'json',
+						data : JSON.stringify({
+							"movieSeq" : $movieSeq,
+							"id" : $$("id"),
+							"movieCheck" : "s"
+						}),
+						contentType : 'application/json',
+						success : d=>{
+							seungwoo.movieDetail.init($movieSeq);
+						},
+						error : (x,s,m)=>{
+							alert("에러 : "+m);
+						}
+					});
+				}
+			} else {
+				alert('로그인 후 이용가능한 서비스입니다.');
+			};
+		});
+		
+		$("#btnInterestingMovie").click(e=>{
+			if(seungwoo.fx.loginChk()>0) {
+				if(seungwoo.fx.interestingChk($movieSeq)>0) {
+					$("#btnInterestingMovie").attr("class","img_btn btn_inte");
+					$.ajax({
+						url : ctx+'/movie/interesting/remove',
+						method : 'post',
+						dataType : 'json',
+						data : JSON.stringify({
+							"movieSeq" : $movieSeq,
+							"id" : $$("id"),
+							"movieCheck" : "i"
+						}),
+						contentType : 'application/json',
+						success : d=>{
+							seungwoo.movieDetail.init($movieSeq);
+						},
+						error : (x,s,m)=>{
+							alert("에러 : "+m);
+						}
+					});
+				} else {
+					$("#btnInterestingMovie").attr("class","img_btn btn_inte active");
+					$.ajax({
+						url : ctx+'/movie/interesting/add',
+						method : 'post',
+						dataType : 'json',
+						data : JSON.stringify({
+							"movieSeq" : $movieSeq,
+							"id" : $$("id"),
+							"movieCheck" : "i"
+						}),
+						contentType : 'application/json',
+						success : d=>{
+							seungwoo.movieDetail.init($movieSeq);
+						},
+						error : (x,s,m)=>{
+							alert("에러 : "+m);
+						}
+					});
+				}
+			} else {
+				alert('로그인 후 이용가능한 서비스입니다.');
+			};
+		});
+	}
 }
 
 var $$=x=>{return sessionStorage.getItem(x)};

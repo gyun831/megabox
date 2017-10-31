@@ -6,6 +6,6 @@ import lombok.Data;
 
 @Component @Data
 public class Member {
-	private String id,password,name,birth,address,email,phone,regdate;
+	private String id,password,name,birth,email,phone,regdate;
 
 }

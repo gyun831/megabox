@@ -6,5 +6,5 @@ import lombok.Data;
 
 @Component @Data
 public class Movie {
-	private String movieTitle,director,actor,gnere,filmRate,contents,startDay,endDay,runningTimme,score;
+	private String movieSeq, movieTitle,director,actor,gnere,filmRate,contents,startDay,endDay,runningTimme,score,image;
 }

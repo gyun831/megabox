@@ -3,12 +3,56 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.megabox.web.mapper.GHMapper">
-	<insert id="insert"></insert>
-	<select id="selectList"></select>
-	<select id="selectOne"></select>
-	<select id="count" resultType="String" parameterType="com.megabox.web.command.Command">
-		select count(*) as count from member
+	<insert id="insert" parameterType="com.megabox.web.domain.Reservation">
+		insert into reservation(id,screeningnumber,seat_seq,cancel)
+		values(#{id},#{screeningNumber},#{seatSeq},#{cancel})
+	</insert>
+	<select id="selectList" resultMap="movie" parameterType="com.megabox.web.command.Command">
+		select movie_title,director,actor,filmrate,image from movie
 	</select>
+	<select id="timeList" resultMap="RespMap" parameterType="com.megabox.web.domain.RespMap">
+		select s.time_seq, s.movie_title,s.day,substring(mt.starttime,'1','5') starttime,s.screeningnumber,substring(mt.endtime,'1','5') endtime,m.filmrate,m.image,sc.officename,sc.screen from screeningdate s
+		join movietime mt on s.time_seq= mt.time_seq join movie m on s.movie_title=m.movie_title join screen sc on mt.screen_seq=sc.screen_seq where s.day=#{day} and sc.officename=#{officeName}
+		<if test="movieTitle !=null">
+			and (s.movie_title=#{movieTitle} or s.movie_title=#{movieTitle2} or s.movie_title=#{movieTitle3} or s.movie_title=#{movieTitle4})
+		</if>
+		<!-- <if test="movieTitle2 !=null">
+			or s.movie_title=#{movieTitle2}
+		</if>
+		<if test="movieTitle3 !=null">
+			or s.movie_title=#{movieTitle3}
+		</if>
+		<if test="movieTitle4 !=null">
+			or s.movie_title=#{movieTitle4}
+		</if> -->
+		order by s.time_seq
+	</select>
+	<select id="seatList" resultType="com.megabox.web.domain.Seat" parameterType="com.megabox.web.command.Command">
+		select substring(s.seat_name,1,1) line,cast(substring(s.seat_name,2,3) as unsigned) seatno,s.screeningnumber,s.seat_name,s.type,r.cancel from seat s left join reservation r on s.screeningnumber=r.screeningnumber and s.seat_name=r.seat_seq and r.cancel != 'Y' 
+		where s.screeningnumber=#{search} order by line,seatno
+	</select>
+	<!-- <select id="selectOne"></select>
 	<update id="update"></update>
-	<delete id="delete"></delete>
+	<delete id="delete"></delete> -->
+	
+	<resultMap type="com.megabox.web.domain.Movie" id="movie">
+	<id property="movieTitle" column="movie_title"></id>
+	<result property="director" column="director" />
+	<result property="actor" column="actor" />
+	<result property="filmRate" column="filmrate" />
+	<result property="screeningNumber" column="screeningnumber" />
+	<result property="image" column="image" />
+	</resultMap>
+	
+	<resultMap type="com.megabox.web.domain.RespMap" id="RespMap">
+	<id property="timeSeq" column="time_seq"></id>
+	<result property="movieTitle" column="movie_title" />
+	<result property="day" column="day" />
+	<result property="startTime" column="starttime" />
+	<result property="endTime" column="endtime" />
+	<result property="filmRate" column="filmrate" />
+	<result property="officeName" column="officename" />
+	<result property="screen" column="screen" />
+
+	</resultMap>
 </mapper>

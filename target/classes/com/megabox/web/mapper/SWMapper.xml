@@ -3,12 +3,215 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.megabox.web.mapper.SWMapper">
-	<insert id="insert"></insert>
-	<select id="selectList"></select>
-	<select id="selectOne"></select>
-	<select id="count" resultType="String" parameterType="com.megabox.web.command.Command">
-		select count(*) as count from member
+	<resultMap id="resultMap" type="com.megabox.web.domain.RespMap">
+		<result property="id" column="id"/>
+		<result property="count" column="count"/>
+		<result property="movieSeq" column="movie_seq"/>
+		<result property="movieTitle" column="movie_title"/>
+		<result property="director" column="director"/>
+		<result property="actor" column="actor"/>
+		<result property="genre" column="genre"/>
+		<result property="filmRate" column="filmrate"/>
+		<result property="contents" column="contents"/>
+		<result property="startDay" column="start_day"/>
+		<result property="endDay" column="end_day"/>
+		<result property="runningtime" column="runningtime"/>
+		<result property="score" column="score"/>
+		<result property="image" column="image"/>
+		<result property="replyNum" column="reply_num"/>
+		<result property="content" column="content"/>
+		<result property="date" column="date"/>
+		<result property="seen" column="seen"/>
+		<result property="interesting" column="interesting"/>
+		<result property="stealcut" column="stealcut"/>
+	</resultMap>
+	
+	<select id="selectMovieList" resultMap="resultMap" parameterType="com.megabox.web.domain.Reservation">
+		SELECT m.movie_seq movie_seq, m.movie_title movie_title, m.filmrate filmrate, m.start_day start_day, IFNULL(r.score, 0) score, m.image
+		<if test="#{id} != null">
+		, IFNULL(a.seen, 0) seen, IFNULL(b.interesting, 0) interesting
+		</if>
+		FROM movie m
+		LEFT JOIN (SELECT SUM(score)/COUNT(score) score, movie_title 
+		            FROM reply 
+		            GROUP BY movie_title) r
+		ON m.movie_title LIKE r.movie_title
+		<if test="#{id} != null">
+		LEFT JOIN (SELECT COUNT(*) seen, movie_title
+		            FROM mymoviestory
+		            WHERE movie_check LIKE 'i'
+		            AND id=#{id}
+		          GROUP BY movie_title) a
+		ON m.movie_title LIKE a.movie_title      
+		LEFT JOIN (SELECT COUNT(*) interesting, movie_title
+		            FROM mymoviestory
+		            WHERE movie_check LIKE 's'
+		            AND id=#{id}
+		          GROUP BY movie_title) b
+		ON m.movie_title LIKE b.movie_title
+		</if>
+		<if test="cancel == 'movie-interesting-date' || cancel == 'movie-interesting-score' || cancel == 'movie-interesting-character' || cancel == 'movie-seen'">
+		JOIN (SELECT id, movie_title, movie_check 
+	          FROM mymoviestory
+	          WHERE id=#{id}
+          <if test="cancel == 'movie-interesting-date' || cancel == 'movie-interesting-score' || cancel == 'movie-interesting-character'">
+         	  AND movie_check='i'
+          </if>
+          <if test="cancel == 'movie-seen'">
+              AND movie_check='s'
+          </if>
+          ) ms
+    	ON m.movie_title = ms.movie_title	
+		</if>
+		<if test="cancel == 'movie-boxoffice'">
+			WHERE now() BETWEEN DATE(m.start_day) AND DATE(m.end_day)
+			ORDER BY score DESC, DATE(m.start_day) DESC
+		</if>
+		<if test="cancel == 'movie-showing-date'">
+			WHERE now() BETWEEN DATE(m.start_day) AND DATE(m.end_day)
+			ORDER BY DATE(m.start_day) DESC
+		</if>
+		<if test="cancel == 'movie-showing-score'">
+			WHERE now() BETWEEN DATE(m.start_day) AND DATE(m.end_day)
+			ORDER BY score DESC
+		</if>
+		<if test="cancel == 'movie-showing-character'">
+			WHERE now() BETWEEN DATE(m.start_day) AND DATE(m.end_day)
+			ORDER BY m.movie_title
+		</if>
+		<if test="cancel == 'movie-scheduled-date'">
+			WHERE now() <![CDATA[ < ]]> DATE(m.start_day)
+			ORDER BY DATE(m.start_day) DESC
+		</if>
+		<if test="cancel == 'movie-scheduled-character'">
+			WHERE now() <![CDATA[ < ]]> DATE(m.start_day)
+			ORDER BY m.movie_title
+		</if>
+		<if test="cancel == 'movie-interesting-date'">
+			ORDER BY DATE(m.start_day) DESC
+		</if>
+		<if test="cancel == 'movie-interesting-score'">
+			ORDER BY score DESC
+		</if>
+		<if test="cancel == 'movie-interesting-character'">
+			ORDER BY m.movie_title
+		</if>
 	</select>
-	<update id="update"></update>
-	<delete id="delete"></delete>
+	
+	<select id="selectMovieDetail" resultMap="resultMap" parameterType="com.megabox.web.domain.Reservation">
+		SELECT m.movie_seq, m.movie_title, m.director, m.actor, m.genre, m.filmrate, m.contents, m.start_day, m.end_day, m.runningtime, IFNULL(r.score, 0) score, m.image
+		FROM movie m
+		LEFT JOIN (SELECT SUM(score)/COUNT(score) score, movie_title FROM reply GROUP BY movie_title) r
+		ON m.movie_title LIKE r.movie_title
+		WHERE m.movie_seq LIKE #{cancel};
+	</select>
+	
+	<select id="selectMovieWishCount" resultType="String" parameterType="com.megabox.web.domain.Reservation">
+		SELECT COUNT(*)
+		FROM mymoviestory ms
+		INNER JOIN movie m
+		ON ms.movie_title = m.movie_title
+		WHERE ms.movie_check LIKE 'i'
+		AND m.movie_seq LIKE #{cancel};
+	</select>
+	
+	<select id="selectMovieCommentCount" resultType="String" parameterType="com.megabox.web.domain.Reservation">
+		SELECT COUNT(*)
+			FROM reply AS r
+			INNER JOIN movie AS m 
+			ON r.movie_title LIKE m.movie_title
+			WHERE movie_seq LIKE #{cancel};
+	</select>
+	
+	<select id="selectMovieCommentList" resultMap="resultMap" parameterType="com.megabox.web.domain.Reservation">
+		SELECT m.movie_seq, r.reply_num, r.movie_title, r.id id, r.content, DATE_FORMAT(r.date, '%Y-%m-%d') date, r.score
+		FROM reply AS r
+		INNER JOIN movie AS m 
+		ON r.movie_title LIKE m.movie_title
+		WHERE movie_seq LIKE #{cancel}
+		<if test="seatSeq == 'movie-comment-date'">
+			ORDER BY r.date DESC
+		</if>
+		<if test="seatSeq == 'movie-comment-score'">
+			ORDER BY r.score DESC
+		</if>
+		<if test="#{reservationNumber} != null">
+			<if test="#{screeningNumber} != null">
+				LIMIT ${reservationNumber}, ${screeningNumber}
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectCommentCountById" resultType="String" parameterType="com.megabox.web.domain.Reservation">
+		SELECT COUNT(*)
+		FROM reply
+		WHERE id= #{id}
+		AND movie_title = #{reservationNumber}
+	</select>
+	
+	<select id="selectMovieTitleByMovieSeq" resultType="String" parameterType="com.megabox.web.domain.Reservation">
+		SELECT movie_title 
+		FROM movie
+		WHERE movie_seq = #{cancel}
+	</select>
+	
+	<insert id="insertMovieComment" parameterType="com.megabox.web.domain.Reservation">
+		INSERT INTO reply(movie_title, id, content, date, score)
+		VALUES(#{reservationNumber}, #{id}, #{screeningNumber}, now(), #{seatSeq});
+	</insert>
+	
+	<delete id="deleteMovieComment" parameterType="com.megabox.web.domain.Reservation">
+		DELETE FROM reply
+		WHERE reply_num=#{cancel}
+	</delete>
+	
+	<select id="selectMyMovieCommentCountById" resultType="String" parameterType="com.megabox.web.domain.Reservation">
+		SELECT COUNT(*)
+		FROM reply
+		WHERE id= #{id}
+	</select>
+	
+	<select id="selectMyMovieCommentListById" resultMap="resultMap" parameterType="com.megabox.web.domain.Reservation">
+		SELECT m.movie_seq, r.reply_num, r.movie_title, r.id id, r.content, DATE_FORMAT(r.date, '%Y-%m-%d') date, r.score, m.image, m.filmrate
+		FROM reply AS r
+		INNER JOIN movie AS m 
+		ON r.movie_title LIKE m.movie_title
+		WHERE id LIKE #{id}
+		<if test="seatSeq == 'movie-comment-date'">
+			ORDER BY r.date DESC
+		</if>
+		<if test="seatSeq == 'movie-comment-score'">
+			ORDER BY r.score DESC
+		</if>
+	</select>
+	
+	<delete id="deleteMyMovieComment" parameterType="com.megabox.web.domain.Reservation">
+		DELETE FROM reply
+		WHERE reply_num = #{cancel}
+	</delete>
+	
+	<select id="selectMovieCheckById" resultType="String" parameterType="com.megabox.web.domain.Reservation">
+		SELECT COUNT(*)
+		FROM mymoviestory
+		WHERE movie_title LIKE #{reservationNumber}
+		AND id LIKE #{id}
+		AND movie_check LIKE #{seatSeq}
+	</select>
+	
+	<insert id="insertMovieCheck" parameterType="com.megabox.web.domain.Reservation">
+		INSERT INTO mymoviestory(id, movie_title, movie_check)
+		VALUES(#{id}, #{reservationNumber}, #{seatSeq})
+	</insert>
+	
+	<delete id="deleteMovieCheck" parameterType="com.megabox.web.domain.Reservation">
+		DELETE FROM mymoviestory
+		WHERE id=#{id} AND movie_title=#{reservationNumber} AND movie_check=#{seatSeq}
+	</delete>
+	
+	<select id="selectStealcut" resultMap="resultMap" parameterType="com.megabox.web.domain.Reservation">
+		SELECT movie_seq, stealcut
+		FROM movie
+		WHERE movie_seq = #{cancel};
+	</select>
+	
 </mapper>

@@ -176,66 +176,6 @@ reservation.index=(function(){
 	                        +' </ul>'
 	                        +' <div tabindex="0" class="slidebar_item">'
 	                          +' <ol id=datey style="width: 2040px;">'
-	                            +' <li data-item="2017-10-17" ><a title="선택됨" class="active" onclick="reservation.event.dateSelect(this)"'
-	                              +' href="#"> 오늘 </a></li>'
-	                            +' <li data-item="2017-10-18" ><a title="" onclick="reservation.event.dateSelect(this)"'
-	                              +' href="#"> 18(수) </a></li>'
-	                            +' <li data-item="2017-10-19" ><a title="" onclick="reservation.event.dateSelect(this)"'
-	                              +' href="#"> 19(목) </a></li>'
-	                            +' <li data-item="2017-10-20" ><a title="" onclick="reservation.event.dateSelect(this)"'
-	                              +' href="#"> 20(금) </a></li>'
-	                            +' <li data-item="2017-10-21" ><a title="" onclick="reservation.event.dateSelect(this)"'
-	                              +' href="#"> 21(토) </a></li>'
-	                            +' <li data-item="2017-10-22" ><a title="" '
-	                              +' onclick="return false;" href="#"> 22(일) </a></li>'
-	                            +' <li data-item="2017-10-23"><a title=""'
-	                              +' onclick="return false;" href="#"> 23(월) </a></li>'
-	                            +' <li data-item="2017-10-24"><a title=""'
-	                              +' onclick="return false;" href="#"> 24(화) </a></li>'
-	                            +' <li data-item="2017-10-25"><a title=""'
-	                              +' onclick="return false;" href="#"> 25(수) </a></li>'
-	                            +' <li data-item="2017-10-26"><a title=""'
-	                              +' onclick="return false;" href="#"> 26(목) </a></li>'
-	                            +' <li data-item="2017-10-27"><a title=""'
-	                              +' onclick="return false;" href="#"> 27(금) </a></li>'
-	                            +' <li data-item="2017-10-28"><a title=""'
-	                              +' onclick="return false;" href="#"> 28(토) </a></li>'
-	                            +' <li data-item="2017-10-29"><a title=""'
-	                              +' onclick="return false;" href="#"> 29(일) </a></li>'
-	                            +' <li data-item="2017-10-30"><a title=""'
-	                              +' onclick="return false;" href="#"> 30(월) </a></li>'
-	                            +' <li data-item="2017-10-31"><a title=""'
-	                              +' onclick="return false;" href="#"> 31(화) </a></li>'
-	                            +' <li data-item="2017-11-01"><a title=""'
-	                              +' onclick="return false;" href="#"> 11/01(수) </a></li>'
-	                            +' <li data-item="2017-11-02"><a title=""'
-	                              +' onclick="return false;" href="#"> 11/02(목) </a></li>'
-	                            +' <li data-item="2017-11-03"><a title=""'
-	                              +' onclick="return false;" href="#"> 11/03(금) </a></li>'
-	                            +' <li data-item="2017-11-04"><a title=""'
-	                              +' onclick="return false;" href="#"> 11/04(토) </a></li>'
-	                            +' <li data-item="2017-11-05"><a title=""'
-	                              +' onclick="return false;" href="#"> 11/05(일) </a></li>'
-	                            +' <li data-item="2017-11-06"><a title=""'
-	                              +' onclick="return false;" href="#"> 11/06(월) </a></li>'
-	                            +' <li data-item="2017-11-07"><a title=""'
-	                              +' onclick="return false;" href="#"> 11/07(화) </a></li>'
-	                            +' <li data-item="2017-11-08"><a title=""'
-	                              +' onclick="return false;" href="#"> 11/08(수) </a></li>'
-	                            +' <li data-item="2017-11-09"><a title="" class="no_click"'
-	                              +' onclick="return false;" href="#"> 11/09(목) </a></li>'
-	                            +' <li data-item="2017-11-10"><a title="" class="no_click"'
-	                              +' onclick="return false;" href="#"> 11/10(금) </a></li>'
-	                            +' <li data-item="2017-11-11"><a title="" class="no_click"'
-	                              +' onclick="return false;" href="#"> 11/11(토) </a></li>'
-	                            +' <li data-item="2017-11-12"><a title=""'
-	                              +' onclick="return false;" href="#"> 11/12(일) </a></li>'
-	                            +' <li data-item="2017-11-13"><a title="" class="no_click"'
-	                              +' onclick="return false;" href="#"> 11/13(월) </a></li>'
-	                            +' <li data-item="2017-11-14"><a title="" class="no_click"'
-	                              +' onclick="return false;" href="#"> 11/14(화) </a></li>'
-	                            +' <li data-item="2017-11-15"><a title=""'
-	                              +' onclick="return false;" href="#"> 11/15(수) </a></li>'
 	                          +' </ol>'
 	                        +' </div>'
 	                      +' </div>'
@@ -302,7 +242,7 @@ reservation.index=(function(){
 	                        +' style="display: none;">'
 	                        +' <ul id="movie_slist"></ul>'
 	                        +' <div class="check">'
-	                          +' <span class="icheckbox_minimal" aria-checked="false"'
+	                          +' <span class="icheckbox_minimal hover disabled checked" aria-checked="false"'
 	                            +' aria-disabled="false"'
 	                            +' style="width: 18px; height: 18px; vertical-align: middle; display: inline-block; position: relative;"><input'
 	                            +' name="movieTypeYnAll" title="전체" class="icheck movieType"'
@@ -408,7 +348,7 @@ reservation.index=(function(){
 	                              +' href="javascript:void(0)">8</a><span class="arrow"></span></li>'
 	                            +' <li data-select="09"><a title=""'
 	                              +' href="javascript:void(0)">9</a><span class="arrow"></span></li>'
-	                            +' <li data-select="10"><a title="선택됨" class="active"'
+	                            +' <li data-select="10"><a title=""'
 	                              +' href="javascript:void(0)">10</a><span class="arrow"></span></li>'
 	                            +' <li data-select="11"><a title=""'
 	                              +' href="javascript:void(0)">11</a><span class="arrow"></span></li>'
@@ -529,7 +469,7 @@ reservation.index=(function(){
                       +' <li title="제주 (2)" data-areacode="80">제주 (2)</li>'
                     +' </ul>'
                     +' <ul class="depth2">'
-                      +' <li data-cinemacode="1372" data-screencode="" class="active"><a'
+                      +' <li data-cinemacode="1372" data-screencode=""><a'
                         +' title="강남 선택"'
                         +' style="left: 232px; top: 275px; letter-spacing: inherit;"'
                         +' href="javascript:void(0);">강남</a></li>'
@@ -606,7 +546,7 @@ reservation.index=(function(){
                         +' href="javascript:void(0);">서울</a>'
                         +' <ul class="depth2 area_10" style="left: 0px; top: 0px;">'
                           +' <li data-cinemacode="1372" data-screencode=""><a'
-                            +' title="강남 선택" class="active"'
+                            +' title="강남 선택" class=""'
                             +' style="left: 232px; top: 275px; letter-spacing: inherit;"'
                             +' href="javascript:void(0);">강남</a></li>'
                           +' <li data-cinemacode="1359" data-screencode=""><a'
@@ -1054,8 +994,7 @@ reservation.index=(function(){
                 +' <div class="last_btns">'
                   +' <button class="img_btn booking cancel" id="btnCinemaCancel"'
                     +' type="button" >취소</button>'
-                  +' <button class="img_btn booking ok" id="btnCinemaConfirm"'
-                    +' type="button">확인</button>'
+                  +' <button class="img_btn booking ok" id="btnCinemaConfirm" type="button">확인</button>'
                 +' </div>'
                 +' <button class="custom_close" aria-hidden="true" type="button"'
                   +' >'
@@ -1089,11 +1028,6 @@ reservation.index=(function(){
                   +' <div class="selected" id="movieSelected">'
                     +' <button class="img_btn booking sel_all mr10 ml0"'
                       +' id="selectAllMoovieBtn">All</button>'
-                    +' <p class="selected_movie" data-moviecode="012320">'
-                      +' <span>그것 </span><a class="fa fa-times a_in_block"'
-                        +' href="javascript:void(0);"><span class="blind">그것'
-                          +' 선택해제</span></a>'
-                    +' </p>'
                   +' </div>'
                   +' <ul class="sort">'
                     +' <li><a title="예매율순 정렬하기" class="sortBtn active"'
@@ -1107,25 +1041,7 @@ reservation.index=(function(){
                 +' <div class="movie_body movie">'
                   +' <!--  영화목록 -->'
                   +' <ul class="movie_list" id="selectMovieList">'
-                    +' <li data-moviecode="012675"><a title="범죄도시 선택"'
-                      +' href="javascript:void(0);"><span class="blind">범죄도시</span></a>'
-                    +' <div class="poster">'
-                        +' <img alt="범죄도시"'
-                          +' src="http://image2.megabox.co.kr/mop/poster/2017/46/F8B4A0-0392-4366-8344-9F210B198398.medium.jpg">'
-                      +' </div>'
-                      +' <p title="범죄도시" class="title">'
-                        +' <span class="age age_19">청소년관람불가</span><span>범죄도시</span>'
-                      +' </p></li>'
-                    +' <li class="selected" data-moviecode="012320"><a'
-                      +' title="그것 선택됨" href="javascript:void(0);"><span'
-                        +' class="blind">그것</span></a>'
-                    +' <div class="poster">'
-                        +' <img alt="그것"'
-                          +' src="http://image2.megabox.co.kr/mop/poster/2017/D5/689964-00D4-4036-80C8-91A59325B25C.medium.jpg">'
-                      +' </div>'
-                      +' <p title="그것" class="title">'
-                        +' <span class="age age_15">15세관람가</span><span>그것</span>'
-                      +' </p></li>'
+                      +' </ui>'
                 +' </div>'
                 +' <div class="movie_body specialContent" style="display: none;">'
                   +' <div class="movie_list" id="selectSpecialContentList"></div>'
@@ -1364,289 +1280,6 @@ reservation.index=(function(){
                         +' <div class="seat_wrap">'
                           +' <p class="screen">SCREEN</p>'
                           +' <div class="seat_position" id="seatPositionList" style="width: 273px; height: 142px;">'
-                            +' <span class="exit left_right" style="left: 277px; top: -18px;"></span>'
-                            +' <span class="line line_a" style="left: 0px; top: 0px;">A</span>'
-                            +' <button title="A1(일반석)" class="seat_normal"'
-                              +' id="seat_A_1_1_0_10"'
-                              +' style="left: 23px; top: 0px; width: 16px; height: 16px;"'
-                              +' onmouseover="" onmouseout="" onkeyup="" onkeypress=""'
-                              +' onclick="" onblur=""'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="1" seatgroup="A">1</button>'
-                            +' <button title="A2(일반석)" class="seat_normal"'
-                              +' id="seat_A_2_1_1_10"'
-                              +' style="left: 41px; top: 0px; width: 16px; height: 16px;"'
-                              +' onmouseover="" onmouseout="" onkeyup="" onkeypress=""'
-                              +' onclick="" onblur=""'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="2" seatgroup="A">2</button>'
-                            +' <button title="A3(일반석)" class="seat_normal"'
-                              +' id="seat_A_3_1_2_10"'
-                              +' style="left: 59px; top: 0px; width: 16px; height: 16px;"'
-                              +' onmouseover="" onmouseout="" onkeyup="" onkeypress=""'
-                              +' onclick="" onblur=""'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="3" seatgroup="A">3</button>'
-                            +' <button title="A4(일반석)" class="seat_normal"'
-                              +' id="seat_A_4_1_3_10"'
-                              +' style="left: 77px; top: 0px; width: 16px; height: 16px;"'
-                              +' onmouseover="" onmouseout="" onkeyup="" onkeypress=""'
-                              +' onclick="" onblur=""'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="4" seatgroup="A">4</button>'
-                            +' <button title="A5(일반석)" class="seat_normal"'
-                              +' id="seat_A_5_0_4_10"'
-                              +' style="left: 95px; top: 0px; width: 16px; height: 16px;"'
-                              +' onmouseover=""'
-                              +' onmouseout=""'
-                              +' onkeyup=""'
-                              +' onkeypress=""'
-                              +' onclick=""'
-                              +' onblur=""'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="5" seatgroup="A">5</button>'
-                            +' <button title="A6(일반석)" class="seat_normal"'
-                              +' id="seat_A_6_1_5_10"'
-                              +' style="left: 113px; top: 0px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="6" seatgroup="A">6</button>'
-                            +' <button title="A7(일반석)" class="seat_normal"'
-                              +' id="seat_A_7_0_6_10"'
-                              +' style="left: 149px; top: 0px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="7" seatgroup="A">7</button>'
-                            +' <button title="A8(일반석)" class="seat_normal"'
-                              +' id="seat_A_8_1_7_10"'
-                              +' style="left: 167px; top: 0px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="8" seatgroup="A">8</button>'
-                            +' <button title="A9(일반석)" class="seat_normal"'
-                              +' id="seat_A_9_0_8_10"'
-                              +' style="left: 185px; top: 0px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="9" seatgroup="A">9</button>'
-                            +' <button title="A10(일반석)" class="seat_normal"'
-                              +' id="seat_A_10_1_9_10"'
-                              +' style="left: 203px; top: 0px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="10" seatgroup="A">10</button>'
-                            +' <button title="A11(일반석)" class="seat_normal"'
-                              +' id="seat_A_11_1_10_10"'
-                              +' style="left: 221px; top: 0px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="11" seatgroup="A">11</button>'
-                            +' <button title="A12(장애인/휠체어석)" class="ico_wheel"'
-                              +' id="seat_A_12_0_11_40"'
-                              +' style="left: 239px; top: 0px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="40"'
-                              +' seatno="12" seatgroup="A">12</button>'
-                            +' <button title="A13(장애인/휠체어석)" class="ico_wheel"'
-                              +' id="seat_A_13_0_12_40"'
-                              +' style="left: 257px; top: 0px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="40"'
-                              +' seatno="13" seatgroup="A">13</button>'
-                            +' <span class="line line_b" style="left: 0px; top: 18px;">B</span>'
-                            +' <button title="B1(일반석)" class="seat_normal"'
-                              +' id="seat_B_1_0_13_10"'
-                              +' style="left: 23px; top: 18px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="1" seatgroup="B">1</button>'
-                            +' <button title="B2(일반석)" class="seat_normal"'
-                              +' id="seat_B_2_1_14_10"'
-                              +' style="left: 41px; top: 18px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="2" seatgroup="B">2</button>'
-                            +' <button title="B3(일반석)" class="seat_normal"'
-                              +' id="seat_B_3_0_15_10"'
-                              +' style="left: 59px; top: 18px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="3" seatgroup="B">3</button>'
-                            +' <button title="B4(일반석)" class="seat_normal"'
-                              +' id="seat_B_4_1_16_10"'
-                              +' style="left: 77px; top: 18px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="4" seatgroup="B">4</button>'
-                            +' <button title="B5(일반석)" class="seat_normal"'
-                              +' id="seat_B_5_0_17_10"'
-                              +' style="left: 95px; top: 18px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="5" seatgroup="B">5</button>'
-                            +' <button title="B6(일반석)" class="seat_normal"'
-                              +' id="seat_B_6_1_18_10"'
-                              +' style="left: 113px; top: 18px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="6" seatgroup="B">6</button>'
-                            +' <button title="B7(일반석)" class="seat_normal"'
-                              +' id="seat_B_7_0_19_10"'
-                              +' style="left: 149px; top: 18px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="7" seatgroup="B">7</button>'
-                            +' <button title="B8(일반석)" class="seat_normal"'
-                              +' id="seat_B_8_1_20_10"'
-                              +' style="left: 167px; top: 18px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="8" seatgroup="B">8</button>'
-                            +' <button title="B9(일반석)" class="seat_normal"'
-                              +' id="seat_B_9_0_21_10"'
-                              +' style="left: 185px; top: 18px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="9" seatgroup="B">9</button>'
-                            +' <button title="B10(일반석)" class="seat_normal"'
-                              +' id="seat_B_10_1_22_10"'
-                              +' style="left: 203px; top: 18px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="10" seatgroup="B">10</button>'
-                            +' <button title="B11(일반석)" class="seat_normal"'
-                              +' id="seat_B_11_0_23_10"'
-                              +' style="left: 221px; top: 18px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="11" seatgroup="B">11</button>'
-                            +' <button title="B12(일반석)" class="seat_normal"'
-                              +' id="seat_B_12_1_24_10"'
-                              +' style="left: 239px; top: 18px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="12" seatgroup="B">12</button>'
-                            +' <button title="B13(일반석)" class="seat_normal"'
-                              +' id="seat_B_13_1_25_10"'
-                              +' style="left: 257px; top: 18px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="13" seatgroup="B">13</button>'
-                            +' <span class="line line_c" style="left: 0px; top: 36px;">C</span>'
-                            +' <button title="C1(일반석)" class="seat_normal"'
-                              +' id="seat_C_1_0_26_10"'
-                              +' style="left: 23px; top: 36px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="1" seatgroup="C">1</button>'
-                            +' <button title="C2(일반석)" class="seat_normal"'
-                              +' id="seat_C_2_1_27_10"'
-                              +' style="left: 41px; top: 36px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="2" seatgroup="C">2</button>'
-                            +' <button title="C3(일반석)" class="seat_normal"'
-                              +' id="seat_C_3_0_28_10"'
-                              +' style="left: 59px; top: 36px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="3" seatgroup="C">3</button>'
-                            +' <button title="C4(일반석)" class="seat_normal"'
-                              +' id="seat_C_4_1_29_10"'
-                              +' style="left: 77px; top: 36px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="4" seatgroup="C">4</button>'
-                            +' <button title="C5(일반석)" class="seat_normal"'
-                              +' id="seat_C_5_0_30_10"'
-                              +' style="left: 95px; top: 36px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="5" seatgroup="C">5</button>'
-                            +' <button title="C6(일반석)" class="seat_normal"'
-                              +' id="seat_C_6_1_31_10"'
-                              +' style="left: 113px; top: 36px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="6" seatgroup="C">6</button>'
-                            +' <button title="C7(일반석)" class="seat_normal"'
-                              +' id="seat_C_7_0_32_10"'
-                              +' style="left: 149px; top: 36px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="7" seatgroup="C">7</button>'
-                            +' <button title="C8(일반석)" class="seat_normal"'
-                              +' id="seat_C_8_1_33_10"'
-                              +' style="left: 167px; top: 36px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="8" seatgroup="C">8</button>'
-                            +' <button title="C9(일반석)" class="seat_normal"'
-                              +' id="seat_C_9_0_34_10"'
-                              +' style="left: 185px; top: 36px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="9" seatgroup="C">9</button>'
-                            +' <button title="C10(일반석)" class="seat_normal"'
-                              +' id="seat_C_10_1_35_10"'
-                              +' style="left: 203px; top: 36px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="10" seatgroup="C">10</button>'
-                            +' <button title="C11(일반석)" class="seat_normal"'
-                              +' id="seat_C_11_0_36_10"'
-                              +' style="left: 221px; top: 36px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="11" seatgroup="C">11</button>'
-                            +' <button title="C12(일반석)" class="seat_normal"'
-                              +' id="seat_C_12_1_37_10"'
-                              +' style="left: 239px; top: 36px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="12" seatgroup="C">12</button>'
-                            +' <button title="C13(일반석)" class="seat_normal"'
-                              +' id="seat_C_13_1_38_10"'
-                              +' style="left: 257px; top: 36px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="13" seatgroup="C">13</button>'
-                            +' <span class="line line_d" style="left: 0px; top: 54px;">D</span>'
-                            +' <button title="D1(일반석)" class="seat_normal"'
-                              +' id="seat_D_1_0_39_10"'
-                              +' style="left: 23px; top: 54px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="1" seatgroup="D">1</button>'
-                            +' <button title="D2(일반석)" class="seat_normal"'
-                              +' id="seat_D_2_1_40_10"'
-                              +' style="left: 41px; top: 54px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="2" seatgroup="D">2</button>'
-                            +' <button title="D3(일반석)" class="seat_normal"'
-                              +' id="seat_D_3_0_41_10"'
-                              +' style="left: 59px; top: 54px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="3" seatgroup="D">3</button>'
-                            +' <button title="D4(일반석)" class="seat_normal"'
-                              +' id="seat_D_4_1_42_10"'
-                              +' style="left: 77px; top: 54px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="4" seatgroup="D">4</button>'
-                            +' <button title="D5(일반석)" class="seat_normal"'
-                              +' id="seat_D_5_1_43_10"'
-                              +' style="left: 95px; top: 54px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
-                              +' seatno="5" seatgroup="D">5</button>'
-                            +' <button title="D6(선택불가)" class="seat_done"'
-                              +' id="seat_D_6_1_44_10"'
-                              +' style="left: 113px; top: 54px; width: 16px; height: 16px;"'
-                              +' onmouseover="" onmouseout="" onkeyup="" onkeypress=""'
-                              +' onclick=""'
-                              +' onblur="" type="button" popupyn="N" seatlinecnt="6"'
-                              +' seattype="10" seatno="6" seatgroup="D">6</button>'
-                            +' <button title="D7(선택불가)" class="seat_done"'
-                              +' id="seat_D_7_0_45_10"'
-                              +' style="left: 149px; top: 54px; width: 16px; height: 16px;"'
-                              +' onmouseover="" onmouseout="" onkeyup="" onkeypress=""'
-                              +' onclick=""'
-                              +' onblur="" type="button" popupyn="N" seatlinecnt="7"'
-                              +' seattype="10" seatno="7" seatgroup="D">7</button>'
-                            +' <button title="D8(일반석)" class="seat_normal"'
-                              +' id="seat_D_8_0_46_10"'
-                              +' style="left: 167px; top: 54px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="8" seatgroup="D">8</button>'
-                            +' <button title="D9(일반석)" class="seat_normal"'
-                              +' id="seat_D_9_1_47_10"'
-                              +' style="left: 185px; top: 54px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="9" seatgroup="D">9</button>'
-                            +' <button title="D10(일반석)" class="seat_normal"'
-                              +' id="seat_D_10_0_48_10"'
-                              +' style="left: 203px; top: 54px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="10" seatgroup="D">10</button>'
-                            +' <button title="D11(일반석)" class="seat_normal"'
-                              +' id="seat_D_11_1_49_10"'
-                              +' style="left: 221px; top: 54px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="11" seatgroup="D">11</button>'
-                            +' <button title="D12(일반석)" class="seat_normal"'
-                              +' id="seat_D_12_0_50_10"'
-                              +' style="left: 239px; top: 54px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="12" seatgroup="D">12</button>'
-                            +' <button title="D13(예매가능/선택불가)" class="seat_cant"'
-                              +' id="seat_D_13_1_51_10"'
-                              +' style="left: 257px; top: 54px; width: 16px; height: 16px;"'
-                              +' type="button" popupyn="N" seatlinecnt="7" seattype="10"'
-                              +' seatno="13" seatgroup="D">13</button>'
                           +' </div>'
                         +' </div>'
                         +' <div class="seat_img" id="bookingSelectSeatSeatInfo">'
@@ -1667,45 +1300,15 @@ reservation.index=(function(){
                       +' <div class="reset">'
                         +' <button class="img_btn booking btn_reset" type="button">다시선택</button>'
                         +' <div class="selected_man">'
-                          +' <span>좌석 선택 인원</span> <span><span'
+                         /* +' <span>좌석 선택 인원</span> <span><span'
                             +' id="currentCountSelectedTicket">4</span>/<span'
-                            +' id="totalCountSelectedTicket">8</span> </span>'
+                            +' id="totalCountSelectedTicket">8</span> </span>'*/
                         +' </div>'
                       +' </div>'
                     +' </div>'
                   +' </div>'
                   +' <!-- 예매현황 -->'
                   +' <div class="right_wrap" id="bookingSelectSeatStatusBoard">'
-                    +' <div class="row1">'
-                      +' <img alt="그것"'
-                        +' src="http://image2.megabox.co.kr/mop/poster/2017/D5/689964-00D4-4036-80C8-91A59325B25C.medium.jpg">'
-                    +' </div>'
-                    +' <div class="row2">'
-                      +' <div class="title">'
-                        +' <i class="age age_15">15세관람가</i>'
-                        +' <h4>그것</h4>'
-                        +' <span>디지털(자막)</span>'
-                      +' </div>'
-                      +' <div'
-                        +' style="height: 123px; overflow: hidden; -ms-overflow-y: auto;">'
-                        +' <ul class="info">'
-                          +' <li>강남<br>5관'
-                          +' </li>'
-                          +' <li>2017. 10. 17 (화) 15:10</li>'
-                          +' <li id="countSelectedByTicket"><span>&nbsp;</span></li>'
-                        +' </ul>'
-                        +' <ul class="seat" id="selectedSeatNumbers1">'
-                        +' </ul>'
-                      +' </div>'
-                      +' <p class="price">'
-                        +' <strong id="ticketTotalPrice">0</strong> 원'
-                      +' </p>'
-                      +' <div class="pay_final_wrp">'
-                        +' <button class="img_btn booking prev" type="button"'
-                          +' id="close_reservation">이전</button>'
-                        +' <button class="img_btn booking next" type="button">다음</button>'
-                      +' </div>'
-                    +' </div>'
                   +' </div>'
                 +' </div>'
                 +' <button class="custom_close" id="closeAll" data-dismiss="modal" type="button">'
@@ -1721,6 +1324,15 @@ reservation.index=(function(){
 		$('#myModal').append(theaterUI);
 		$('#myModal').append(movieUI);
 		$('#myModal').append(seatUI);
+		var today = new Date();
+		var week = new Array('일','월','화','수','목','금','토');
+		var dui=' <li data-item="'+(today.getFullYear())+(today.getMonth()+1)+(today.getDate())+'" ><a title="선택됨" class="active" onclick="reservation.event.dateSelect(this)" href="#"> 오늘 </a></li>';
+		  for(var i=1; i <21;i++){
+			  today.setDate(today.getDate()+1);
+        	  dui+= ' <li data-item="'+(today.getFullYear())+(today.getMonth()+1)+(today.getDate())+'" ><a title="선택됨" class="" onclick="reservation.event.dateSelect(this)" href="#"> '+today.getDate()+'('+week[today.getDay()]+')'+'</a></li>';
+          }
+		$('#datey').append(dui);
+		
 		setContentView();
 	};
 	var setContentView=()=>{
@@ -1744,13 +1356,15 @@ reservation.event=(()=>{
 		});
 		/*극장 선택*/
 		$('#btnCinemaConfirm').click(()=> {
+			if($('#cinemaSelected p').length!=0){
 			$('#th_btn1').attr('title', '강남 선택해제');
 			$('#th_btn1').addClass('close_small');
-			$('#th_btn1').after('<span>강남<span>');
+			$('#th_btn1').after('<span>'+$('#cinemaSelected').text()+'<span>');
+	
+			timeline();
+			
+			}
 			$('#btnCinemaCancel').trigger('click');
-			var ui = '<li data-slide-indicator="16" onclick="reservation.event.reservation_move()"><div class="viewing_time"><p class="time_table"><strong>16:15</strong><span>~ 18:40</span></p></div><div class="movie"><p title="그것" class="title"><span class="age age_15">15세관람가</span><a title="2017-10-18 16:15 그것 선택" href="javascript:void(0);">그것</a></p><p class="subtitle">디지털(자막)</p></div><div class="theater_wrap"><p class="theater">강남<br>5관</p><p class="seat">87 / 92</p></div></li>';
-			$('#movieTimeList').empty();
-			$('#movieTimeList').append(ui);
 
 		});
 		$('#btnCinemaCancel').click(()=> {
@@ -1762,38 +1376,145 @@ reservation.event=(()=>{
 			$('#select_movie').addClass('modal fade booking_lp booking_lp2 in');
 			$('#select_movie').css('display', 'block');
 			$('#select_movie').css('z-index', '1200');
+			var url=$$('x')+'/gh/list';
+			var ui='';
+			var film;
+			$.getJSON(url,data=>{
+				$.each(data.list,(i,j)=>{
+				
+					ui+=' <li data-movietitle="'+j.movieTitle+'" data-movieimage="'+j.image+'"><a title="'+j.movieTitle+' 선택" href="javascript:void(0);"><span class="blind">'+j.movieTitle+'</span></a>'
+                    +' <div class="poster">'
+                    +' <img alt="'+j.movieTitle+'" src="'+j.image+'">'
+                  +' </div>'
+                  +' <p title="'+j.movieTitle+'" class="title">'
+                    +' <span class="'+j.filmRate+'"></span><span>'+j.movieTitle+'</span>'
+                  +' </p></li>';
+					
+				});
+				$('#movieSelected p').remove();
+				$('#selectMovieList').empty();
+				$('#selectMovieList').append(ui);
+				
+				$('#selectMovieList li').on('click',function(){
+					
+						if($(this).attr('class')=='selected'){
+							var title=$(this).attr('data-movietitle');
+							$(this).attr('class','');
+							$.each($('#movieSelected p'),function(index,item){
+								if($(item).attr('data-title')==title){
+									$(item).remove();
+								}
+
+							});
+						}else{
+							if($('#movieSelected p').length <4){
+							//$('#selectMovieList li').attr('class','');
+							$(this).attr('class','selected');
+							var title=$(this).attr('data-movietitle');
+							var image=$(this).attr('data-movieimage');
+							var ui=' <p class="selected_movie" data-title="'+title+'" data-image="'+image+'">'
+				            +' <span>'+title+'</span><a class="fa fa-times a_in_block" href="javascript:void(0);"><span class="blind">'+title
+				              +' 선택해제</span></a> </p>';
+							//$('#movieSelected p').remove();
+							$('#movieSelected').append(ui);
+							}else{
+								alert('4개까지만 선택할 수 있습니다.');
+							}
+						}
+					
+				});
+			});
 		});
 		$('#btnMovieCancel').click(()=> {
 			$('#select_movie').addClass('modal fade booking_lp booking_lp2');
 			$('#select_movie').css('display', 'none');
 		});
 		$('#btnMovieConfirm').click(()=> {
-			var ui = '<li class="poster" data-moviecode="012320"><div class="poster"><button title="그것 선택해제" class="close_small" onclick="reservation.event.movielist_cencel()" type="button"></button>'
-					+ '<img alt="그것" src="http://image2.megabox.co.kr/mop/poster/2017/D5/689964-00D4-4036-80C8-91A59325B25C.medium.jpg"></div></li>'
-					+ '<li><div class="poster"><button title="극장선택 빈프레임" class="btn_add" type="button"></button></div></li>'
-					+ '<li><div class="poster"><button title="극장선택 빈프레임" class="btn_add" type="button"></button></div></li>'
-					+ '<li><div class="poster"><button title="극장선택 빈프레임" class="btn_add" type="button"></button></div></li>';
-
+			$('#select_movie').addClass('modal fade booking_lp booking_lp2');
+			$('#select_movie').css('display', 'none');
+			if($('#movieSelected p').length!=0){
+			var title;
+			var img;
+			var ui='';
+			$.each($('#movieSelected p'),function(index,item){
+				title=$(item).attr('data-title');
+				img=$(item).attr('data-image');
+				ui+='<li class="poster" data-moviecode="012320"><div class="poster"><button title="'+title+' 선택해제" class="closemovie close_small" type="button"></button>'
+				+ '<img alt="'+title+'" src="'+img+'"></div></li>';
+				
+			});
+			switch ($('#movieSelected p').length) {
+			case 1:
+				ui += '<li><div class="poster"><button title="극장선택 빈프레임" class="openmovie btn_add" type="button"></button></div></li>'
+					+ '<li><div class="poster"><button title="극장선택 빈프레임" class="openmovie btn_add" type="button"></button></div></li>'
+					+ '<li><div class="poster"><button title="극장선택 빈프레임" class="openmovie btn_add" type="button"></button></div></li>';
+				break;
+			case 2:
+				ui += '<li><div class="poster"><button title="극장선택 빈프레임" class="openmovie btn_add" type="button"></button></div></li>'
+					+ '<li><div class="poster"><button title="극장선택 빈프레임" class="openmovie btn_add" type="button"></button></div></li>';
+				break;
+			case 3:
+				ui += '<li><div class="poster"><button title="극장선택 빈프레임" class="openmovie btn_add" type="button"></button></div></li>';
+				break;
+			default:
+				break;
+			}
 			$('#selectedAllMovie').css('display', 'none');
 			$('#selectedMovieList').css('display', 'block');
+			$('#movie_slist').empty();
 			$('#movie_slist').append(ui);
-			$('#btnMovieCancel').trigger('click');
-		});
-
-		$('#close_reservation').click(()=> {
-			$('#select_seat').addClass('modal fade booking_lp booking_lp2');
-			$('#select_seat').css('display', 'none');
+			
+			$('.closemovie').on('click',function(){
+				var mtitle=$(this).parent('div').find('img').attr('alt');
+				$.each($('#movieSelected p'),function(index,item){
+					if($(item).attr('data-title')==mtitle){
+						$(item).remove();
+					}
+				});
+				$.each($('#selectMovieList li'),function(index,item){
+					if($(item).attr('data-movietitle')==mtitle){
+						$(item).attr('class','');
+					}
+				});
+				$(this).parent('div').parent('li').remove();
+				$('#movie_slist').append('<li><div class="poster"><button title="극장선택 빈프레임" class="openmovie btn_add" type="button"></button></div></li>');
+				if($('#movie_slist li div button').attr('title')=='극장선택 빈프레임'){
+					movielist_cancel();
+				}
+				$('.openmovie').on('click',function(){
+					$('#select_movie').addClass('modal fade booking_lp booking_lp2 in');
+					$('#select_movie').css('display', 'block');
+					$('#select_movie').css('z-index', '1200');
+					
+				});
+			});
+			$('.openmovie').on('click',function(){
+				$('#select_movie').addClass('modal fade booking_lp booking_lp2 in');
+				$('#select_movie').css('display', 'block');
+				$('#select_movie').css('z-index', '1200');
+				
+			});
+			timeline();
+		}
 		});
 		
 		$('#closeAll').click(()=>{
+			$('#selectedAllMovie').css('display', 'block');
+			$('#selectedMovieList').css('display', 'none');
+			$('#movie_slist').empty();
+			$('#movieSelected p').remove();
+			var ui = '<li class="no_movie_list"><span class="blind">조회된 상영목록이 없습니다</span></li>';
+			$('#movieTimeList').empty();
+			$('#movieTimeList').html(ui);
 			$('#close_reservation').trigger('click');
-			movielist_cencel();
+			
 			$('#cinemaList button').attr('class','btn_add');
 			$('#cinemaList button').attr('title','극장선택 빈프레임');
 			$('#cinemaList span').remove();
-			var ui = '<li class="no_movie_list"><span class="blind">조회된 상영목록이 없습니다</span></li>';
-			$('#movieTimeList').empty();
-			$('#movieTimeList').append(ui);
+			$('#cinemaSelected').empty();
+			$('.depth2 li').attr('class','');
+			$('#movieSelected p').remove();
+			$('#selectMovieList li').attr('class','');
 		});
 		$('#closeAll2').click(()=>{
 			$('#closeAll').trigger('click');
@@ -1804,36 +1525,38 @@ reservation.event=(()=>{
 			$('#countSelectedByTicket').text("일반 "+$(this).text()+"명");
 			$('#selectno').text($(this).text());
 		});
-		
-		$('#seatPositionList button').on('click',function(){
-			if($(this).attr('class')=='seat_normal'){
-				if($('#selectno').text() > $('#selectedSeatNumbers1 li').length){
-				var seat=$(this).attr('seatgroup')+$(this).attr('seatno');
-				$(this).attr('class','seat_selected');
-				$(this).attr('title',seat+'(선택됨)');
-				
-				var ui='<li>'+seat+'</li>'
-				$('#selectedSeatNumbers1').append(ui);
-				$('#ticketTotalPrice').text($('#selectedSeatNumbers1 li').length*9+',000');
-				}else{
-					alert('인원초과');
-				}
-			}else if($(this).attr('class')=='seat_selected'){
-				var seat=$(this).attr('seatgroup')+$(this).attr('seatno');
-				$(this).attr('class','seat_normal');
-				$(this).attr('title',seat+'(일반석)');
-				//ticketTotalPrice
-				//alert($('#selectedSeatNumbers1 li').length);
-				$.each($('#selectedSeatNumbers1 li'),function(index,item){
-					if($(item).text()==seat){
-						$(item).remove();
-					}
 
-				});
-				$('#ticketTotalPrice').text($('#selectedSeatNumbers1 li').length*9+',000');
-			}
+		$('.depth2 li').on('click',function(){
+			$('.depth2 li').attr('class','');
+			$(this).attr('class','active');
+			var ui='<p class="selected_movie" data-cinemacode="1372">'
+				+' <span>'+$(this).text()+'</span>'
+				+' <a href="javascript:void(0);" class="fa fa-times a_in_block"></a></p>';
+			$('#cinemaSelected').empty();
+			$('#cinemaSelected').append(ui);
 		});
-
+		$('.depth2 li').on('mouseover',function(){
+			var a=$('.area_10 li').eq($(this).index()).find('a');
+			a.attr('class','active');
+			//alert($(this).index());
+		});
+		$('.depth2 li').on('mouseout',function(){
+			//alert($(this).index());
+			$('.area_10 li a').attr('class','');
+		});
+		$('#refreshCinemaBtn').click(()=>{
+			$('#cinemaList button').attr('class','btn_add');
+			$('#cinemaList button').attr('title','극장선택 빈프레임');
+			$('#cinemaList span').remove();
+			$('#cinemaSelected').empty();
+			$('.depth2 li').attr('class','');
+			var ui = '<li class="no_movie_list"><span class="blind">조회된 상영목록이 없습니다</span></li>';
+			$('#movieTimeList').empty();
+			$('#movieTimeList').append(ui);
+		});
+		$('#refreshMovieBtn').click(()=>{
+			movielist_cancel();
+		});
 		/*$('.dateSelect a').click(()=>{
 			alert($(this).val());
 			//$(this).attr('class','actives');
@@ -1848,23 +1571,22 @@ reservation.event=(()=>{
 			$('#select_theater').css('display', 'block');
 			$('#select_theater').css('z-index', '1100');
 		} else {
+			$('#cinemaSelected').empty();
 			o.className = 'btn_add';
 			o.title = '극장선택 빈프레임';
 			o.nextSibling.outerHTML = '';
 			var ui = '<li class="no_movie_list"><span class="blind">조회된 상영목록이 없습니다</span></li>';
 			$('#movieTimeList').empty();
 			$('#movieTimeList').append(ui);
+			$('.depth2 li').attr('class','');
 		}
 	};
-	var movielist_cencel=()=>{
+	var movielist_cancel=()=>{
 		$('#selectedAllMovie').css('display', 'block');
 		$('#selectedMovieList').css('display', 'none');
 		$('#movie_slist').empty();
-	};
-	var reservation_move=()=>{
-		$('#select_seat').addClass('modal fade booking_lp booking_lp2 in');
-		$('#select_seat').css('display', 'block');
-		$('#select_seat').css('z-index', '1200');
+		$('#movieSelected p').remove();
+		timeline();
 	};
 	var date_prev=()=>{
 		var obj=$('#datey').position();
@@ -1885,16 +1607,226 @@ reservation.event=(()=>{
 	var dateSelect=(o)=>{
 		$('#datey a').attr('class','');
 		o.className = 'active';
+		timeline();
+	};
+	var timeline=()=>{
+		if($('#cinemaSelected p').length!=0){
+			var date=$('#datey li').find('.active').parent('li').attr('data-item');
+			
+		$.ajax({
+			url : $$('x')+'/gh/timelist',
+			method : 'post',
+			dataType:'json',
+			data : JSON.stringify({
+				'day':date,
+				'officeName':$('#cinemaSelected p').text(),
+				'movieTitle':$('#movieSelected p').eq(0).attr('data-title'),
+				'movieTitle2':$('#movieSelected p').eq(1).attr('data-title'),
+				'movieTitle3':$('#movieSelected p').eq(2).attr('data-title'),
+				'movieTitle4':$('#movieSelected p').eq(3).attr('data-title')
+			}),
+			contentType : 'application/json',
+			success : d=>{
+				//alert('ajax 통신 성공'+d.msg);
+				var ui='';
+				var film;
+				if(d.timelist.length!=0){
+				var timesel=parseInt((d.timelist[0].startTime).substring(0,2));
+				$('#slidebarItems li a').attr('class','');
+				$('#slidebarItems li').eq(timesel).find('a').attr('class','active');
+				//var obj=$('#slidebarItems').position();
+				$('#slidebarItems').css('left',-30*timesel);
+				
+				$.each(d.timelist,(i,j)=>{
+					if(j.filmRate=='age_19'){
+						film= '청소년관람불가';
+					}else if(j.filmRate=='age_15'){
+						film='15세관람가';
+					}else{
+						film='12세관람가';
+					}
+					ui+='<li>'
+						+' <div class="viewing_time"><p class="time_table"><strong>'+j.startTime+'</strong><span>~ '+j.endTime+'</span></p></div>'
+						+' <div class="movie"><p title="'+j.movieTitle+'" class="title"><span class="age '+j.filmRate+'">'+film+'</span>'
+						+' <a title="'+j.movieTitle+' 선택" href="javascript:void(0);">'+j.movieTitle+'</a></p>'
+						+' <p class="subtitle">디지털(자막)</p></div><div class="theater_wrap"><p class="theater">'+j.officeName+'<br>'+j.screen+'관</p><p class="seat">87 / 92</p></div></li>';
+				});
+				
+				$('#movieTimeList').empty();
+				$('#movieTimeList').append(ui);
+				
+				//예매창
+				$('#movieTimeList li').on('click',function(){
+					$('#select_seat').addClass('modal fade booking_lp booking_lp2 in');
+					$('#select_seat').css('display', 'block');
+					$('#select_seat').css('z-index', '1200');
+					
+					var atitle=$(this).find('.movie').find('p').eq(0);
+					$.each(d.timelist,(l,k)=>{
+					if(k.movieTitle==atitle.attr('title')){
+						
+						var url=$$('x')+'/gh/seat/'+k.screeningNumber;
+						var  lines='';
+						var seatcant='';
+						var top=-18;
+						var left=23;
+						var seat_ui=' <span class="exit left_right" style="left: 277px; top: -18px;"></span>';
+						$.getJSON(url,data=>{
+							$.each(data.seatlist,(i,j)=>{
+								if(lines!=j.line){
+									lines=j.line;
+									top+=18;
+									seat_ui+=' <span class="line line_'+j.line+'" style="left: 0px; top: '+top+'px;">'+j.line+'</span>';
+									
+									left=23;
+								}
+								if(j.cancel=='N'){
+									seatcant='seat_cant';
+								}else{
+									seatcant=j.type;
+								}
+								seat_ui+=' <button title="'+j.seat_name+'" class="'+seatcant+'" '
+		                              +' style="left: '+left+'px; top: '+top+'px; width: 16px; height: 16px;"'
+		                              +' onmouseover="" onmouseout="" onkeyup="" onkeypress=""'
+		                              +' onclick="" onblur=""'
+		                              +' type="button" popupyn="N" seatlinecnt="6" seattype="10"'
+		                              +' seatno="'+j.seatno+'" seatgroup="'+j.line+'">'+j.seatno+'</button>';
+								left+=18;
+							});
+							$('#seatPositionList').empty();
+							$('#seatPositionList').append(seat_ui);
+							$('#seatPositionList button').on('click',function(){
+								if($(this).attr('class')=='seat_normal'){
+									if($('#selectno').text() > $('#selectedSeatNumbers1 li').length){
+									var seat=$(this).attr('seatgroup')+$(this).attr('seatno');
+									$(this).attr('class','seat_selected');
+									$(this).attr('title',seat+'(선택됨)');
+									
+									var ui='<li>'+seat+'</li>'
+									$('#selectedSeatNumbers1').append(ui);
+									$('#ticketTotalPrice').text($('#selectedSeatNumbers1 li').length*9+',000');
+									}else{
+										if($('#selectno').text()==0){
+											alert('인원을 먼저 선택해주세요.');
+										}else{
+											alert('좌석 선택이 완료되었습니다.');
+										}
+									}
+								}else if($(this).attr('class')=='seat_selected'){
+									var seat=$(this).attr('seatgroup')+$(this).attr('seatno');
+									$(this).attr('class','seat_normal');
+									$(this).attr('title',seat+'(일반석)');
+									//ticketTotalPrice
+									//alert($('#selectedSeatNumbers1 li').length);
+									$.each($('#selectedSeatNumbers1 li'),function(index,item){
+										if($(item).text()==seat){
+											$(item).remove();
+										}
+
+									});
+									$('#ticketTotalPrice').text($('#selectedSeatNumbers1 li').length==0? '0':$('#selectedSeatNumbers1 li').length*9+',000');
+								}
+							});
+						});
+						
+					var rui= ' <div class="row1" id="re_screen_num" data-screeningnumber="'+k.screeningNumber+'">'
+	                +' <img alt="'+k.movieTitle+'"'
+	                +' src="'+k.image+'">'
+	            +' </div>'
+	            +' <div class="row2">'
+	              +' <div class="title">'
+	                +' <i class="age '+k.filmRate+'"></i>'
+	                +' <h4>'+k.movieTitle+'</h4>'
+	                +' <span>디지털(자막)</span>'
+	              +' </div>'
+	              +' <div'
+	                +' style="height: 123px; overflow: hidden; -ms-overflow-y: auto;">'
+	                +' <ul class="info">'
+	                  +' <li>'+k.officeName+'<br>'+k.screen+'관'
+	                  +' </li>'
+	                  +' <li>'+k.day.substring(0,4)+'.'+k.day.substring(4,6)+'.'+k.day.substring(6,8)+' '+k.startTime+'</li>'
+	                  +' <li id="countSelectedByTicket"><span>&nbsp;</span></li>'
+	                +' </ul>'
+	                +' <ul class="seat" id="selectedSeatNumbers1">'
+	                +' </ul>'
+	              +' </div>'
+	              +' <p class="price">'
+	                +' <strong id="ticketTotalPrice">0</strong> 원'
+	              +' </p>'
+	              +' <div class="pay_final_wrp">'
+	                +' <button class="img_btn booking prev" type="button" id="close_reservation">이전</button>'
+	                +' <button class="img_btn booking next" type="button" id="reservation_credit">다음</button>'
+	              +' </div>'
+	            +' </div>';
+						$('#bookingSelectSeatStatusBoard').empty();
+						$('#bookingSelectSeatStatusBoard').append(rui);
+					}
+					});
+					
+					$('#close_reservation').click(()=> {
+						$('#select_seat').addClass('modal fade booking_lp booking_lp2');
+						$('#select_seat').css('display', 'none');
+					});
+					
+					$('#reservation_credit').click(e=> {
+						e.preventDefault();
+						if($$('id')!=null){
+						if($('#selectno').text() == $('#selectedSeatNumbers1 li').length){
+						for(var i=0; i<$('#selectedSeatNumbers1 li').length;i++){
+							$.ajax({
+								url : $$('x')+'/gh/reservation/insert',
+								method : 'post',
+								dataType:'json',
+								data : JSON.stringify({
+									'screeningNumber':$('#re_screen_num').attr('data-screeningnumber'),
+									'seatSeq':$('#selectedSeatNumbers1 li').eq(i).text(),
+									'cancel':'N',
+									'id':$$('id')
+								}),
+								contentType : 'application/json',
+								success : d=>{
+									//alert('ajax 통신 성공'+d.msg);
+								},
+								error : (x,s,m)=>{
+									//alert('결제 오류'+m);
+								}
+							});
+						}
+						alert('예매가 완료되었습니다.');
+						$('#closeAll').trigger('click');
+						}else{
+							alert('예매하고자 하는 좌석수와 선택한 좌석수가 일치하지 않습니다.');
+						}
+						}else{
+							alert('로그인을 해주세요');
+							$('#closeAll').trigger('click');
+							$.getScript($$('j')+'megabox.js',()=>{
+								megabox.index.init();
+
+							})
+						}});
+				});
+			}else{
+				var fui = '<li class="no_movie_list"><span class="blind">조회된 상영목록이 없습니다</span></li>';
+				$('#movieTimeList').empty();
+				$('#movieTimeList').append(fui);
+			}
+			},
+			error : (x,s,m)=>{
+				alert('결제 오류'+m);
+			}
+		});
+		}
 	};
 	return {
 		init:init,
 		theater_click:theater_click,
-		movielist_cencel:movielist_cencel,
-		reservation_move:reservation_move,
+		movielist_cancel:movielist_cancel,
 		date_prev:date_prev,
 		date_next:date_next,
 		hour_prev:hour_prev,
 		hour_next:hour_next,
-		dateSelect:dateSelect
+		dateSelect:dateSelect,
+		timeline:timeline
 	};
 })();

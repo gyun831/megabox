@@ -69,7 +69,7 @@
 		</if>
 		<if test="cancel == 'movie-boxoffice'">
 			WHERE now() BETWEEN DATE(m.start_day) AND DATE(m.end_day)
-			ORDER BY score DESC, DATE(m.start_day) DESC
+			ORDER BY cast(score as unsigned) DESC, DATE(m.start_day) DESC
 		</if>
 		<if test="cancel == 'movie-showing-date'">
 			WHERE now() BETWEEN DATE(m.start_day) AND DATE(m.end_day)
@@ -77,7 +77,7 @@
 		</if>
 		<if test="cancel == 'movie-showing-score'">
 			WHERE now() BETWEEN DATE(m.start_day) AND DATE(m.end_day)
-			ORDER BY score DESC
+			ORDER BY cast(score as unsigned) DESC
 		</if>
 		<if test="cancel == 'movie-showing-character'">
 			WHERE now() BETWEEN DATE(m.start_day) AND DATE(m.end_day)
@@ -95,7 +95,7 @@
 			ORDER BY DATE(m.start_day) DESC
 		</if>
 		<if test="cancel == 'movie-interesting-score'">
-			ORDER BY score DESC
+			ORDER BY cast(score as unsigned) DESC
 		</if>
 		<if test="cancel == 'movie-interesting-character'">
 			ORDER BY m.movie_title
@@ -140,7 +140,7 @@
 			ORDER BY r.date DESC
 		</if>
 		<if test="seatSeq == 'movie-comment-score'">
-			ORDER BY r.score DESC
+			ORDER BY cast(r.score as unsigned) DESC
 		</if>
 		<if test="#{reservationNumber} != null">
 			<if test="#{screeningNumber} != null">
@@ -188,7 +188,7 @@
 			ORDER BY r.date DESC
 		</if>
 		<if test="seatSeq == 'movie-comment-score'">
-			ORDER BY r.score DESC
+			ORDER BY cast(r.score as unsigned) DESC
 		</if>
 		<if test="#{reservationNumber} != null">
 			<if test="#{screeningNumber} != null">

@@ -16,15 +16,6 @@
 		<if test="movieTitle !=null">
 			and (s.movie_title=#{movieTitle} or s.movie_title=#{movieTitle2} or s.movie_title=#{movieTitle3} or s.movie_title=#{movieTitle4})
 		</if>
-		<!-- <if test="movieTitle2 !=null">
-			or s.movie_title=#{movieTitle2}
-		</if>
-		<if test="movieTitle3 !=null">
-			or s.movie_title=#{movieTitle3}
-		</if>
-		<if test="movieTitle4 !=null">
-			or s.movie_title=#{movieTitle4}
-		</if> -->
 		order by s.time_seq
 	</select>
 	<select id="seatList" resultType="com.megabox.web.domain.Seat" parameterType="com.megabox.web.command.Command">

@@ -23,11 +23,25 @@ import com.megabox.web.service.IPostService;
 public class SWController {
 	@Autowired SWMapper mapper;
 	@Autowired Reservation rsv;
+	
+	@RequestMapping(value="/main/movieList", method=RequestMethod.POST, consumes="application/json")
+	public @ResponseBody Map<?,?> mainList(@RequestBody Map<?,?> reqMap) {
+		Map<String,Object> map=new HashMap<>();
+		rsv.setCancel(String.valueOf(reqMap.get("sort")));
+		rsv.setScreeningNumber("mainChk");
+		IListService movieListService=null;
+		movieListService=(x)-> {
+			return mapper.selectMovieList(rsv);
+		};
+		map.put("movieList", movieListService.execute(rsv));
+		return map;
+	};
 
 	@RequestMapping(value="/movie/list", method=RequestMethod.POST, consumes="application/json")
 	public @ResponseBody Map<?,?> list(@RequestBody Map<?,?> reqMap) {
 		Map<String,Object> map=new HashMap<>();
 		rsv.setCancel(String.valueOf(reqMap.get("sort")));
+		rsv.setScreeningNumber("");
 		if(reqMap.get("id")!=null) {
 			rsv.setId(String.valueOf(reqMap.get("id")));
 		}
@@ -146,6 +160,7 @@ public class SWController {
 	@RequestMapping(value="/movie/myComment", method=RequestMethod.POST, consumes="application/json")
 	public @ResponseBody Map<?,?> myCommentList(@RequestBody Map<?,?> reqMap) {
 		Map<String,Object> map=new HashMap<>();
+		String pageNum=String.valueOf(reqMap.get("pageNum"));
 		rsv.setId((String) reqMap.get("id"));
 		rsv.setSeatSeq((String) reqMap.get("sort"));
 		IListService myMovieCommentListService=null;
@@ -153,9 +168,13 @@ public class SWController {
 		myMovieCommentCountService=(x)-> {
 			return mapper.selectMyMovieCommentCountById(rsv);
 		};
+		Map<?,?> pagingMap=CommentPagingFactory.create(String.valueOf(myMovieCommentCountService.execute(rsv)), pageNum);
+		rsv.setReservationNumber(String.valueOf(pagingMap.get("start")));
+        rsv.setScreeningNumber(String.valueOf(pagingMap.get("pageSize")));
 		myMovieCommentListService=(x)-> {
 			return mapper.selectMyMovieCommentListById(rsv);
 		};
+		map.put("commentPaging", pagingMap);
 		map.put("myMovieCommentCount", myMovieCommentCountService.execute(rsv));
 		map.put("myMovieCommentList", myMovieCommentListService.execute(rsv));
 		return map;

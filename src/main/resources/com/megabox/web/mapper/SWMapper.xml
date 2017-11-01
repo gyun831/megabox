@@ -96,6 +96,9 @@
 		<if test="cancel == 'movie-interesting-character'">
 			ORDER BY m.movie_title
 		</if>
+		<if test="screeningNumber == 'mainChk'">
+			LIMIT 0, 8
+		</if>
 	</select>
 	
 	<select id="selectMovieDetail" resultMap="resultMap" parameterType="com.megabox.web.domain.Reservation">
@@ -182,6 +185,11 @@
 		</if>
 		<if test="seatSeq == 'movie-comment-score'">
 			ORDER BY r.score DESC
+		</if>
+		<if test="#{reservationNumber} != null">
+			<if test="#{screeningNumber} != null">
+				LIMIT ${reservationNumber}, ${screeningNumber}
+			</if>
 		</if>
 	</select>
 	

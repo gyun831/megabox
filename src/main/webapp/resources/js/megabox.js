@@ -30,52 +30,9 @@ megabox.index =(()=>{
 		$.getScript(index,()=>{
 			$main.html(mainUI.slide());
 			$footer.html(compUI.footer());
-				var arr=[
-					'http://image2.megabox.co.kr/mop/poster/2017/46/F8B4A0-0392-4366-8344-9F210B198398.large.jpg',
-					'http://image2.megabox.co.kr/mop/poster/2017/28/5CCD96-6F15-4C2F-8F4E-CF9A9E9CF37D.large.jpg',
-					'http://image2.megabox.co.kr/mop/poster/2017/4D/E63310-9DAD-4A68-91BD-CDCBB8031901.large.jpg',
-					'http://image2.megabox.co.kr/mop/poster/2017/C3/6557FA-E32C-4F36-8AB2-2A347FE8D324.large.jpg'
-					];
-				$.each(arr,(i,j)=>{
-					$('#boxul').append(compUI.boxoffice(arr[i]));
-					$('<a/>')
-					.appendTo($('#main_btn_wrap'))
-					.attr('class','img_btn movie pull-left')
-					.attr('title','영화상세 보기')
-					.text('상세정보')
-					.click(()=>{
-						$.getScript(sw,()=>{
-			            	seungwoo.movieDetail.init();
-				    	});
-					});
-					$('<a/>')
-					.appendTo($('#main_btn_wrap'))
-					.attr('class','img_btn movie pull-right')
-					.attr('data-toggle','modal')
-					.attr('data-target','#myModal')
-					.attr('title','영화 예매하기')
-					.text('예매하기');
-					$('<button/>')
-					.appendTo('.back_wrap')
-					.attr('type','button')
-					.addClass('img_you_ck btn_01')
-					.click(e=>{
-						alert('dd');
-					});
-					$('<button/>')
-					.appendTo('.back_wrap')
-					.attr('type','button')
-					.addClass('img_you_ck btn_02')
-					.click(e=>{
-						alert('dd');
-					});
-					});
-			    $(".thumb").mouseover(function(){
-			    	$(this).attr('class','thumb flip flipIt');
-			    });
-			    $(".thumb").mouseout(function(){
-			    	$(this).attr('class','thumb flip');
-			    });
+				$.getScript(sw,()=>{
+					seungwoo.mainMovie.init("movie-boxoffice");
+		    	})
 			    $(document).scroll(function(){
 			    	var height = $(document).scrollTop();
 					$('#grand1').css({'background-position-y':1600-height});
@@ -300,15 +257,26 @@ megabox.func=(()=>{
 	var mymegabox=()=>{
 		$main.empty();
 		$main.append(memberUI.mymegabox());
+		$('#col5').click(()=>{
+			$.getScript($$('j')+'/seungwoo.js',()=>{
+				seungwoo.movieStory.init("movie-interesting-date");
+	    	})
+		})
 		$('#col7').click(()=>{
 			myinfoupdate();
 		})
+		
 	}
 	var myinfoupdate=()=>{
-		$main.empty();
-		$main.append(memberUI.myinfoupdate());
+		$('#mega_main').empty();
+		$('#mega_main').append(memberUI.myinfoupdate());
 		$('#myinfocan').click(()=>{
 			mymegabox();
+		})
+		$('#col5').click(()=>{
+			$.getScript($$('j')+'/seungwoo.js',()=>{
+				seungwoo.movieStory.init("movie-interesting-date");
+	    	})
 		})
 		$('#myinfoup').click(()=>{
 			$.ajax({

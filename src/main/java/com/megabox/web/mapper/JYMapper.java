@@ -9,7 +9,7 @@ import com.megabox.web.domain.Member;
 
 @Repository
 public interface JYMapper {
-	public int insert(Object o);
+	public void insert(Object o);
 	public List<?> selectList(Command cmd);
 	public Member selectOne(Command cmd);
 	public String count(Command cmd);

@@ -20,6 +20,7 @@ import com.megabox.web.command.Command;
 import com.megabox.web.complex.MailService;
 import com.megabox.web.domain.Member;
 import com.megabox.web.mapper.JYMapper;
+import com.megabox.web.service.IDeleteService;
 import com.megabox.web.service.IGetService;
 import com.megabox.web.service.IPostService;
 import com.megabox.web.service.IPutService;
@@ -124,7 +125,34 @@ public class JYController {
 		updateService.execute(cmd);
 		return map;
 	}
-
+	@RequestMapping(value="/get/pwupdate",method=RequestMethod.POST,consumes="application/json")
+	public @ResponseBody Map<?,?> pwupdate(@RequestBody Map<String,String> pwupdate){
+		System.out.println("비번변경 => 넘어온 아이디 :"+pwupdate.get("id")+", 비번 : "+pwupdate.get("oldpass"));
+		Map<String,Object> map=new HashMap<>();
+		IPutService pwUpdateService = null;
+		member.setPassword(pwupdate.get("newpass"));
+		member.setId(pwupdate.get("id"));
+		pwUpdateService=(x)->{
+			JYmapper.passUpdate(member);
+		};
+		pwUpdateService.execute(cmd);
+		map.put("msg", "성공");
+						
+		return map;	
+	}
+	@RequestMapping(value="/delete",method=RequestMethod.POST,consumes="application/json")
+	public @ResponseBody Map<?,?> delete(@RequestBody Map<String,String> mem){
+		Map<String,Object> map=new HashMap<>();
+		IDeleteService deleteService = null;
+		cmd.setSearch(mem.get("id"));
+		deleteService=(x)->{
+			JYmapper.delete(cmd);
+		};
+		deleteService.execute(cmd);
+		map.put("msg", "성공");
+						
+		return map;	
+	}
 	
 	
 

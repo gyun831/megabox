@@ -20,5 +20,10 @@
 		SET email = #{search},phone=#{column}
 		WHERE id = #{condition}
 	</update>
-	<delete id="delete"></delete>
+	<update id="passUpdate" parameterType="com.megabox.web.domain.Member">
+	     UPDATE member SET password = #{password} WHERE id=#{id};    
+	</update>
+	<delete id="delete" parameterType="com.megabox.web.command.Command">
+		DELETE FROM Member WHERE id=#{search}; 
+	</delete>
 </mapper>

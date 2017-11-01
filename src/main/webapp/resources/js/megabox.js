@@ -235,6 +235,7 @@ megabox.func=(()=>{
 				$('#login_wrap').attr('class','login_info remove_loginInfo');
 				$('#open_myinfo').attr('class','login hide');
 				$('.navigation').after(compUI.afterlogin(m));
+				
 				$('.member_info').after(memberUI.loginbox());
 				$('#login_drop').click(()=>{
 					$('#myinfo_wrap').attr('class','login_info remove_loginInfo open_myinfo_open');
@@ -242,6 +243,14 @@ megabox.func=(()=>{
 				$('.item1').click(()=>{
 	    			$('#myinfo_wrap').attr('class','login_info remove_loginInfo');
 	    			mymegabox();
+				})
+				$('#name_membership_c_mint').click(()=>{
+					$.getScript($$('j')+'/seungwoo.js',()=>{
+						seungwoo.checkBookingMenu.init();
+					})
+				})
+				$('.myinfo_close').click(()=>{
+					$('#myinfo_wrap').attr('class','login_info remove_loginInfo');
 				})
 				$(".log_out").click(()=>{
 					sessionStorage.removeItem('id');
@@ -257,15 +266,17 @@ megabox.func=(()=>{
 	var mymegabox=()=>{
 		$main.empty();
 		$main.append(memberUI.mymegabox());
-		$('#col5').click(()=>{
-			$.getScript($$('j')+'/seungwoo.js',()=>{
-				seungwoo.movieStory.init("movie-interesting-date");
-	    	})
+		$.getScript($$('j')+'/seungwoo.js',()=>{
+			$('#col3').click(()=>{
+				seungwoo.checkBookingMenu.init();
+			})
+			$('#col5').click(()=>{
+				seungwoo.movieStoryMenu.init("movie-interesting-date");
+			})
+			$('#col7').click(()=>{
+				myinfoupdate();
+			})
 		})
-		$('#col7').click(()=>{
-			myinfoupdate();
-		})
-		
 	}
 	var myinfoupdate=()=>{
 		$('#mega_main').empty();
@@ -273,11 +284,15 @@ megabox.func=(()=>{
 		$('#myinfocan').click(()=>{
 			mymegabox();
 		})
-		$('#col5').click(()=>{
-			$.getScript($$('j')+'/seungwoo.js',()=>{
-				seungwoo.movieStory.init("movie-interesting-date");
-	    	})
+		$.getScript($$('j')+'/seungwoo.js',()=>{
+		$('#col3').click(()=>{
+			seungwoo.checkBookingMenu.init();
 		})
+		$('#col5').click(()=>{
+			seungwoo.movieStoryMenu.init("movie-interesting-date");
+	    })
+		})
+		
 		$('#myinfoup').click(()=>{
 			$.ajax({
 				url : $$('x')+'/selectid/id',
@@ -334,10 +349,71 @@ megabox.func=(()=>{
 		$('#passUpdate').click(()=>{
 			passupdate();
 		})
+		$('#memberdel').click(()=>{
+			alert('탈퇴');
+			$.ajax({
+				url : $$('x')+'/delete',
+				method : 'post',
+				dataType : 'json',
+				data : JSON.stringify({
+					id : $$('id')
+				}),
+				contentType : 'application/json',
+				success : d=>{
+					alert('탈퇴하셨습니다.');
+					sessionStorage.removeItem('id');
+					sessionStorage.removeItem('name');
+					sessionStorage.removeItem('birth');
+					sessionStorage.removeItem('phone');
+					sessionStorage.removeItem('email');
+					megabox.index.onCreate();
+					
+				},
+				error : (x,m,s)=>{
+					alert(s);
+				}
+				
+			})
+		})
 	}
 	var passupdate=()=>{
 		$main.empty();
 		$main.append(memberUI.passchange());
+		$("#pw_change button").eq(0).click(e=>{
+			myinfoupdate();
+		});
+		$("#pw_change button").eq(1).click(e=>{		
+		    var id =$$('id');
+			var oldpass=$('#inputtext1').val();
+	     	var newpass=$("#inputtext2").val();
+	     	var confirmpass=$("#inputtext3").val();
+	     	if(oldpass==""){
+	     		alert("현재 비밀번호 입력하세요.");		     		   
+	     	}else if(newpass==""){
+	     		alert( "새 비밀번호 입력하세요.");
+	     	}else if(confirmpass==="" || newpass!==confirmpass){
+	     		alert( "새 비밀번호 확인 입력하세요.");
+	     	}else{
+		     	$.ajax({
+			  		 url :$$('x')+'/get/pwupdate', 
+					 method : 'POST',					
+					 data  : JSON.stringify({
+						 'oldpass' : oldpass,
+						 'newpass' : newpass,
+						 'id'      : id
+					 }),
+					 contentType : 'application/json',
+					 success : d=>{ // d 는 컨트롤러 리턴값.
+						 alert('비밀번호 변경이 완료되었습니다.');
+						 myinfoupdate();
+					 },
+					 error : (x,s,m)=>{
+						alert('ajax에러'+m);
+					}
+		    	});	
+	 	   }    	
+					     	
+		});	
 	}
 	var memberadd=()=>{
 		$('#mega_main').empty();

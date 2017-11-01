@@ -25,4 +25,7 @@ public interface SWMapper {
 	public void insertMovieCheck(Reservation rsv);
 	public void deleteMovieCheck(Reservation rsv);
 	public RespMap selectStillcut(Reservation rsv);
+	public String selectBookingCountById(Reservation rsv);
+	public List<RespMap> selectBookingListById(Reservation rsv);
+	public void updateCancelById(Reservation rsv);
 }

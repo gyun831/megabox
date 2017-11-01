@@ -24,6 +24,10 @@
 		<result property="seen" column="seen"/>
 		<result property="interesting" column="interesting"/>
 		<result property="stillcut" column="stillcut"/>
+		<result property="num" column="num"/>
+		<result property="officeName" column="officename"/>
+		<result property="day" column="day"/>
+		<result property="reservationNumber" column="reservation_number"/>
 	</resultMap>
 	
 	<select id="selectMovieList" resultMap="resultMap" parameterType="com.megabox.web.domain.Reservation">
@@ -222,4 +226,52 @@
 		WHERE movie_seq = #{cancel};
 	</select>
 	
+	<select id="selectBookingCountById" resultType="String" parameterType="com.megabox.web.domain.Reservation">
+		SELECT COUNT(*)
+		FROM (SELECT r.reservation_number, sd.movie_title, a.officename, sd.day, r.cancel
+		        FROM reservation r
+		        JOIN (SELECT officename, screeningnumber
+		              FROM movietime mt
+		              JOIN screen s
+		              ON mt.screen_seq = s.screen_seq
+		              JOIN screeningdate sd
+		              ON mt.time_seq = sd.time_seq) a
+		        ON r.screeningnumber=a.screeningnumber
+		        JOIN screeningdate sd
+		        ON r.screeningnumber = sd.screeningnumber
+		        JOIN (SELECT @ROWNUM := 0) n
+		        WHERE id=#{id}
+		        AND cancel=#{cancel}) t
+		ORDER BY reservation_number
+	</select>
+	
+	<select id="selectBookingListById" resultMap="resultMap" parameterType="com.megabox.web.domain.Reservation">
+		SELECT @ROWNUM := @ROWNUM + 1 as num, t.*
+		FROM (SELECT r.reservation_number, sd.movie_title, a.officename, sd.day, r.cancel
+		        FROM reservation r
+		        JOIN (SELECT officename, screeningnumber
+		              FROM movietime mt
+		              JOIN screen s
+		              ON mt.screen_seq = s.screen_seq
+		              JOIN screeningdate sd
+		              ON mt.time_seq = sd.time_seq) a
+		        ON r.screeningnumber=a.screeningnumber
+		        JOIN screeningdate sd
+		        ON r.screeningnumber = sd.screeningnumber
+		        JOIN (SELECT @ROWNUM := 0) n
+		        WHERE id=#{id}
+		        AND cancel=#{cancel}) t
+		ORDER BY reservation_number
+		<if test="#{reservationNumber} != null">
+			<if test="#{screeningNumber} != null">
+				LIMIT ${reservationNumber}, ${screeningNumber}
+			</if>
+		</if>
+	</select>
+	
+	<update id="updateCancelById" parameterType="com.megabox.web.domain.Reservation">
+		UPDATE reservation
+		SET cancel=#{cancel}
+		WHERE reservation_number=#{id}
+	</update>
 </mapper>

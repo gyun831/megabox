@@ -203,8 +203,7 @@ seungwoo.movieMain=(()=>{
 		setContentView();
 		seungwoo.movieHeader.init();
 		seungwoo.movieSubmenu.init();
-		
-		/* 정렬 + 영화 리스트 */
+	
 		seungwoo.movieMainSort.init($sort);
 	};
 	var setContentView=()=>{
@@ -496,7 +495,6 @@ seungwoo.movieDetail=((()=>{
 			dataType : 'json',
 			contentType : 'application/json',
 			success : d=>{
-				/* [영화상세 정보] */
 				$('<img>')
 					.attr('src',d.movieDetail.image)
 					.appendTo($(".left_wrap"))
@@ -592,7 +590,7 @@ seungwoo.movieDetail=((()=>{
 			}
 		});
 		seungwoo.movieStillcut.init($movieSeq);
-		seungwoo.movieComment.init($movieSeq);
+		seungwoo.movieCommentMain.init($movieSeq);
 	};
 	var setContentView=()=>{
 		$("#movie_detail")
@@ -744,7 +742,7 @@ seungwoo.movieStillcut=(()=>{
 	return {init:init}
 })();
 
-seungwoo.movieComment=(()=>{
+seungwoo.movieCommentMain=(()=>{
 	var ctx, $movieSeq, $sort, $pageNum;
 	var init=(x,y,z)=>{
 		ctx=$$("x");
@@ -835,25 +833,25 @@ seungwoo.movieComment=(()=>{
 						alert("댓글 내용을 입력해주세요.");
 						return false;
 					}
-					if($("#starScore").val()=="") {
+					if($("#starScore").val()=="0") {
 						alert("평점을 입력해주세요.");
 						return false;
 					} 
 						
 					$.ajax({
-						url : ctx+'/movie/comment/'+$movieSeq+'/write',
+						url : ctx+'/movie/comment/write/'+$movieSeq,
 						method : 'post',
 						dataType : 'json',
 						data : JSON.stringify({
 							"id" : $$("id"),
 							"content" : $("textarea[name=comment]").val(),
-							"score" : $("input[name=starScore]").val()
+							"score" : $("#starScore").val()
 						}),
 						contentType : 'application/json',
 						success : d=>{
 							if(d.msg=="성공") {
 								alert('댓글이 작성되었습니다.');
-								seungwoo.movieComment.init($movieSeq,$sort);
+								seungwoo.movieCommentMain.init($movieSeq,$sort);
 							} else {
 								alert('이미 댓글을 작성하셨습니다.');
 							};
@@ -911,19 +909,19 @@ seungwoo.movieComment=(()=>{
 		$('<input/>',{type:"image",src:"http://image2.megabox.co.kr/mop/home/star_mid_off.png"})
 			.appendTo($("#myStarScore"))
 			.click(e=>{
-				$("starScore").val("2");
+				$("#starScore").val("2");
 				return false;
 			});
 		$('<input/>',{type:"image",src:"http://image2.megabox.co.kr/mop/home/star_mid_off.png"})
 			.appendTo($("#myStarScore"))
 			.click(e=>{
-				$("starScore").val("4");
+				$("#starScore").val("4");
 				return false;
 			});
 		$('<input/>',{type:"image",src:"http://image2.megabox.co.kr/mop/home/star_mid_off.png"})
 			.appendTo($("#myStarScore"))
 			.click(e=>{
-				$("starScore").val("6");
+				$("#starScore").val("6");
 				return false;
 			});
 		$('<input/>',{type:"image",src:"http://image2.megabox.co.kr/mop/home/star_mid_off.png"})
@@ -938,7 +936,7 @@ seungwoo.movieComment=(()=>{
 				$("#starScore").val("10");
 				return false;
 			});
-		$('<input/>',{type:"hidden",id:"starScore"})
+		$('<input/>',{type:"hidden",id:"starScore",value:"0"})
 			.appendTo($("#myStarScore"));
 		
 		$('<p/>', {id:"starScoreExplain"})
@@ -1000,7 +998,7 @@ seungwoo.movieCommentList=(()=>{
 				$("#movieCommentSort2").removeClass();
 				$("#movieCommentSort3").removeClass();
 				$("#movieCommentSort1").addClass('c_mint');
-				seungwoo.movieComment.init($movieSeq,$sort);
+				seungwoo.movieCommentMain.init($movieSeq,$sort);
 			});
 		
 		$("#movieCommentSort2").click(e=>{
@@ -1009,7 +1007,7 @@ seungwoo.movieCommentList=(()=>{
 				$("#movieCommentSort2").removeClass();
 				$("#movieCommentSort3").removeClass();
 				$("#movieCommentSort2").addClass('c_mint');
-				seungwoo.movieComment.init($movieSeq,$sort);
+				seungwoo.movieCommentMain.init($movieSeq,$sort);
 			});
 		
 		$.ajax({
@@ -1024,73 +1022,79 @@ seungwoo.movieCommentList=(()=>{
 			success : d=>{
 				$("#movieCommentTotalCount")
 					.text(" ("+d.commentCount+")")
-				
-				$.each(d.commentList,(i,j)=>{
-					li+='<li>'
-	                +'<div class="text">'
-	                	+'<input type="hidden" id="replyID_'+j.replyNum+'" value="'+j.id+'">'
-	                	+'<input type="hidden" id="replyNum_'+j.replyNum+'" value="'+j.replyNum+'">'
-	                    +'<div class="name"><strong>'+j.id+'</strong></div>'
-	                    +'	<p>'
-	                    +'		<span id="comment_'+j.replyNum+'" class="comment">'+j.content+' </span>'
-	                    +'	</p>'
-	                    +'<div class="name">'
-	                        +'<span>'+j.date+'</span>'
-	                        +'<span class="small_star2">'
-	                            +'<span class="fill" style="width:'+j.score*10+'%;"></span>'
-	                        +'</span>'
-	                        +'<div id="report_'+j.replyNum+'" class="report"><i class="i_report" aria-hidden="true"></i>신고하기</div>'
-	                    +'</div>'
-	                +'</div>'
-	                +'</li>'
-					+'<script>'
-					+'if(seungwoo.fx.loginChk()>0) {'
-					+'	if($("#replyID_'+j.replyNum+'").val()==$$("id")) {'
-							+'$("<span/>",{class:"my_review"}).insertBefore($("#comment_'+j.replyNum+'"));'
-							+'$("<button/>",{id:"btn_modify_'+j.replyNum+'", class:"btn_delete"}).insertAfter($("#comment_'+j.replyNum+'"));'
-							+'$("#btn_modify_'+j.replyNum+'").click(e=>{'
-					+'		seungwoo.fx.deleteComment($("#replyNum_'+j.replyNum+'").val());'
-					+' 		seungwoo.movieComment.init('+$movieSeq+');'	
-					+'			});'
-					+'	 }'
-					+'}'
-					+'$("#report_'+j.replyNum+'").click(e=>{'
-					+'	alert("신고하기");'
-					+'});'
-					+'$("#recommend_'+j.replyNum+'").click(e=>{'
-					+'	alert("추천");'
-					+'});'
-					+'</script>';
-				});
-				$("#movieCommentList ul").eq(1).append(li);
-				
-				$("<ul>", {id:"custom-pagination"})
-					.addClass("custom-pagination mt20")
-					.appendTo($("#movieCommentList"));
+				if(d.commentCount==0) {
+					$("#movieCommentList").append('<div class="item_2block">'
+					   +'	<div class="text-center pt50 pb50">등록된 한줄평이 없습니다.</div>'
+					   +'</div>');
+					
+				} else {
+					$.each(d.commentList,(i,j)=>{
+						li+='<li>'
+		                +'<div class="text">'
+		                	+'<input type="hidden" id="replyID_'+j.replyNum+'" value="'+j.id+'">'
+		                	+'<input type="hidden" id="replyNum_'+j.replyNum+'" value="'+j.replyNum+'">'
+		                    +'<div class="name"><strong>'+j.id+'</strong></div>'
+		                    +'	<p>'
+		                    +'		<span id="comment_'+j.replyNum+'" class="comment">'+j.content+' </span>'
+		                    +'	</p>'
+		                    +'<div class="name">'
+		                        +'<span>'+j.date+'</span>'
+		                        +'<span class="small_star2">'
+		                            +'<span class="fill" style="width:'+j.score*10+'%;"></span>'
+		                        +'</span>'
+		                        +'<div id="report_'+j.replyNum+'" class="report"><i class="i_report" aria-hidden="true"></i>신고하기</div>'
+		                    +'</div>'
+		                +'</div>'
+		                +'</li>'
+						+'<script>'
+						+'if(seungwoo.fx.loginChk()>0) {'
+						+'	if($("#replyID_'+j.replyNum+'").val()==$$("id")) {'
+								+'$("<span/>",{class:"my_review"}).insertBefore($("#comment_'+j.replyNum+'"));'
+								+'$("<button/>",{id:"btn_modify_'+j.replyNum+'", class:"btn_delete"}).insertAfter($("#comment_'+j.replyNum+'"));'
+								+'$("#btn_modify_'+j.replyNum+'").click(e=>{'
+						+'		seungwoo.fx.deleteComment($("#replyNum_'+j.replyNum+'").val());'
+						+' 		seungwoo.movieCommentMain.init('+$movieSeq+');'	
+						+'			});'
+						+'	 }'
+						+'}'
+						+'$("#report_'+j.replyNum+'").click(e=>{'
+						+'	alert("신고하기");'
+						+'});'
+						+'$("#recommend_'+j.replyNum+'").click(e=>{'
+						+'	alert("추천");'
+						+'});'
+						+'</script>';
+					});
+					$("#movieCommentList ul").eq(1).append(li);
+					
+					$("<ul>", {id:"custom-pagination"})
+						.addClass("custom-pagination mt20")
+						.appendTo($("#movieCommentList"));
 
-				if(d.commentPaging.cnt>0) {
-					if(d.commentPaging.startPage>d.commentPaging.pageBlock) {
-						$("#movieCommentList ul").eq(2).append('<li><a class="img_btn customer prev" id="page_prev">«</a></li>');
-						$("#page_prev").click(e=>{
-							seungwoo.movieCommentList.init($movieSeq,$sort,d.commentPaging.startPage - d.commentPaging.pageBlock);
-						});
-					}
-					for(var i=d.commentPaging.startPage; i<=d.commentPaging.endPage; i++) {
-						if(i == d.commentPaging.currentPage) {
-							paging_li+='<li><a class="active" onclick=seungwoo.movieCommentList.init("'+$movieSeq+'","'+$sort+'","'+i+'")>'+i+'</a></li>';
+					if(d.commentPaging.cnt>0) {
+						if(d.commentPaging.startPage>d.commentPaging.pageBlock) {
+							$("#custom-pagination").append('<li><a class="img_btn customer prev" id="page_prev">«</a></li>');
+							$("#page_prev").click(e=>{
+								seungwoo.movieCommentList.init($movieSeq,$sort,d.commentPaging.startPage - d.commentPaging.pageBlock);
+							});
 						}
-						if(i != d.commentPaging.currentPage) {
-							paging_li+='<li><a onclick=seungwoo.movieCommentList.init("'+$movieSeq+'","'+$sort+'","'+i+'")>'+i+'</a></li>';
+						for(var i=d.commentPaging.startPage; i<=d.commentPaging.endPage; i++) {
+							if(i == d.commentPaging.currentPage) {
+								paging_li+='<li><a class="active" onclick=seungwoo.movieCommentList.init("'+$movieSeq+'","'+$sort+'","'+i+'")>'+i+'</a></li>';
+							}
+							if(i != d.commentPaging.currentPage) {
+								paging_li+='<li><a onclick=seungwoo.movieCommentList.init("'+$movieSeq+'","'+$sort+'","'+i+'")>'+i+'</a></li>';
+							}
 						}
-					}
-					$("#custom-pagination").append(paging_li);
-					if(d.commentPaging.pageCount>d.commentPaging.endPage) {
-						$("#movieCommentList ul").eq(2).append('<li><a class="img_btn customer next" id="page_next">»</a></li>');
-						$("#page_next").click(e=>{
-							seungwoo.movieCommentList.init($movieSeq,$sort,d.commentPaging.startPage + d.commentPaging.pageBlock);
-						});
+						$("#custom-pagination").append(paging_li);
+						if(d.commentPaging.pageCount>d.commentPaging.endPage) {
+							$("#custom-pagination").append('<li><a class="img_btn customer next" id="page_next">»</a></li>');
+							$("#page_next").click(e=>{
+								seungwoo.movieCommentList.init($movieSeq,$sort,d.commentPaging.startPage + d.commentPaging.pageBlock);
+							});
+						}	
 					}	
-				}	
+				}
 			},
 			error : (x,s,m)=>{
 				alert('에러 발생 : '+m);
@@ -1241,7 +1245,221 @@ seungwoo.movieMyCommentList=(()=>{
 	return {init:init}
 })();
 
-seungwoo.movieStory=(()=>{
+seungwoo.checkBookingMenu=(()=>{
+	var ctx, $pageNum;
+	var init=()=>{
+		ctx=$$('x');
+		$("#mega_main").empty();
+		onCreate();
+	};
+	var onCreate=()=>{
+		setContentView();
+		seungwoo.movieHeader.init();
+		seungwoo.myInfoSubmenu.init();
+		
+		$('<a/>',{id:"ttab1"}).attr({'data-toggle':"tab"})
+			.text('예매 내역')
+			.appendTo($("#nav-nav-tabs-mb20 li").eq(0))
+			.click(e=>{
+				seungwoo.checkBookingList.init("N",$pageNum);
+			});
+		
+		$('<a/>',{id:"ttab2"})
+			.attr({'data-toggle':"tab"})
+			.text('취소 내역')
+			.appendTo($("#nav-nav-tabs-mb20 li").eq(1))
+			.click(e=>{
+				seungwoo.checkBookingList.init("Y",$pageNum);
+			});
+		seungwoo.checkBookingList.init("N",$pageNum);
+	};
+	var setContentView=()=>{
+		$("#mega_main")
+			.append($('<div/>',{class:'content_wrap'}));
+		$(".content_wrap")
+			.append($('<div/>',{class:"header-btn-wrap"}))
+			.append($('<div/>',{class:"sub_navi"}))
+			.append($('<div/>',{id:"main-content",class:"main-content"}))
+			.append($('<div/>',{id:"movie_detail",class:"modal fade"}));
+		
+		$(".header-btn-wrap")
+			.append($('<button/>',{id:"btn_menu_all_sub_c"}))
+			.append($('<div/>',{id:"btn_social_sub_c"}))
+			.append($('<div/>',{class:"btn_theater"}));
+		
+		$(".main-content")
+			.append($('<div/>',{id:"mypage_container",class:"mypage_container"}));
+		$('<div/>',{id:"width-fixed_mypage_membership_wrap"})
+			.addClass('width-fixed mypage_membership_wrap')
+			.css({'position':'relative'}).appendTo(".mypage_container");
+		
+		$('<ul/>')
+			.append($('<li/>')).append($('<li/>')).append($('<li/>')).append($('<li/>')).append($('<li/>')).append($('<li/>')).append($('<li/>')).append($('<li/>'))
+			.addClass('mypage_menu')
+			.appendTo("#width-fixed_mypage_membership_wrap");
+	
+		$('<div/>')
+			.addClass('h2_mypage')
+			.appendTo($("#width-fixed_mypage_membership_wrap"));
+		$('<h3/>')
+			.addClass('sub_title')
+			.text('예매 확인/취소')
+			.appendTo($(".h2_mypage"));
+		$(".h2_mypage").append('<span>예매하신 영화 내역과 취소 내역을 확인할 수 있습니다.</span>');
+		
+		$('<ul/>',{id:"nav-nav-tabs-mb20"})
+			.addClass('nav nav-tabs mb20')
+			.appendTo($("#width-fixed_mypage_membership_wrap"));
+		$('<li/>').
+			addClass('active')
+			.appendTo($("#nav-nav-tabs-mb20"));
+		$('<li/>')
+			.appendTo($("#nav-nav-tabs-mb20"));
+		$('<li/>')
+			.appendTo($("#nav-nav-tabs-mb20"));
+		
+		$('<div/>',{class:"tab-content"}).appendTo($("#width-fixed_mypage_membership_wrap"));
+		$('<div/>',{class:"tab-pane active", id:"tab1"}).appendTo($(".tab-content"));
+		$('<div/>',{id:"flip_wrapper"}).appendTo($("#tab1"));
+		$('<div/>',{class:"movielist_util_wrap"}).appendTo($("#flip_wrapper"));
+		
+		$(".mypage_container").append($("<div/>",{class:"tab-content"}))
+		$(".tab-content").append($("<div/>",{class:"tab-pane active",id:"tab_list"}))
+	};
+	return {init:init}
+})();
+
+seungwoo.checkBookingList=(()=>{
+	var ctx, tr, paging_li, $cancel, $pageNum;
+	var init=(x,y)=>{
+		ctx=$$('x');
+		$("#tab_list").empty();
+		if(x==null) {
+			$cancel="N";
+		} else {
+			$cancel=x;
+		}
+		if(y==null) {
+			$pageNum=1;
+		} else {
+			$pageNum=y;
+		}
+		tr="";
+		paging_li="";
+		onCreate();
+	};
+	var onCreate=()=>{
+		setContentView();
+		$.ajax({
+			url : ctx+'/movie/booking',
+			method : 'post',
+			dataType : 'json',
+			contentType : 'application/json',
+			data : JSON.stringify({
+				"cancel" : $cancel,
+				"id" : $$("id"),
+				"pageNum" : $pageNum
+			}),
+			
+			success : d=> {
+				if(d.bookingCount==0) {
+					tr='<tbody>'
+					   +'	<tr>'
+					   +'		<td colspan="6" style="height: 201px;">최근 예매 내역이 없습니다.</td>'
+					   +'	</tr>'
+					   +'</tbody>'
+				} else {
+					if($cancel=="N") {
+						$.each(d.bookingList, (i,j)=>{
+							tr+='<tbody>'
+								+'<tr>'
+								+'	<td>'+j.num+'</td>'
+								+'	<td>'+j.reservationNumber+'</td>'
+								+'	<td>'+j.movieTitle+'</td>'
+								+'	<td>'+j.officeName+'</td>'
+								+'	<td>'+j.day+'</td>'
+								+'	<td><button onclick=seungwoo.fx.bookingCancel("'+j.reservationNumber+'","'+$cancel+'")>취소</button></td>'
+								+'</tr>'
+								+'</tbody>'
+						});
+					} else {
+						$.each(d.bookingList, (i,j)=>{
+							tr+='<tbody>'
+								+'<tr>'
+								+'	<td>'+j.num+'</td>'
+								+'	<td>'+j.reservationNumber+'</td>'
+								+'	<td>'+j.movieTitle+'</td>'
+								+'	<td>'+j.officeName+'</td>'
+								+'	<td>'+j.day+'</td>'
+								+'	<td>취소됨</td>'
+								+'</tr>'
+								+'</tbody>'
+						});
+					}
+					
+				}
+				$(".data_table").append(tr);
+				
+				if(d.commentPaging.cnt>0) {
+					if(d.commentPaging.startPage>d.commentPaging.pageBlock) {
+						$("#custom-pagination").append('<li><a class="img_btn customer prev" id="page_prev">«</a></li>');
+						$("#page_prev").click(e=>{
+							seungwoo.checkBookingList.init($cancel,d.commentPaging.startPage - d.commentPaging.pageBlock);
+						});
+					}
+					for(var i=d.commentPaging.startPage; i<=d.commentPaging.endPage; i++) {
+						if(i == d.commentPaging.currentPage) {
+							paging_li+='<li><a class="active" onclick=seungwoo.checkBookingList.init("'+$cancel+'","'+i+'")>'+i+'</a></li>';
+						}
+						if(i != d.commentPaging.currentPage) {
+							paging_li+='<li><a onclick=seungwoo.checkBookingList.init("'+$cancel+'","'+i+'")>'+i+'</a></li>';
+						}
+					}
+					$("#custom-pagination").append(paging_li);
+					if(d.commentPaging.pageCount>d.commentPaging.endPage) {
+						$("#custom-pagination").append('<li><a class="img_btn customer next" id="page_next">»</a></li>');
+						$("#page_next").click(e=>{
+							seungwoo.checkBookingList.init($cancel,d.commentPaging.startPage + d.commentPaging.pageBlock);
+						});
+					}	
+				}	
+			},
+			error : (x,s,m)=>{
+				
+			}
+		});
+	};
+	var setContentView=()=>{
+		$("<table>",{class:"data_table"}).appendTo($("#tab_list"));
+		$(".data_table").append('<colgroup>'
+				    +'<col width="80px">'
+				    +'<col width="140px">'
+				    +'<col>'
+				    +'<col width="100px">'
+				    +'<col width="110px">'
+				    +'<col width="110px">'
+				+'</colgroup>'
+		);
+		$(".data_table").append('<thead>'
+				    +'<tr>'
+			        +'<th scope="col" id="th_booklist_no">NO</th>'
+			        +'<th scope="col" id="th_booklist_reserveno">예매번호</th>'
+			        +'<th scope="col" id="th_booklist_moviename">영화명</th>'
+			        +'<th scope="col" id="th_booklist_cinemaname">영화관</th>'
+			        +'<th scope="col" id="th_booklist_playdate">상영일시</th>'
+			        +'<th scope="col" id="th_booklist_refunddate">예매취소</th>'
+			    +'</tr>'
+			+'</thead>'
+		);
+		
+		$("<ul>", {id:"custom-pagination"})
+			.addClass("custom-pagination mt20")
+			.appendTo($("#tab_list"));
+	};
+	return {init:init}
+})();
+
+seungwoo.movieStoryMenu=(()=>{
 	var $sort;
 	var init=x=>{
 		ctx=$$('x');
@@ -1521,7 +1739,7 @@ seungwoo.movieSubmenu=(()=>{
 		$("#movie_sm12")
 			.click(e=>{
 				if(seungwoo.fx.loginChk()>0) {
-					seungwoo.movieStory.init("movie-interesting-date");
+					seungwoo.movieStoryMenu.init("movie-interesting-date");
 				} else {
 					alert("로그인 해주세요.");
 				}
@@ -1561,10 +1779,7 @@ seungwoo.myInfoSubmenu=(()=>{
 		setContentView();
 		$('<a/>',{id:"mypage_sm01",class:"mypage sm01"})
 			.text('나의 메가박스')
-			.appendTo(".clearfix li")
-			.click(e=>{
-				alert('나의 메가박스');
-			});
+			.appendTo("#movie_clearfix li");
 		
 		$('<a/>',{class:"col1",text:"멤버십정보", id:"col1"})
 			.appendTo($(".mypage_menu li").eq(0))
@@ -1579,7 +1794,7 @@ seungwoo.myInfoSubmenu=(()=>{
 		$('<a/>',{class:"col3",text:"예매확인/취소",id:"col3"})
 			.appendTo($(".mypage_menu li").eq(2))
 			.click(e=>{
-				alert('예매확인/취소');
+				seungwoo.checkBookingMenu.init();
 			});
 		$('<a/>',{class:"col4",text:"스토어 구매내역",id:"col4"})
 			.appendTo($(".mypage_menu li").eq(3))
@@ -1589,7 +1804,7 @@ seungwoo.myInfoSubmenu=(()=>{
 		$('<a/>',{class:"col5",text:"나의무비스토리",id:"col5"})
 			.appendTo($(".mypage_menu li").eq(4))
 			.click(e=>{
-				seungwoo.movieStory.init("movie-interesting-date");
+				seungwoo.movieStoryMenu.init("movie-interesting-date");
 			});
 		$('<a/>',{class:"col6",text:"관람권/VIP쿠폰",id:"col6"})
 			.appendTo($(".mypage_menu li").eq(5))
@@ -1612,10 +1827,10 @@ seungwoo.myInfoSubmenu=(()=>{
 	var setContentView=()=>{
 		$(".sub_navi")
 			.append($('<div/>',{class:"sub_navi_wrap"}));
-		$('<ul/>')
+		$('<ul/>',{id:"movie_clearfix"})
 			.addClass('clearfix')
 			.appendTo($(".sub_navi_wrap"));
-		$('<li/>').appendTo($(".clearfix"));
+		$('<li/>').appendTo($("#movie_clearfix"));
 	};
 	return {init:init}
 })();
@@ -1960,6 +2175,25 @@ seungwoo.fx={
 				alert('로그인 후 이용가능한 서비스입니다.');
 			};
 		});
+	},
+	bookingCancel : (x,y)=>{
+		var ctx=$$("x");
+		$.ajax({
+			url : ctx+'/movie/booking/cancel',
+			method : 'post',
+			dataType : 'json',
+			data : JSON.stringify({
+				"reservationNumber" : x
+			}),
+			contentType : 'application/json',
+			success : d=>{
+				alert('예매 취소 성공');
+				seungwoo.checkBookingList.init(y);
+			},
+			error : (x,s,m)=>{
+				alert("에러 : "+m);
+			}
+		});	
 	}
 }
 

@@ -598,8 +598,7 @@ var compUI ={
 				+'<strong>'+m.member.name+'<span>님</span></strong>'
 				+'<span id="login_drop" class="name_arrow"><i class="fa fa-chevron-down"></i></span>'
 			+'</a>'
-//			+'<a href="javascript:void(0);" class="name_membership c_mint" onclick="showMenu('mypage-booking')" title="예매내역 바로가기">예매확인/취소</a>'
-			+'<a href="javascript:void(0);" id="name_membership_c_mint" class="name_membership c_mint" onclick="showMenu()" title="예매내역 바로가기">예매확인/취소</a>'
+			+'<a href="javascript:void(0);" id="name_membership_c_mint" class="name_membership c_mint" title="예매내역 바로가기">예매확인/취소</a>'
 		+'</div>'
 	+'</div>'
 	}

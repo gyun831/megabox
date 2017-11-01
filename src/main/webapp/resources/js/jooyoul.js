@@ -283,7 +283,7 @@ var memberUI={
 					+'<div class="bottom">'
 						+'<a class="log_out" title="로그아웃">로그아웃</a>'
 					+'</div>'
-					+'<a href="javascript:void(0);" class="myinfo_close" title="닫기">닫기</a>'
+					+'<a class="myinfo_close" title="닫기">닫기</a>'
 				+'</div>'
 			+'<!-- //드롭다운 --> '
 		},
@@ -1221,7 +1221,7 @@ var memberUI={
 					+'</div>'
 					+'<div class="personal_info_last">'
 						+'<button type="button" id="passUpdate" class="img_btn mypage personal_change_pw mr6">비밀번호 변경</button>'
-						+'<button type="button" class="img_btn mypage personal_quit" onclick="showMenu()">회원탈퇴</button>'
+						+'<button type="button" id="memberdel" class="img_btn mypage personal_quit">회원탈퇴</button>'
 					+'</div>'
 					+'<div class="user_wrap">'
 						+'<div id="userJoinContainer" class="form-style">'

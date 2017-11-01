@@ -15,4 +15,5 @@ public interface JYMapper {
 	public String count(Command cmd);
 	public void update(Object o);
 	public void delete(Command cmd);
+	public void passUpdate(Member member);
 }

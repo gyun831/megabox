@@ -87,13 +87,13 @@ public class SWController {
 		return map;
 	};
 
-	@RequestMapping(value="/movie/comment/{movieSeq}/write", method=RequestMethod.POST, consumes="application/json")
+	@RequestMapping(value="/movie/comment/write/{movieSeq}", method=RequestMethod.POST, consumes="application/json")
 	public @ResponseBody Map<?,?> commentWrite(@PathVariable String movieSeq, @RequestBody Map<?,?> reqMap) {
 		Map<String,Object> map=new HashMap<>();
 		rsv.setCancel(movieSeq);
-		rsv.setId((String)reqMap.get("id"));
-		rsv.setScreeningNumber((String)reqMap.get("content"));
-		rsv.setSeatSeq((String)reqMap.get("score"));
+		rsv.setId(String.valueOf(reqMap.get("id")));
+		rsv.setScreeningNumber(String.valueOf(reqMap.get("content")));
+		rsv.setSeatSeq(String.valueOf(reqMap.get("score")));
 		IGetService commentCheckByIdService=null;
 		IGetService movieTitleBySeqService=null;
 		IPostService movieCommentWriteService=null;
@@ -320,6 +320,42 @@ public class SWController {
 			return mapper.selectCommentCountById(rsv);
 		};
 		map.put("idChk", String.valueOf(commentCheckByIdService.execute(rsv)));
+		return map;
+	};
+	
+	@RequestMapping(value="/movie/booking", method=RequestMethod.POST, consumes="application/json")
+	public @ResponseBody Map<?,?> bookingList(@RequestBody Map<?,?> reqMap) {
+		Map<String,Object> map=new HashMap<>();
+		String pageNum=String.valueOf(reqMap.get("pageNum"));
+		rsv.setId(String.valueOf(reqMap.get("id")));
+		rsv.setCancel(String.valueOf(reqMap.get("cancel")));
+		IGetService bookingCountService=null;
+		bookingCountService=(x)-> {
+			return mapper.selectBookingCountById(rsv);
+		};
+		Map<?,?> pagingMap=CommentPagingFactory.create(String.valueOf(bookingCountService.execute(rsv)), pageNum);
+		rsv.setReservationNumber(String.valueOf(pagingMap.get("start")));
+        rsv.setScreeningNumber(String.valueOf(pagingMap.get("pageSize")));
+        IListService bookingListService=null;
+        bookingListService=(x)-> {
+			return mapper.selectBookingListById(rsv);
+		};
+		map.put("commentPaging", pagingMap);
+		map.put("bookingCount",bookingCountService.execute(rsv));
+		map.put("bookingList",bookingListService.execute(rsv));
+		return map;
+	};
+	
+	@RequestMapping(value="/movie/booking/cancel", method=RequestMethod.POST, consumes="application/json")
+	public @ResponseBody Map<?,?> bookingCancel(@RequestBody Map<?,?> reqMap) {
+		Map<String,Object> map=new HashMap<>();
+		rsv.setCancel("Y");
+		rsv.setId(String.valueOf(reqMap.get("reservationNumber")));
+		IDeleteService bookingCancelService=null;
+		bookingCancelService=(x)-> {
+			mapper.updateCancelById(rsv);
+		};
+		bookingCancelService.execute(rsv);
 		return map;
 	};
 }

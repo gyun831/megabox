@@ -124,10 +124,10 @@
 	
 	<select id="selectMovieCommentCount" resultType="String" parameterType="com.megabox.web.domain.Reservation">
 		SELECT COUNT(*)
-			FROM reply AS r
-			INNER JOIN movie AS m 
-			ON r.movie_title LIKE m.movie_title
-			WHERE movie_seq LIKE #{cancel};
+		FROM reply AS r
+		INNER JOIN movie AS m 
+		ON r.movie_title LIKE m.movie_title
+		WHERE movie_seq LIKE #{cancel};
 	</select>
 	
 	<select id="selectMovieCommentList" resultMap="resultMap" parameterType="com.megabox.web.domain.Reservation">
@@ -242,7 +242,6 @@
 		        JOIN (SELECT @ROWNUM := 0) n
 		        WHERE id=#{id}
 		        AND cancel=#{cancel}) t
-		ORDER BY reservation_number
 	</select>
 	
 	<select id="selectBookingListById" resultMap="resultMap" parameterType="com.megabox.web.domain.Reservation">

@@ -826,6 +826,7 @@ seungwoo.movieCommentMain=(()=>{
 			.text('등록')
 			.appendTo($("#btn_wrap_2"))
 			.click(e=>{
+				e.preventDefault();
 				if(seungwoo.fx.loginChk()<0) {
 					alert("로그인 후 이용가능한 서비스입니다.");
 				} else {
@@ -1990,6 +1991,7 @@ seungwoo.fx={
 		var $movieSeq=x;
 		var $sort=y;
 		$("#btnSeenMovie_"+$movieSeq).click(e=>{
+			e.preventDefault();
 			if(seungwoo.fx.loginChk()>0) {
 				if(seungwoo.fx.seenChk($movieSeq)>0) {
 					$("#btnSeenMovie_"+$movieSeq).attr("class","img_you_ck btn_01");
@@ -2036,6 +2038,7 @@ seungwoo.fx={
 		});
 		
 		$("#btnInterestingMovie_"+$movieSeq).click(e=>{
+			e.preventDefault();
 			if(seungwoo.fx.loginChk()>0) {
 				if(seungwoo.fx.interestingChk($movieSeq)>0) {
 					$("#btnInterestingMovie_"+$movieSeq).attr("class","img_you_ck btn_02");
@@ -2085,6 +2088,7 @@ seungwoo.fx={
 		var ctx=$$("x");
 		var $movieSeq=x;
 		$("#btnSeenMovie").click(e=>{
+			e.preventDefault();
 			if(seungwoo.fx.loginChk()>0) {
 				if(seungwoo.fx.seenChk($movieSeq)>0) {
 					$("#btnSeenMovie").attr("class","img_btn btn_seen");
@@ -2131,6 +2135,7 @@ seungwoo.fx={
 		});
 		
 		$("#btnInterestingMovie").click(e=>{
+			e.preventDefault();
 			if(seungwoo.fx.loginChk()>0) {
 				if(seungwoo.fx.interestingChk($movieSeq)>0) {
 					$("#btnInterestingMovie").attr("class","img_btn btn_inte");

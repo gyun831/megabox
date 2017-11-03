@@ -73,7 +73,8 @@ megabox.index =(()=>{
 		    		$('#login_wrap').attr('class','login_info remove_loginInfo');
 	    			$main.empty();
 	    			$main.append(memberUI.findbyid());
-	    			$('#id_send').click(()=>{
+	    			$('#id_send').click(e=>{
+	    				e.preventDefault();
 	    				$.ajax({
 	    					url : $$('x')+'/sendMail',
 	    					method : 'post',
@@ -83,7 +84,8 @@ megabox.index =(()=>{
 	    					contentType : 'application/json',
 	    					success : m=>{
 	    						alert('전송');
-	    						$('#find_id').click(()=>{
+	    						$('#find_id').click(e=>{
+	    							e.preventDefault();
 	    							if(m.joinCode==$('#userfind-id-code').val()){
 		    							alert('인증완료');
 		    							$.ajax({
@@ -112,7 +114,8 @@ megabox.index =(()=>{
 	    					}
 	    				})	
 	    			})
-	    			$('#pass_send').click(()=>{
+	    			$('#pass_send').click(e=>{
+	    				e.preventDefault();
 	    				$.ajax({
 	    					url : $$('x')+'/sendMail',
 	    					method : 'post',
@@ -122,7 +125,8 @@ megabox.index =(()=>{
 	    					contentType : 'application/json',
 	    					success : m=>{
 	    						alert('전송');
-	    						$('#img_btn_pass').click(()=>{
+	    						$('#img_btn_pass').click(e=>{
+	    							e.preventDefault();
 	    							if(m.joinCode==$('#userfind-pass-code').val()){
 	    								alert('인증완료');
 		    							$.ajax({
@@ -156,7 +160,8 @@ megabox.index =(()=>{
 		    		$('#login_wrap').attr('class','login_info remove_loginInfo');
 	    			$main.empty();
 	    			$main.append(memberUI.membertext());
-	    			$('#check_send').click(()=>{
+	    			$('#check_send').click(e=>{
+	    				e.preventDefault();
 	    				$.ajax({
 	    					url : $$('x')+'/sendMail',
 	    					method : 'post',
@@ -185,7 +190,8 @@ megabox.index =(()=>{
 		    	$('#exit').on('click',()=>{
 					$('#login_wrap').attr('class','login_info remove_loginInfo');
 				});
-		    	$('#main_login').click(()=>{
+		    	$('#main_login').click(e=>{
+		    		e.preventDefault();
 		    		$.ajax({
 		    			url : $$('x')+'/login',
 		    			method : 'post',
@@ -293,7 +299,8 @@ megabox.func=(()=>{
 	    })
 		})
 		
-		$('#myinfoup').click(()=>{
+		$('#myinfoup').click(e=>{
+			e.preventDefault();
 			$.ajax({
 				url : $$('x')+'/selectid/id',
 				method : 'post',
@@ -349,7 +356,8 @@ megabox.func=(()=>{
 		$('#passUpdate').click(()=>{
 			passupdate();
 		})
-		$('#memberdel').click(()=>{
+		$('#memberdel').click(e=>{
+			e.preventDefault();
 			alert('탈퇴');
 			$.ajax({
 				url : $$('x')+'/delete',
@@ -382,7 +390,8 @@ megabox.func=(()=>{
 		$("#pw_change button").eq(0).click(e=>{
 			myinfoupdate();
 		});
-		$("#pw_change button").eq(1).click(e=>{		
+		$("#pw_change button").eq(1).click(e=>{	
+			e.preventDefault();
 		    var id =$$('id');
 			var oldpass=$('#inputtext1').val();
 	     	var newpass=$("#inputtext2").val();
@@ -418,7 +427,8 @@ megabox.func=(()=>{
 	var memberadd=()=>{
 		$('#mega_main').empty();
 		$('#mega_main').append(memberUI.memberadd());
-		$('#img_btn_user_input_id_pull-left').click(()=>{
+		$('#img_btn_user_input_id_pull-left').click(e=>{
+			e.preventDefault();
 			$.ajax({
 				url : $$('x')+'/selectid/id',
 				method : 'post',
@@ -439,7 +449,8 @@ megabox.func=(()=>{
 							alert('일치하지않습니다.');
 						}
 					})
-					$('#joinconfirm').click(()=>{
+					$('#joinconfirm').click(e=>{
+						e.preventDefault();
 						$.ajax({
 							url : $$('x')+'/join',
 							method : 'post',

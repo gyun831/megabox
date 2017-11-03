@@ -82,7 +82,6 @@ public class GHController {
 		list =(x)->{
 			return gmapper.timeList(resp);
 		};
-	
 		map.put("timelist", list.execute(resp));
 		//System.out.println(map.get("timelist"));
 		return map;

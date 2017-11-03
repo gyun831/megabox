@@ -465,7 +465,7 @@ megabox.func=(()=>{
 							contentType : 'application/json',
 							success : m=>{
 								alert('회원가입성공');
-								onCreate();
+								megabox.index.onCreate();
 							},
 							error : ()=>{
 								alert('실패');

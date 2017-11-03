@@ -1325,12 +1325,20 @@ reservation.index=(function(){
 		$('#myModal').append(movieUI);
 		$('#myModal').append(seatUI);
 		var today = new Date();
-		var week = new Array('일','월','화','수','목','금','토');
-		var dui=' <li data-item="'+(today.getFullYear())+(today.getMonth()+1)+(today.getDate())+'" ><a title="선택됨" class="active" onclick="reservation.event.dateSelect(this)" href="#"> 오늘 </a></li>';
-		  for(var i=1; i <21;i++){
-			  today.setDate(today.getDate()+1);
-        	  dui+= ' <li data-item="'+(today.getFullYear())+(today.getMonth()+1)+(today.getDate())+'" ><a title="선택됨" class="" onclick="reservation.event.dateSelect(this)" href="#"> '+today.getDate()+'('+week[today.getDay()]+')'+'</a></li>';
-          }
+	      var mm=today.getMonth()+1;
+	      var dd=today.getDate("dd");
+	      if(dd<10){dd='0'+dd} 
+	      if(mm<10){mm='0'+mm} 
+	      var week = new Array('일','월','화','수','목','금','토');
+	      var dui=' <li data-item="'+(today.getFullYear())+(mm)+(dd)+'" ><a title="선택됨" class="active" onclick="reservation.event.dateSelect(this)" href="#"> 오늘 </a></li>';
+	        for(var i=1; i <21;i++){
+	           today.setDate(today.getDate()+1);
+	           mm=today.getMonth()+1;
+	           dd=today.getDate();
+	           if(dd<10){dd='0'+dd} 
+	           if(mm<10){mm='0'+mm} 
+	             dui+= ' <li data-item="'+(today.getFullYear())+(mm)+(dd)+'" ><a title="선택됨" class="" onclick="reservation.event.dateSelect(this)" href="#"> '+today.getDate()+'('+week[today.getDay()]+')'+'</a></li>';
+	          }
 		$('#datey').append(dui);
 		
 		setContentView();
